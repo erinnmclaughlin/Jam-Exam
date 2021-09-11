@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31129.286
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "src\Client\Client.csproj", "{378C5197-5003-4D3B-B548-E1CDD717780F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "src\Server\Server.csproj", "{3404DCCE-73AA-4EDB-94DD-FA7B340A5D9E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "src\Shared\Shared.csproj", "{F17C4625-F6D7-48BD-A824-D696CD73F452}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{378C5197-5003-4D3B-B548-E1CDD717780F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{378C5197-5003-4D3B-B548-E1CDD717780F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{378C5197-5003-4D3B-B548-E1CDD717780F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{378C5197-5003-4D3B-B548-E1CDD717780F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3404DCCE-73AA-4EDB-94DD-FA7B340A5D9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3404DCCE-73AA-4EDB-94DD-FA7B340A5D9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3404DCCE-73AA-4EDB-94DD-FA7B340A5D9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3404DCCE-73AA-4EDB-94DD-FA7B340A5D9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F17C4625-F6D7-48BD-A824-D696CD73F452}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F17C4625-F6D7-48BD-A824-D696CD73F452}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F17C4625-F6D7-48BD-A824-D696CD73F452}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F17C4625-F6D7-48BD-A824-D696CD73F452}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {497A695B-CCA9-405A-92DA-85701D288C9C}
+	EndGlobalSection
+EndGlobal
