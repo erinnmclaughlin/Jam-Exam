@@ -8,10 +8,15 @@ namespace Client.Extensions
         {
             return user.FindFirst("SpotifyToken")?.Value;
         }
+
         public static string GetUserId(this ClaimsPrincipal user)
         {
             return user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         }
 
+        public static string GetName(this ClaimsPrincipal user)
+        {
+            return user.Identity.Name ?? "Unknown User";
+        }
     }
 }

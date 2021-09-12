@@ -11,9 +11,6 @@ namespace Server.Authentication
             var tokenManager = (TokenManager)context.HttpContext.RequestServices.GetService(typeof(TokenManager));
             var hasToken = context.HttpContext.Request.Headers.TryGetValue("Authorization", out var token);
 
-            if (hasToken)
-                token = token.ToString().Replace("Bearer ", "");
-            
             if (!hasToken || !tokenManager.VerifyToken(token))
             {
                 context.ModelState.AddModelError("Unauthorized", "Invalid or missing token.");

@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using Server.Authentication;
 using Server.Settings;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace Server.Controllers
@@ -36,10 +33,10 @@ namespace Server.Controllers
             return Ok(uri);
         }
 
-        [HttpGet, Route("api/token")]
-        public async Task<IActionResult> GetAccessToken([FromQuery] string code)
+        [HttpGet, Route("api/login")]
+        public async Task<IActionResult> LoginUser([FromQuery] string code)
         {
-            var token = await _tokenManager.GenerateToken(code);
+            var token = await _tokenManager.LoginUser(code);
             return Ok(token);
         }
     }

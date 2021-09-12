@@ -1,5 +1,4 @@
 ﻿using Refit;
-using Shared.Authentication;
 using Shared.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,8 +10,8 @@ namespace Client
         [Get("/authorize-url")]
         Task<string> GetSpotifyAuthUrl();
 
-        [Get("/token")]
-        Task<Token> GetToken(string code);
+        [Get("/login")]
+        Task<string> LoginUser(string code);
 
         [Get("/genres")]
         Task<List<GenreModel>> GetGenres();
