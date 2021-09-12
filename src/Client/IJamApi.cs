@@ -7,6 +7,9 @@ namespace Client
 {
     public interface IJamApi
     {
+        [Get("/artists")]
+        Task<List<ArtistModel>> SearchArtists(string searchText, int limit = 20);
+
         [Get("/authorize-url")]
         Task<string> GetSpotifyAuthUrl();
 
