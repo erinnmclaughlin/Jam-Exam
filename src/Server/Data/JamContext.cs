@@ -14,7 +14,6 @@ namespace Server.Data
 
         public JamContext(DbContextOptions<JamContext> options) : base(options)
         {
-
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
