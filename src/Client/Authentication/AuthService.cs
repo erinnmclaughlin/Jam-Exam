@@ -1,12 +1,8 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
-using Newtonsoft.Json;
-using Shared.Authentication;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -14,15 +10,15 @@ namespace Client.Authentication
 {
     public class AuthService
     {
-        private readonly HttpClient _httpClient;
+        private readonly IJamApi _api;
         private readonly ILocalStorageService _localStorage;
         private readonly NavigationManager _navManager;
 
         public event EventHandler AuthenticationStateChanged;
 
-        public AuthService(HttpClient httpClient, ILocalStorageService localStorage,NavigationManager navManager)
+        public AuthService(IJamApi api, ILocalStorageService localStorage,NavigationManager navManager)
         {
-            _httpClient = httpClient;
+            _api = api;
             _localStorage = localStorage;
             _navManager = navManager;
         }
@@ -33,19 +29,13 @@ namespace Client.Authentication
             var expiry = await _localStorage.GetItemAsync<DateTime?>("expiry");
             var isAuthenticated = token is not null && expiry is not null && DateTime.UtcNow <= expiry;
 
-            _httpClient.DefaultRequestHeaders.Authorization = isAuthenticated ? new AuthenticationHeaderValue("Bearer", token) : null;
             return isAuthenticated;
         }
 
         public async Task RequestSpotifyAuthorization()
         {
-            var response = await _httpClient.GetAsync("api/authorize-url");
-            var content = await response.Content.ReadAsStringAsync();
-
-            if (response.IsSuccessStatusCode)
-            {
-                _navManager.NavigateTo(content);
-            }
+            var url = await _api.GetSpotifyAuthUrl();
+            _navManager.NavigateTo(url);
         }
 
         public async Task RequestToken()
@@ -56,13 +46,7 @@ namespace Client.Authentication
             if (!qs.TryGetValue("code", out var code))
                 return;
 
-            var response = await _httpClient.GetAsync(QueryHelpers.AddQueryString("api/token", "code", code));
-
-            if (!response.IsSuccessStatusCode)
-                return;
-
-            var content = await response.Content.ReadAsStringAsync();
-            var token = JsonConvert.DeserializeObject<Token>(content);
+            var token = await _api.GetToken(code);
 
             await _localStorage.SetItemAsync("token", token.Value);
             await _localStorage.SetItemAsync("expiry", token.Expiry);
@@ -74,9 +58,7 @@ namespace Client.Authentication
         public async Task<ClaimsPrincipal> GetClaimsPrincipal()
         {
             if (await IsAuthenticated() == false)
-            {
                 return new ClaimsPrincipal(new ClaimsIdentity());
-            }
 
             var claims = new List<Claim>
             {

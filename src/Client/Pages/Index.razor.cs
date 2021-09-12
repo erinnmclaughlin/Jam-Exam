@@ -1,18 +1,26 @@
 ﻿using Microsoft.AspNetCore.Components;
-using System.Net.Http;
+using Microsoft.AspNetCore.Components.Authorization;
+using Shared.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Client.Pages
 {
+
     public partial class Index
     {
-        [Inject] private HttpClient HttpClient { get; set; }
-        private string Message { get; set; } = "Loading...";
+        [Inject] private IJamApi Api { get; set; }
+        [CascadingParameter] private Task<AuthenticationState> AuthStateTask { get; set; }
+
+        private List<GenreModel> Genres { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            var response = await HttpClient.GetAsync("api/test");
-            Message = await response.Content.ReadAsStringAsync();
+            var authState = await AuthStateTask;
+
+            if (authState.User.Identity.IsAuthenticated)
+                Genres = await Api.GetGenres();
+
             await base.OnInitializedAsync();
         }
     }

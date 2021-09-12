@@ -3,8 +3,8 @@ using Client.Authentication;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Refit;
 using System;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Client
@@ -21,8 +21,11 @@ namespace Client
             builder.Services.AddScoped<AuthenticationStateProvider, JamExamAuthStateProvider>();
             builder.Services.AddScoped<AuthService>();
             builder.Services.AddBlazoredLocalStorage();
+            builder.Services.AddTransient<JamHeaderHandler>();
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddRefitClient<IJamApi>()
+                .ConfigureHttpClient(c => c.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress + "api"))
+                .AddHttpMessageHandler<JamHeaderHandler>();
 
             await builder.Build().RunAsync();
         }
