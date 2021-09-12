@@ -3,9 +3,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Server.Authentication;
-using Server.Services;
-using Shared.Authentication;
-using System;
+using Server.Settings;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -16,13 +14,13 @@ namespace Server.Controllers
     [ApiController]
     public class AuthorizationController : ControllerBase
     {
-        private readonly SpotifyOptions _config;
-        private readonly TokenService _tokenService;
+        private readonly SpotifySettings _spotifySettings;
+        private readonly TokenManager _tokenManager;
 
-        public AuthorizationController(IOptions<SpotifyOptions> options, TokenService tokenService)
+        public AuthorizationController(IOptions<SpotifySettings> options, TokenManager tokenManager)
         {
-            _config = options.Value;
-            _tokenService = tokenService;
+            _spotifySettings = options.Value;
+            _tokenManager = tokenManager;
         }
 
         [HttpGet, Route("api/authorize-url")]
@@ -31,39 +29,18 @@ namespace Server.Controllers
             var uri = "https://accounts.spotify.com/authorize";
             uri = QueryHelpers.AddQueryString(uri, new Dictionary<string, string>
             {
-                { "client_id", _config.ClientId },
-                { "response_type", SpotifyOptions.ResponseType },
-                { "redirect_uri", _config.RedirectUri },
-                { "scope", SpotifyOptions.Scope }
+                { "client_id", _spotifySettings.ClientId },
+                { "response_type", "code" },
+                { "redirect_uri", _spotifySettings.RedirectUri }
             });
-            return Ok(new AuthorizationUrl { Url = uri });
+            return Ok(uri);
         }
 
         [HttpGet, Route("api/token")]
         public async Task<IActionResult> GetAccessToken([FromQuery] string code)
         {
-            using var httpClient = new HttpClient();
-
-            var body = new FormUrlEncodedContent(new Dictionary<string, string>
-            {
-                { "grant_type", "authorization_code" },
-                { "code", code },
-                { "redirect_uri", _config.RedirectUri },
-                { "client_id", _config.ClientId },
-                { "client_secret", _config.ClientSecret }
-            });
-            body.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
-
-            var response = await httpClient.PostAsync("https://accounts.spotify.com/api/token", body);
-            var content = await response.Content.ReadAsStringAsync();
-
-            if (!response.IsSuccessStatusCode)
-                return BadRequest(content);
-
-            var tokenResponse = JsonConvert.DeserializeObject<SpotifyTokenResponse>(content);
-            _tokenService.SetToken(tokenResponse);
-
-            return Ok(new TokenResponse { Token = _tokenService.Token, ExpiresOn = _tokenService.ExpiresOn.Value });
+            var token = await _tokenManager.GenerateToken(code);
+            return Ok(token);
         }
     }
 }

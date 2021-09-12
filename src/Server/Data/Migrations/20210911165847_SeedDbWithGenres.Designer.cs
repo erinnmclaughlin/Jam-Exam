@@ -9,7 +9,7 @@ using Server.Data;
 
 namespace Server.Data.Migrations
 {
-    [DbContext(typeof(JamExamContext))]
+    [DbContext(typeof(JamContext))]
     [Migration("20210911165847_SeedDbWithGenres")]
     partial class SeedDbWithGenres
     {

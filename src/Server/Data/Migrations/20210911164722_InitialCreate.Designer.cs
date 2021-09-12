@@ -9,7 +9,7 @@ using Server.Data;
 
 namespace Server.Data.Migrations
 {
-    [DbContext(typeof(JamExamContext))]
+    [DbContext(typeof(JamContext))]
     [Migration("20210911164722_InitialCreate")]
     partial class InitialCreate
     {

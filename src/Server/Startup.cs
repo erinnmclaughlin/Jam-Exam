@@ -4,8 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Server.Authentication;
 using Server.Data;
-using Server.Services;
+using Server.Settings;
 
 namespace Server
 {
@@ -22,9 +23,9 @@ namespace Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<JamExamContext>(x => x.UseSqlServer(Configuration.GetConnectionString("JamExam")));
-            services.AddScoped<TokenService>();
-            services.Configure<SpotifyOptions>(Configuration.GetSection("Spotify"));
+            services.AddDbContext<JamContext>(x => x.UseSqlServer(Configuration.GetConnectionString("JamExam")));
+            services.AddScoped<TokenManager>();
+            services.Configure<SpotifySettings>(Configuration.GetSection("Spotify"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

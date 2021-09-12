@@ -6,6 +6,7 @@ using Shared.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -30,7 +31,10 @@ namespace Client.Authentication
         {
             var token = await _localStorage.GetItemAsync<string>("token");
             var expiry = await _localStorage.GetItemAsync<DateTime?>("expiry");
-            return token is not null && expiry is not null && DateTime.UtcNow <= expiry;
+            var isAuthenticated = token is not null && expiry is not null && DateTime.UtcNow <= expiry;
+
+            _httpClient.DefaultRequestHeaders.Authorization = isAuthenticated ? new AuthenticationHeaderValue("Bearer", token) : null;
+            return isAuthenticated;
         }
 
         public async Task RequestSpotifyAuthorization()
@@ -40,8 +44,7 @@ namespace Client.Authentication
 
             if (response.IsSuccessStatusCode)
             {
-                var uri = JsonConvert.DeserializeObject<AuthorizationUrl>(content);
-                _navManager.NavigateTo(uri.Url);
+                _navManager.NavigateTo(content);
             }
         }
 
@@ -59,10 +62,10 @@ namespace Client.Authentication
                 return;
 
             var content = await response.Content.ReadAsStringAsync();
-            var token = JsonConvert.DeserializeObject<TokenResponse>(content);
+            var token = JsonConvert.DeserializeObject<Token>(content);
 
-            await _localStorage.SetItemAsync("token", token.Token);
-            await _localStorage.SetItemAsync("expiry", token.ExpiresOn);
+            await _localStorage.SetItemAsync("token", token.Value);
+            await _localStorage.SetItemAsync("expiry", token.Expiry);
 
             AuthenticationStateChanged.Invoke(this, new EventArgs());
             _navManager.NavigateTo("");
@@ -70,11 +73,14 @@ namespace Client.Authentication
 
         public async Task<ClaimsPrincipal> GetClaimsPrincipal()
         {
-            var token = await _localStorage.GetItemAsync<string>("token");
+            if (await IsAuthenticated() == false)
+            {
+                return new ClaimsPrincipal(new ClaimsIdentity());
+            }
 
             var claims = new List<Claim>
             {
-                new Claim("token", token),
+                new Claim(ClaimTypes.Name, "Test User"),
             };
 
             return new ClaimsPrincipal(new ClaimsIdentity(claims, "jamExamAuth"));

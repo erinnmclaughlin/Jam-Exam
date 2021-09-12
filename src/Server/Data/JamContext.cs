@@ -5,14 +5,14 @@ using System.Collections.Generic;
 
 namespace Server.Data
 {
-    public class JamExamContext : DbContext
+    public class JamContext : DbContext
     {
         public DbSet<Game> Games { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserToken> UserTokens { get; set; }
 
-        public JamExamContext(DbContextOptions<JamExamContext> options) : base(options)
+        public JamContext(DbContextOptions<JamContext> options) : base(options)
         {
 
         }
