@@ -30,6 +30,7 @@ jobs:
 
       - name: Update Database
         run: |
+          dotnet new tool-manifest
           dotnet tool install dotnet-ef
           dotnet ef database update --context ApplicationDbContext --connection ${{ secrets.CONNECTION_STRING }}
 
