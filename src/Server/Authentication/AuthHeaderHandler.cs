@@ -23,12 +23,14 @@ namespace Server.Authentication
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             StringValues token = "";
-            _httpAccessor.HttpContext?.Request?.Headers.TryGetValue("Authorization", out token);
 
-            var spotifyToken = new JwtSecurityTokenHandler().ReadJwtToken(token.ToString().Replace("Bearer ", ""))
-                .Claims.FirstOrDefault(x => x.Type == ClaimTypes.Authentication)?.Value;
+            if (_httpAccessor.HttpContext?.Request?.Headers.TryGetValue("Authorization", out token) == true)
+            {
+                var spotifyToken = new JwtSecurityTokenHandler().ReadJwtToken(token.ToString().Replace("Bearer ", ""))
+                    .Claims.FirstOrDefault(x => x.Type == ClaimTypes.Authentication)?.Value;
 
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", spotifyToken);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", spotifyToken);
+            }
 
             return await base.SendAsync(request, cancellationToken).ConfigureAwait(false);
         }
