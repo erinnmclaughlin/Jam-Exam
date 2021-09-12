@@ -1,13 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using Server.Authentication;
 using Server.Data;
-using Server.Models;
 using Shared.Models;
 using System;
 using System.Linq;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -41,16 +38,48 @@ namespace Server.Controllers
         }
 
         [HttpGet("{genreId}")]
-        public async Task<IActionResult> GetPlaylistByGenre(string genreId, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetGenre(string genreId, CancellationToken cancellationToken)
         {
             var genre = await _context.Genres.FirstOrDefaultAsync(x => x.Id.ToString() == genreId, cancellationToken);
 
             if (genre is null)
                 return NotFound();
 
-            var playlist = await _api.GetPlaylist(genre.SpotifyPlaylistId);
+            return Ok(new GenreModel { Id = genre.Id.ToString(), Name = genre.Name });
+        }
 
-            return Ok(new PlaylistModel { Id = playlist.Id, Name = playlist.Name, Description = playlist.Description });
+        [HttpPost("{genreId}/games")]
+        public async Task<IActionResult> CreateGame(string genreId, CreateGameModel command, CancellationToken cancellationToken)
+        {
+            var genre = await _context.Genres.FirstOrDefaultAsync(x => x.Id.ToString() == genreId, cancellationToken);
+
+            if (genre is null)
+                return NotFound();
+
+            // TODO: add to db
+            //var game = new Game
+            //{
+            //    MaxAnswerTime = 30,
+            //    GenreId = genre.Id,
+            //    NumberOfQuestions = command.NumberOfQuestions,
+            //    StartedOn = DateTime.UtcNow
+            //};
+
+            var playlist = await _api.GetPlaylistTracks(genre.SpotifyPlaylistId);
+            var tracks = playlist.Items.Select(x => x.Track)
+                .Where(x => x.Preview_Url != null)
+                .OrderBy(x => new Random().Next())
+                .Take(command.NumberOfQuestions)
+                .Select(x => new TrackModel
+                {
+                    ArtistIds = x.Artists.Select(a => a.Id).ToArray(),
+                    Id = x.Id,
+                    Name = x.Name,
+                    PreviewUrl = x.Preview_Url
+                })
+                .ToList();
+
+            return Ok(tracks);
         }
     }
 }

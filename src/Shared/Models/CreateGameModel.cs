@@ -1,10 +1,8 @@
-﻿using Shared.Enums;
-
-namespace Shared.Models
+﻿namespace Shared.Models
 {
     public class CreateGameModel
     {
-        public Difficulty? Difficulty { get; set; }
+        public int? Difficulty { get; set; }
         public int NumberOfQuestions { get; set; }
     }
 }

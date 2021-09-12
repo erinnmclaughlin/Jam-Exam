@@ -17,6 +17,10 @@ namespace Client
         Task<List<GenreModel>> GetGenres();
 
         [Get("/genres/{genreId}")]
-        Task<PlaylistModel> GetGenrePlaylist(string genreId);
+        Task<GenreModel> GetGenre(string genreId);
+
+        [Post("/genres/{genreId}/games")]
+        Task<List<TrackModel>> CreateGame(string genreId, CreateGameModel command);
+
     }
 }

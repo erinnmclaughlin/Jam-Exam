@@ -1,0 +1,20 @@
+﻿@page "/create-game"
+@page "/play" 
+
+@if (Genre is null)
+{
+    <p>Loading...</p>
+}
+else if (Tracks is null)
+{
+    <CreateGame GenreId="@Genre.Id" OnCreate="HandleCreate" />
+}
+else
+{
+    <ul>
+        @foreach (var track in Tracks)
+        {
+            <li><a href="@track.PreviewUrl" target="_blank">@track.Name</a></li>
+        }
+    </ul>
+}
