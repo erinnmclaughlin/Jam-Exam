@@ -32,7 +32,7 @@ jobs:
         run: |
           dotnet new tool-manifest
           dotnet tool install dotnet-ef
-          dotnet ef database update --project src/Server/Server.csproj --context JamContext --connection ${{ secrets.CONNECTION_STRING }}
+          dotnet ef database update --project src/Server/Server.csproj --context JamContext --connection "${{ secrets.CONNECTION_STRING }}"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
