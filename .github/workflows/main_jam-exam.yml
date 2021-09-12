@@ -34,7 +34,7 @@ jobs:
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Generate scripts
-        run: dotnet ef migrations script --project Server/Server.csproj --output ${{env.DOTNET_ROOT}}/sql/sql-script.sql --idempotent --context JamContext
+        run: dotnet ef migrations script --project /Server/Server.csproj --output ${{env.DOTNET_ROOT}}/sql/sql-script.sql --idempotent --context JamContext
 
       - name: Azure SQL Deploy
         uses: Azure/sql-action@v1
