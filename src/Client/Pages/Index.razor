@@ -15,7 +15,13 @@ else
     <ul>
         @foreach (var genre in Genres)
         {
-            <li><a>@genre.Name</a></li>
+            <li><a @onclick="(() => LoadPlaylist(genre.Id))">@genre.Name</a></li>
         }
     </ul>
+
+    @if (Playlist is not null)
+    {
+        <p>@Playlist.Name</p>
+        <p>@Playlist.Description</p>
+    }
 }

@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using Refit;
 using Server.Data;
 using Server.Data.Entities;
-using Server.Models;
 using Server.Settings;
 using System;
 using System.Collections.Generic;
@@ -20,15 +21,17 @@ namespace Server.Authentication
 {
     public class TokenManager
     {
+        private readonly ISpotifyApi _api;
         private readonly JamContext _context;
-        private readonly HttpClient _httpClient;
+        private readonly IHttpContextAccessor _http;
         private readonly JwtSettings _jwtSettings;
         private readonly SpotifySettings _spotifySettings;
 
-        public TokenManager(JamContext context, IHttpClientFactory httpClientFactory, IOptions<JwtSettings> jwtOptions, IOptions<SpotifySettings> spotifyOptions)
+        public TokenManager(ISpotifyApi api, JamContext context, IHttpContextAccessor http, IOptions<JwtSettings> jwtOptions, IOptions<SpotifySettings> spotifyOptions)
         {
+            _api = api;
             _context = context;
-            _httpClient = httpClientFactory.CreateClient("Spotify");
+            _http = http;
             _jwtSettings = jwtOptions.Value;
             _spotifySettings = spotifyOptions.Value;
         }
@@ -53,11 +56,7 @@ namespace Server.Authentication
 
             var content = await response.Content.ReadAsStringAsync();
             var spotifyToken = JsonConvert.DeserializeObject<SpotifyToken>(content);
-
-            _httpClient.DefaultRequestHeaders.Clear();
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", spotifyToken.Access_Token);
-
-            var user = await GetCurrentUser();
+            var user = await GetCurrentUser(spotifyToken.Access_Token);
 
             _context.UserTokens.Add(new UserToken { ExpiresOn = spotifyToken.Expires_On, Value = spotifyToken.Access_Token, UserId = user.Id });
             await _context.SaveChangesAsync();
@@ -91,26 +90,35 @@ namespace Server.Authentication
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        private async Task<User> GetCurrentUser()
-        {            
-            var response = await _httpClient.GetAsync("me");
-            var content = await response.Content.ReadAsStringAsync();
-            var spotifyUser = JsonConvert.DeserializeObject<SpotifyUserModel>(content);
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.SpotifyUserId == spotifyUser.Id);
+        private async Task<User> GetCurrentUser(string token)
+        {
+            Console.WriteLine("Getting current user...");
+            Console.WriteLine(token);
 
-            if (user is null)
+            try
             {
-                user = new User
+                var spotifyUser = await _api.GetCurrentUser(token);
+                var user = await _context.Users.FirstOrDefaultAsync(x => x.SpotifyUserId == spotifyUser.Id);
+
+                if (user is null)
                 {
-                    DisplayName = spotifyUser.Display_Name,
-                    SpotifyUserId = spotifyUser.Id
-                };
+                    user = new User
+                    {
+                        DisplayName = spotifyUser.Display_Name,
+                        SpotifyUserId = spotifyUser.Id
+                    };
 
-                _context.Users.Add(user);
-                await _context.SaveChangesAsync();
+                    _context.Users.Add(user);
+                    await _context.SaveChangesAsync();
+                }
+
+                return user;
             }
-
-            return user;
+            catch (ApiException ex)
+            {
+                Console.WriteLine(ex.Content);
+                return null;
+            }
         }
     }
 }

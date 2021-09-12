@@ -16,5 +16,7 @@ namespace Client
         [Get("/genres")]
         Task<List<GenreModel>> GetGenres();
 
+        [Get("/genres/{genreId}")]
+        Task<PlaylistModel> GetGenrePlaylist(string genreId);
     }
 }
