@@ -6,14 +6,12 @@ using System.Threading.Tasks;
 
 namespace Client.Pages
 {
-
     public partial class Index
     {
         [Inject] private IJamApi Api { get; set; }
         [CascadingParameter] private Task<AuthenticationState> AuthStateTask { get; set; }
 
         private List<GenreModel> Genres { get; set; }
-        private PlaylistModel Playlist { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -23,12 +21,6 @@ namespace Client.Pages
                 Genres = await Api.GetGenres();
 
             await base.OnInitializedAsync();
-        }
-
-        private async Task LoadPlaylist(string id)
-        {
-            Playlist = await Api.GetGenrePlaylist(id);
-            StateHasChanged();
         }
     }
 }

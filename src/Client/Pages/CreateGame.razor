@@ -1,0 +1,12 @@
+﻿@page "/create-game" 
+
+@if (Playlist is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <p>Create a Game</p>
+    <p>@Playlist.Name</p>
+    <p>@Playlist.Description</p>
+}
