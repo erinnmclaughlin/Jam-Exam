@@ -10,7 +10,7 @@ namespace Client.Pages.Authorization
 
         protected override async Task OnInitializedAsync()
         {
-            await AuthService.RequestToken();
+            await AuthService.LoginUser();
             await base.OnInitializedAsync();
         }
     }

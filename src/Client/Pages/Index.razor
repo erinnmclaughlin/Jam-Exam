@@ -6,4 +6,22 @@ Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
 
-<p>Message: @Message</p>
+@if (Genres is null)
+{
+    <p>Loading genres...</p>
+}
+else
+{
+    <ul>
+        @foreach (var genre in Genres)
+        {
+            <li><a @onclick="(() => LoadPlaylist(genre.Id))">@genre.Name</a></li>
+        }
+    </ul>
+
+    @if (Playlist is not null)
+    {
+        <p>@Playlist.Name</p>
+        <p>@Playlist.Description</p>
+    }
+}

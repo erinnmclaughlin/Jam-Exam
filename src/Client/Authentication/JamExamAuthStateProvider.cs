@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using System;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Client.Authentication
@@ -23,8 +22,8 @@ namespace Client.Authentication
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var user = await _authService.GetClaimsPrincipal();
-            return new AuthenticationState(user);
+            var user = await _authService.GetCurrentUser();
+            return await Task.FromResult(new AuthenticationState(user));
         }
 
         private void HandleAuthenticationStateChange(object o, EventArgs e)

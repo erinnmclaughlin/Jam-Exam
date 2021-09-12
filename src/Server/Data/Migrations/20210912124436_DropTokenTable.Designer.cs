@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Server.Data;
 
 namespace Server.Data.Migrations
 {
     [DbContext(typeof(JamContext))]
-    partial class JamExamContextModelSnapshot : ModelSnapshot
+    [Migration("20210912124436_DropTokenTable")]
+    partial class DropTokenTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,61 +69,61 @@ namespace Server.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("aed3ddfe-6ba1-48c9-9b08-042365e55954"),
+                            Id = new Guid("47f2fa78-78e8-4ea0-b11f-1ee832cdad75"),
                             Name = "Classic Rock",
                             SpotifyPlaylistId = "37i9dQZF1DWXRqgorJj26U"
                         },
                         new
                         {
-                            Id = new Guid("8d2699ef-f3c0-4e80-9eea-6f7bda902ef1"),
+                            Id = new Guid("580b858f-508a-41cb-82eb-98fced1084be"),
                             Name = "Indie",
                             SpotifyPlaylistId = "37i9dQZF1DX2Nc3B70tvx0"
                         },
                         new
                         {
-                            Id = new Guid("723b6836-1911-4785-8cbb-c0f857de775e"),
+                            Id = new Guid("1f5a9ab5-accf-431e-9e8c-3e053d6eedf2"),
                             Name = "Pop",
                             SpotifyPlaylistId = "37i9dQZF1DXcBWIGoYBM5M"
                         },
                         new
                         {
-                            Id = new Guid("9ad81caa-abb3-44a7-a6cb-2dbb1bfb0279"),
+                            Id = new Guid("ffd580b2-45a2-4448-9b6a-0c8eefa5f921"),
                             Name = "Hip Hop",
                             SpotifyPlaylistId = "37i9dQZF1DX0XUsuxWHRQd"
                         },
                         new
                         {
-                            Id = new Guid("8a2bb8f0-a0fa-4379-8d4e-f2ab5efd244c"),
+                            Id = new Guid("348870e7-40ec-4749-a886-7b1ade7f1a1c"),
                             Name = "Country",
                             SpotifyPlaylistId = "37i9dQZF1DX1lVhptIYRda"
                         },
                         new
                         {
-                            Id = new Guid("2f63ceca-d59f-48bc-a27b-172aa1b6751e"),
+                            Id = new Guid("37f74247-2065-49b2-81dd-427a1a8097e5"),
                             Name = "1960s",
                             SpotifyPlaylistId = "37i9dQZF1DWWzBc3TOlaAV"
                         },
                         new
                         {
-                            Id = new Guid("a4148812-875f-474d-8082-391ce3448fc5"),
+                            Id = new Guid("38a9b33d-f2eb-4351-96ac-a0e3f1ddd8a4"),
                             Name = "1970s",
                             SpotifyPlaylistId = "37i9dQZF1DWTJ7xPn4vNaz"
                         },
                         new
                         {
-                            Id = new Guid("98744f94-53b6-469c-a9ec-da9fc3dd8838"),
+                            Id = new Guid("413a7ff3-b311-4ddf-8190-74b393414a90"),
                             Name = "1980s",
                             SpotifyPlaylistId = "37i9dQZF1DX4UtSsGT1Sbe"
                         },
                         new
                         {
-                            Id = new Guid("fae6ccda-cf87-476c-8261-5e31f7806a71"),
+                            Id = new Guid("f52c26b4-73bf-499e-bdfb-6d5b7904cb3d"),
                             Name = "1990s",
                             SpotifyPlaylistId = "37i9dQZF1DXbTxeAdrVG2l"
                         },
                         new
                         {
-                            Id = new Guid("0401158a-915a-4814-89ce-483e2709373c"),
+                            Id = new Guid("f66ab338-41ab-49f0-969b-e052ab614877"),
                             Name = "2000s",
                             SpotifyPlaylistId = "37i9dQZF1DX4o1oenSJRJd"
                         });
@@ -146,29 +148,6 @@ namespace Server.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Server.Data.Entities.UserToken", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("ExpiresOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserTokens");
-                });
-
             modelBuilder.Entity("Server.Data.Entities.Game", b =>
                 {
                     b.HasOne("Server.Data.Entities.Genre", "Genre")
@@ -184,17 +163,6 @@ namespace Server.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Genre");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Server.Data.Entities.UserToken", b =>
-                {
-                    b.HasOne("Server.Data.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("User");
                 });

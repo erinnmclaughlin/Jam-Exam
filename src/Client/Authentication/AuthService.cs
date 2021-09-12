@@ -1,12 +1,9 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
-using Newtonsoft.Json;
-using Shared.Authentication;
 using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -14,15 +11,15 @@ namespace Client.Authentication
 {
     public class AuthService
     {
-        private readonly HttpClient _httpClient;
+        private readonly IJamApi _api;
         private readonly ILocalStorageService _localStorage;
         private readonly NavigationManager _navManager;
 
         public event EventHandler AuthenticationStateChanged;
 
-        public AuthService(HttpClient httpClient, ILocalStorageService localStorage,NavigationManager navManager)
+        public AuthService(IJamApi api, ILocalStorageService localStorage, NavigationManager navManager)
         {
-            _httpClient = httpClient;
+            _api = api;
             _localStorage = localStorage;
             _navManager = navManager;
         }
@@ -30,25 +27,31 @@ namespace Client.Authentication
         public async Task<bool> IsAuthenticated()
         {
             var token = await _localStorage.GetItemAsync<string>("token");
-            var expiry = await _localStorage.GetItemAsync<DateTime?>("expiry");
-            var isAuthenticated = token is not null && expiry is not null && DateTime.UtcNow <= expiry;
 
-            _httpClient.DefaultRequestHeaders.Authorization = isAuthenticated ? new AuthenticationHeaderValue("Bearer", token) : null;
-            return isAuthenticated;
+            if (string.IsNullOrEmpty(token))
+                return false;
+
+            var expiry = new JwtSecurityTokenHandler().ReadJwtToken(token).Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Exp)?.Value;
+            return expiry is not null && DateTime.TryParse(expiry, out var exp) && exp > DateTime.UtcNow;
+        }
+
+        public async Task<ClaimsPrincipal> GetCurrentUser()
+        {
+            if (!await IsAuthenticated())
+                return new ClaimsPrincipal(new ClaimsIdentity());
+
+            var token = await _localStorage.GetItemAsync<string>("token");
+            var claims = new JwtSecurityTokenHandler().ReadJwtToken(token).Claims;
+            return new ClaimsPrincipal(new ClaimsIdentity(claims, "jwtAuth"));
         }
 
         public async Task RequestSpotifyAuthorization()
         {
-            var response = await _httpClient.GetAsync("api/authorize-url");
-            var content = await response.Content.ReadAsStringAsync();
-
-            if (response.IsSuccessStatusCode)
-            {
-                _navManager.NavigateTo(content);
-            }
+            var url = await _api.GetSpotifyAuthUrl();
+            _navManager.NavigateTo(url);
         }
 
-        public async Task RequestToken()
+        public async Task LoginUser()
         {
             var uri = _navManager.ToAbsoluteUri(_navManager.Uri);
             var qs = QueryHelpers.ParseQuery(uri.Query);
@@ -56,40 +59,16 @@ namespace Client.Authentication
             if (!qs.TryGetValue("code", out var code))
                 return;
 
-            var response = await _httpClient.GetAsync(QueryHelpers.AddQueryString("api/token", "code", code));
+            var authResponse = await _api.LoginUser(code);
 
-            if (!response.IsSuccessStatusCode)
-                return;
-
-            var content = await response.Content.ReadAsStringAsync();
-            var token = JsonConvert.DeserializeObject<Token>(content);
-
-            await _localStorage.SetItemAsync("token", token.Value);
-            await _localStorage.SetItemAsync("expiry", token.Expiry);
-
+            await _localStorage.SetItemAsync("token", authResponse);
             AuthenticationStateChanged.Invoke(this, new EventArgs());
             _navManager.NavigateTo("");
-        }
-
-        public async Task<ClaimsPrincipal> GetClaimsPrincipal()
-        {
-            if (await IsAuthenticated() == false)
-            {
-                return new ClaimsPrincipal(new ClaimsIdentity());
-            }
-
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, "Test User"),
-            };
-
-            return new ClaimsPrincipal(new ClaimsIdentity(claims, "jamExamAuth"));
         }
 
         public async Task Logout()
         {
             await _localStorage.RemoveItemAsync("token");
-            await _localStorage.RemoveItemAsync("expiry");
             AuthenticationStateChanged.Invoke(this, new EventArgs());
             _navManager.NavigateTo("login");
         }
