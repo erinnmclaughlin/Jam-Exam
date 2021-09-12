@@ -12,5 +12,10 @@ namespace Server
         [Get("/playlists/{playlistId}")]
         Task<SpotifyPlaylistModel> GetPlaylist(string playlistId);
 
+        [Get("/playlists/{playlistId}/tracks")]
+        Task<PagedResponseModel<SpotifyPlaylistTrackModel>> GetPlaylistTracks(string playlistId);
+
+        [Get("/search")]
+        Task<SpotifySearchResultsModel> Search(string q, string type, int limit = 20);
     }
 }

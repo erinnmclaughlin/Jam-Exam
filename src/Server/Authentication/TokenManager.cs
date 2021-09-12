@@ -23,15 +23,13 @@ namespace Server.Authentication
     {
         private readonly ISpotifyApi _api;
         private readonly JamContext _context;
-        private readonly IHttpContextAccessor _http;
         private readonly JwtSettings _jwtSettings;
         private readonly SpotifySettings _spotifySettings;
 
-        public TokenManager(ISpotifyApi api, JamContext context, IHttpContextAccessor http, IOptions<JwtSettings> jwtOptions, IOptions<SpotifySettings> spotifyOptions)
+        public TokenManager(ISpotifyApi api, JamContext context, IOptions<JwtSettings> jwtOptions, IOptions<SpotifySettings> spotifyOptions)
         {
             _api = api;
             _context = context;
-            _http = http;
             _jwtSettings = jwtOptions.Value;
             _spotifySettings = spotifyOptions.Value;
         }

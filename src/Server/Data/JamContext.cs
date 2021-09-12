@@ -8,6 +8,7 @@ namespace Server.Data
     public class JamContext : DbContext
     {
         public DbSet<Game> Games { get; set; }
+        public DbSet<GameAnswer> GameAnswers { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserToken> UserTokens { get; set; }

@@ -7,6 +7,9 @@ namespace Client
 {
     public interface IJamApi
     {
+        [Get("/artists")]
+        Task<List<ArtistModel>> SearchArtists(string searchText, int limit = 20);
+
         [Get("/authorize-url")]
         Task<string> GetSpotifyAuthUrl();
 
@@ -17,6 +20,10 @@ namespace Client
         Task<List<GenreModel>> GetGenres();
 
         [Get("/genres/{genreId}")]
-        Task<PlaylistModel> GetGenrePlaylist(string genreId);
+        Task<GenreModel> GetGenre(string genreId);
+
+        [Post("/genres/{genreId}/games")]
+        Task<List<TrackModel>> CreateGame(string genreId, CreateGameModel command);
+
     }
 }

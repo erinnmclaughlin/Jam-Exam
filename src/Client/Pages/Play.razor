@@ -1,0 +1,58 @@
+﻿@page "/create-game"
+@page "/play"
+
+@if (IsLoading)
+{
+    <p>Loading...</p>
+}
+else if (Tracks is null)
+{
+    <CreateGame GenreId="@Genre.Id" OnCreate="HandleCreate" />
+}
+else if (GameOver)
+{
+    <h1>Game Over</h1>
+    <p>You got @NumberCorrect out of @Tracks.Count right!</p>
+}
+else
+{
+    <p>Track @(CurrentIndex + 1) of @Tracks.Count</p>
+
+    @if (CurrentTrack != null)
+    {
+        <video hidden autoplay="" name="media">
+            <source src="@CurrentTrack.PreviewUrl" type="audio/mpeg">
+        </video>
+    }
+
+    <EditForm Model="this" OnValidSubmit="GuessArtist">
+        <div class="form-group">
+            <label for="guess">Name the Artist!</label>
+            <InputText @bind-Value="Guess" class="form-control" id="guess" autocomplete="off" />
+        </div>
+    </EditForm>
+
+    @if (IsCorrect == true)
+    {
+        <p class="text-success">You guessed it!</p>
+    }
+    else if (IsCorrect == false)
+    {
+        <p class="text-danger">Sorry, try again!</p>
+    }
+
+    @if (IsCorrect != null)
+    {
+        <button class="btn btn-primary" @onclick="GetNextTrack">
+            @if (CurrentIndex + 1 == Tracks.Count)
+            {
+                <span>View Results</span>
+            }
+            else
+            {
+                <span>Next Track</span>
+            }
+        </button>
+    }
+
+}

@@ -34,10 +34,10 @@ namespace Server.Controllers
         }
 
         [HttpGet, Route("api/login")]
-        public async Task<IActionResult> LoginUser([FromQuery] string code)
+        public async Task<IActionResult> GetAccessToken([FromQuery] string code)
         {
             var token = await _tokenManager.LoginUser(code);
-            return Ok(token);
+            return Ok(token);            
         }
     }
 }
