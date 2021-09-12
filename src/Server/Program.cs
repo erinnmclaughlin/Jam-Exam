@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Server.Data;
-using Server.Extensions;
 
 namespace Server
 {
@@ -12,7 +10,6 @@ namespace Server
         {
             CreateHostBuilder(args)
                 .Build()
-                .Migrate<JamContext>()
                 .Run();
         }
 
