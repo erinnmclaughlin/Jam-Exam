@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -56,7 +55,7 @@ namespace Server.Authentication
             var spotifyToken = JsonConvert.DeserializeObject<SpotifyToken>(content);
             var user = await GetCurrentUser(spotifyToken.Access_Token);
 
-            _context.UserTokens.Add(new UserToken { ExpiresOn = spotifyToken.Expires_On, Value = spotifyToken.Access_Token, UserId = user.Id });
+            _context.UserTokens.Add(new UserToken { ExpiresOn = spotifyToken.Expires_On, Value = spotifyToken.Access_Token, RefreshToken = spotifyToken.Refresh_Token, UserId = user.Id });
             await _context.SaveChangesAsync();
 
             return GenerateToken(spotifyToken, user);
