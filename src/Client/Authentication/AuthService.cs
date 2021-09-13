@@ -69,6 +69,10 @@ namespace Client.Authentication
                 AuthenticationStateChanged.Invoke(this, new EventArgs());
                 _navManager.NavigateTo("");
             }
+            else
+            {
+                Console.WriteLine(authResponse.Error?.Content);
+            }
         }
 
         public async Task Logout()
