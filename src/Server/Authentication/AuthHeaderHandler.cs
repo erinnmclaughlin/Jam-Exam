@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
@@ -25,10 +26,12 @@ namespace Server.Authentication
 
             if (_httpAccessor.HttpContext?.Request?.Headers.TryGetValue("Authorization", out token) == true)
             {
-                var spotifyToken = new JwtSecurityTokenHandler().ReadJwtToken(token.ToString().Replace("Bearer ", ""))
-                    .Claims.FirstOrDefault(x => x.Type == ClaimTypes.Authentication)?.Value;
+                var claims = new JwtSecurityTokenHandler().ReadJwtToken(token.ToString().Replace("Bearer ", "")).Claims;
+                var spotifyToken = claims.FirstOrDefault(x => x.Type == ClaimTypes.Authentication)?.Value;
+                var expiry = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Exp)?.Value;
 
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", spotifyToken);
+                if (DateTime.TryParse(expiry, out var expireDate) && DateTime.UtcNow < expireDate)
+                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", spotifyToken);
             }
 
             return await base.SendAsync(request, cancellationToken).ConfigureAwait(false);

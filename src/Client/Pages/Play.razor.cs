@@ -1,7 +1,5 @@
 ﻿using Client.Extensions;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.WebUtilities;
-using Refit;
 using Shared.Models;
 using System;
 using System.Collections.Generic;
@@ -23,6 +21,7 @@ namespace Client.Pages
         private int CurrentIndex { get; set; } = 0;
         private List<TrackModel> Tracks { get; set; }
         private bool? IsCorrect { get; set; }
+        private string Error { get; set; }
 
         private TrackModel CurrentTrack { get; set; }
 
@@ -30,26 +29,32 @@ namespace Client.Pages
         {
             var genreId = NavigationManager.TryGetQueryString("genreId");
 
-            try
+            var response = await Api.GetGenre(genreId);
+
+            if (response.IsSuccessStatusCode)
             {
-                Genre = await Api.GetGenre(genreId);
+                Genre = response.Content;
                 IsLoading = false;
             }
-            catch (ApiException)
+            else
             {
-                var message = "There was an error loading the genre. Please try again later.";
-                NavigationManager.NavigateTo(QueryHelpers.AddQueryString("", "error", message));
+                Error = response.Error.Content;
             }
         }
 
         private async Task GuessArtist()
         {
-            var artists = await Api.SearchArtists(Guess, 2);
+            var response = await Api.SearchArtists(Guess, 2);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Error = response.Error.Content;
+                return;
+            }
 
             IsCorrect = false;
-            foreach (var artist in artists)
+            foreach (var artist in response.Content)
             {
-                Console.WriteLine(artist.Name);
                 if (CurrentTrack.ArtistIds.Contains(artist.Id))
                     IsCorrect = true;
             }
