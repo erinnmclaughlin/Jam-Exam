@@ -62,14 +62,24 @@ namespace Server.Authentication
             return GenerateToken(spotifyToken, user);
         }
 
-        public bool VerifyToken(string token)
+        public async Task<bool> VerifyToken(string token)
         {
             token = token.Replace("Bearer ", "");
             var claims = new JwtSecurityTokenHandler().ReadJwtToken(token).Claims;
             var spotifyToken = claims.FirstOrDefault(x => x.Type == ClaimTypes.Authentication)?.Value;
             var userId = claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
 
-            return _context.UserTokens.Any(x => x.UserId.ToString() == userId && x.Value == spotifyToken && x.ExpiresOn > DateTime.UtcNow);
+            var userToken = _context.UserTokens.FirstOrDefault(x => x.UserId.ToString() == userId && x.Value == spotifyToken);
+
+            if (userToken is null)
+                return false;
+
+            if (DateTime.UtcNow < userToken.ExpiresOn)
+                return true;
+
+            var result = await RefreshToken(userToken);
+            return result != null;
+
         }
 
         private string GenerateToken(SpotifyToken spotifyToken, User user)
@@ -86,6 +96,37 @@ namespace Server.Authentication
             var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var token = new JwtSecurityToken(new JwtHeader(signingCredentials), new JwtPayload(claims));
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        private async Task<SpotifyToken> RefreshToken(UserToken userToken)
+        {
+            var body = new FormUrlEncodedContent(new Dictionary<string, string>
+            {
+                { "grant_type", "refresh_token" },
+                { "refresh_token", userToken.RefreshToken }
+            });
+            body.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
+
+            using var httpClient = new HttpClient();
+            var response = await httpClient.PostAsync("https://accounts.spotify.com/api/token", body);
+
+            if (!response.IsSuccessStatusCode)
+                return null;
+
+            var content = await response.Content.ReadAsStringAsync();
+            var token = JsonConvert.DeserializeObject<SpotifyToken>(content);
+
+            _context.UserTokens.Add(new UserToken
+            {
+                ExpiresOn = token.Expires_On,
+                RefreshToken = userToken.RefreshToken,
+                UserId = userToken.UserId,
+                Value = token.Access_Token
+            });
+
+            await _context.SaveChangesAsync();
+
+            return token;
         }
 
         private async Task<User> GetCurrentUser(string token)

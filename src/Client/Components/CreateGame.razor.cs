@@ -19,8 +19,10 @@ namespace Client.Components
 
         private async Task HandleValidSubmit()
         {
-            var tracks = await Api.CreateGame(GenreId, CreateGameModel);
-            await OnCreate.InvokeAsync(tracks);
+            var response = await Api.CreateGame(GenreId, CreateGameModel);
+
+            if (response.IsSuccessStatusCode)
+                await OnCreate.InvokeAsync(response.Content);
         }
     }
 }

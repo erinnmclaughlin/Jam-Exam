@@ -1,5 +1,10 @@
 ﻿@page "/"
 
+@if (Error is not null)
+{
+    <p class="text-danger">@Error</p>
+}
+
 @if (Genres is null)
 {
     <p>Loading genres...</p>

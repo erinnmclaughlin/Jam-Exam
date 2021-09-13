@@ -47,8 +47,10 @@ namespace Client.Authentication
 
         public async Task RequestSpotifyAuthorization()
         {
-            var url = await _api.GetSpotifyAuthUrl();
-            _navManager.NavigateTo(url);
+            var response = await _api.GetSpotifyAuthUrl();
+
+            if (response.IsSuccessStatusCode)
+                _navManager.NavigateTo(response.Content);
         }
 
         public async Task LoginUser()
@@ -61,9 +63,12 @@ namespace Client.Authentication
 
             var authResponse = await _api.LoginUser(code);
 
-            await _localStorage.SetItemAsync("token", authResponse);
-            AuthenticationStateChanged.Invoke(this, new EventArgs());
-            _navManager.NavigateTo("");
+            if (authResponse.IsSuccessStatusCode)
+            {
+                await _localStorage.SetItemAsync("token", authResponse.Content);
+                AuthenticationStateChanged.Invoke(this, new EventArgs());
+                _navManager.NavigateTo("");
+            }
         }
 
         public async Task Logout()

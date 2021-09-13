@@ -8,22 +8,22 @@ namespace Client
     public interface IJamApi
     {
         [Get("/artists")]
-        Task<List<ArtistModel>> SearchArtists(string searchText, int limit = 20);
+        Task<ApiResponse<List<ArtistModel>>> SearchArtists(string searchText, int limit = 20);
 
         [Get("/authorize-url")]
-        Task<string> GetSpotifyAuthUrl();
+        Task<ApiResponse<string>> GetSpotifyAuthUrl();
 
         [Get("/login")]
-        Task<string> LoginUser(string code);
+        Task<ApiResponse<string>> LoginUser(string code);
 
         [Get("/genres")]
-        Task<List<GenreModel>> GetGenres();
+        Task<ApiResponse<List<GenreModel>>> GetGenres();
 
         [Get("/genres/{genreId}")]
-        Task<GenreModel> GetGenre(string genreId);
+        Task<ApiResponse<GenreModel>> GetGenre(string genreId);
 
         [Post("/genres/{genreId}/games")]
-        Task<List<TrackModel>> CreateGame(string genreId, CreateGameModel command);
+        Task<ApiResponse<List<TrackModel>>> CreateGame(string genreId, CreateGameModel command);
 
     }
 }

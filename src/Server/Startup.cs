@@ -44,6 +44,10 @@ namespace Server
                 app.UseDeveloperExceptionPage();
                 app.UseWebAssemblyDebugging();
             }
+            else
+            {
+                app.UseHsts();
+            }
 
             app.UseHttpsRedirection();
             app.UseBlazorFrameworkFiles();
