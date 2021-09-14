@@ -1,6 +1,6 @@
 ﻿@page "/login" 
 @layout UnauthorizedLayout 
 
-<button class="btn btn-lg btn-success" @onclick="AuthService.RequestSpotifyAuthorization">
+<button class="btn btn-lg btn-success" disabled="@IsLoggingIn" @onclick="LoginUser">
     Login with Spotify
 </button>
