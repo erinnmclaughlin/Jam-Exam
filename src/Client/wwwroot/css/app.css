@@ -1,3 +1,125 @@
 ﻿@tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+
+    html {
+        @apply min-h-full bg-gradient-to-b from-gray-900 to-black;
+    }
+
+    body, #app {
+        @apply h-full text-gray-200;
+    }
+
+    .main {
+        @apply w-full h-full bg-transparent;
+    }
+}
+
+@layer components {
+
+    .icon-card {
+        @apply flex flex-col flex-wrap items-center justify-center m-2 p-4 cursor-pointer border border-gray-700 rounded-lg hover:bg-gray-700 transition-all duration-200 opacity-80 transform;
+    }
+
+        .icon-card p {
+            @apply font-semibold tracking-widest mt-4;
+        }
+
+        .icon-card:hover {
+            @apply -translate-y-1;
+        }
+
+    .navbar {
+        @apply flex justify-between h-20 bg-transparent;
+    }
+
+        .navbar .identity {
+            @apply absolute right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0;
+        }
+
+            .navbar .identity .avatar {
+                @apply bg-gray-800 flex text-sm rounded-full;
+            }
+
+                .navbar .identity .avatar:focus {
+                    @apply outline-none ring-2 ring-offset-2 ring-offset-gray-800 ring-gray-400;
+                }
+
+                .navbar .identity .avatar img {
+                    @apply h-10 w-10 rounded-full;
+                }
+
+            .navbar .identity .avatar-dropdown {
+                @apply origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-gray-700 text-gray-200 /*ring-1 ring-black ring-opacity-5*/ z-50;
+            }
+
+                .navbar .identity .avatar-dropdown:focus {
+                    @apply outline-none;
+                }
+
+                .navbar .identity .avatar-dropdown .dropdown-item {
+                    @apply block my-1 mx-2 p-3 rounded text-sm hover:bg-gray-600 hover:text-white;
+                }
+
+    .navbar-brand {
+        @apply text-lg font-semibold tracking-widest uppercase rounded-lg focus:outline-none;
+    }
+
+    .navbar-item {
+        @apply px-8 py-4 flex items-center text-gray-50;
+    }
+
+    .search {
+        @apply bg-gray-700 flex items-center rounded-full shadow-xl w-96;
+    }
+
+        .search .icon {
+            @apply p-4 text-gray-400;
+        }
+
+        .search input {
+            @apply rounded-l-full w-full py-2 px-6 leading-tight bg-gray-700 focus:outline-none text-white;
+        }
+
+        .search.is-active .icon {
+            @apply text-gray-200;
+        }
+
+    .sidebar {
+        @apply flex flex-col w-full md:w-64 text-gray-200 flex-shrink-0;
+    }
+}
+
+@layer utilities {
+
+    .bg-spotify-green {
+        background-color: #1DB954 !important;
+    }
+}
+
+.icon {
+    width: 50px;
+    height: 50px;
+    margin: .5em;
+}
+
+#blazor-error-ui {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }

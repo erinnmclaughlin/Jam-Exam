@@ -18,5 +18,10 @@ namespace Client.Extensions
         {
             return user.Identity.Name ?? "Unknown User";
         }
+
+        public static string GetProfileImage(this ClaimsPrincipal user)
+        {
+            return user.FindFirst("ProfileImageUrl")?.Value;
+        }
     }
 }

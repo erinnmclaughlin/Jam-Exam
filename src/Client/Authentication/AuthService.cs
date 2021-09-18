@@ -77,6 +77,7 @@ namespace Client.Authentication
 
         public async Task Logout()
         {
+            Console.WriteLine("Logging out...");
             await _localStorage.RemoveItemAsync("token");
             AuthenticationStateChanged.Invoke(this, new EventArgs());
             _navManager.NavigateTo("login");

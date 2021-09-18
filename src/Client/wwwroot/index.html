@@ -7,13 +7,48 @@
     <title>Client</title>
     <base href="/" />
     <link href="css/app.min.css" rel="stylesheet" />
+    <link href="css/loader.css" rel="stylesheet">
+    <link href="Client.styles.css" rel="stylesheet">
     <link href="manifest.json" rel="manifest" />
     <link href="icon-512.png" rel="apple-touch-icon" sizes="512x512" />
 </head>
 
 <body>
-    <div id="app">Loading...</div>
+    <div id="app">
+        <div class="loader full">
+            <div class='sound-icon'>
+                <div class='sound-wave'>
+                    <i class='bar'></i>
+                    <i class='bar'></i>
+                    <i class='bar'></i>
+                    <i class='bar'></i>
+                    <i class='bar'></i>
+                    <i class='bar'></i>
+                    <i class='bar'></i>
+                    <i class='bar'></i>
+                    <i class='bar'></i>
+                    <i class='bar'></i>
+                    <i class='bar'></i>
+                    <i class='bar'></i>
+                    <i class='bar'></i>
+                    <i class='bar'></i>
+                    <i class='bar'></i>
+                    <i class='bar'></i>
+                    <i class='bar'></i>
+                    <i class='bar'></i>
+                    <i class='bar'></i>
+                    <i class='bar'></i>
+                </div>
+            </div>
+            <div class="text-gray-100">Preparing jams...</div>
+        </div>
+    </div>
     <script src="_framework/blazor.webassembly.js"></script>
+    <script>
+        window.SetFocusToElement = (element) => {
+            element.focus();
+        };
+    </script>
 </body>
 
 </html>

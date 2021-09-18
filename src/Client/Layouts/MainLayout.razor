@@ -2,29 +2,13 @@
 @inject AuthService AuthService 
 
 <AuthorizeView>
-    <Authorizing>
-        <p>Authorizing...</p>
-    </Authorizing>
     <NotAuthorized>
         <RedirectToLogin />
     </NotAuthorized>
     <Authorized>
-        <div class="page">
-            <div class="sidebar">
-                <NavMenu />
-            </div>
-
-            <div class="main">
-                <div class="top-row px-4">
-                    <a>Hello, @context.User.Identity.Name</a>
-                    <a href="#" @onclick="AuthService.Logout">Log out</a>
-                </div>
-
-                <div class="content px-4">
-                    @Body
-                </div>
-            </div>
+        <NavMenu />
+        <div class="main">
+            @Body
         </div>
-
     </Authorized>
 </AuthorizeView>

@@ -4,6 +4,7 @@ using Server.Authentication;
 using Server.Data;
 using Shared.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,14 +28,28 @@ namespace Server.Controllers
         public async Task<IActionResult> GetGenres(CancellationToken cancellationToken)
         {
             var genres = await _context.Genres
-                .Select(x => new GenreModel
-                {
-                    Id = x.Id.ToString(),
-                    Name = x.Name
-                })
                 .ToListAsync(cancellationToken);
 
-            return Ok(genres);
+            List<GenreModel> models = new();
+            foreach (var genre in genres)
+            {
+                var images = await _api.GetPlaylistCoverImage(genre.SpotifyPlaylistId);
+                var image = images.First();
+
+                models.Add(new GenreModel
+                {
+                    Id = genre.Id.ToString(),
+                    Name = genre.Name,
+                    CoverPhoto = new ImageModel
+                    {
+                        Height = image.Height,
+                        Url = image.Url,
+                        Width = image.Width
+                    }
+                });
+            }
+
+            return Ok(models);
         }
 
         [HttpGet("{genreId}")]
