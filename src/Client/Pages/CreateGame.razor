@@ -1,0 +1,41 @@
+﻿@page "/create-game"
+
+<div class="flex justify-center" style="height: calc(100vh - 10rem);">
+
+    <EditForm Model="CreateGameModel" OnValidSubmit="HandleValidSubmit" style="align-self: center;">
+
+        <FluentValidationValidator />
+
+        <h2 class="text-center text-3xl font-bold text-gray-50 mb-10">
+            Configure Game Options
+        </h2>
+
+        <label class="block mb-3">
+            <span class="text-sm text-gray-50 font-semibold mb-3">Difficulty</span>
+            <InputSelect @bind-Value="CreateGameModel.Difficulty" class="block w-full mt-0 px-2 bg-gray-700 border border-transparent rounded-sm focus:ring-0 focus:border-black">
+                <option class="bg-gray-700 text-gray-400" selected disabled>Select a difficulty...</option>
+                <option class="bg-gray-700 text-gray-200" value="1">Easy</option>
+                <option class="bg-gray-700 text-gray-200" value="2">Normal</option>
+                <option class="bg-gray-700 text-gray-200" value="3">Hard</option>
+                <option class="bg-gray-700 text-gray-200" value="4">Expert</option>
+            </InputSelect>
+            <ValidationMessage For="(() => CreateGameModel.Difficulty)" />
+        </label>
+
+        <label class="block py-2 mb-3">
+            <span class="text-sm text-gray-50 font-semibold mb-3">Number of Questions</span>
+            <InputNumber @bind-Value="CreateGameModel.NumberOfQuestions" class="mt-0 block w-full px-2 bg-gray-700 border border-transparent rounded-sm focus:ring-0 focus:border-black" />
+            <ValidationMessage For="(() => CreateGameModel.NumberOfQuestions)" />
+        </label>
+
+        <div class="grid grid-flow-col gap-4">
+            <a href="" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700">
+                Cancel
+            </a>
+            <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                Play
+            </button>
+        </div>
+        
+    </EditForm>
+</div>

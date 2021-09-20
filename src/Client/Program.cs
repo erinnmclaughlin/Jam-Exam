@@ -1,5 +1,7 @@
 using Blazored.LocalStorage;
+using Blazored.SessionStorage;
 using Client.Authentication;
+using Client.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,9 +20,11 @@ namespace Client
 
             builder.Services.AddOptions();
             builder.Services.AddAuthorizationCore();
+            builder.Services.AddBlazoredLocalStorage();
+            builder.Services.AddBlazoredSessionStorage();
             builder.Services.AddScoped<AuthenticationStateProvider, JamExamAuthStateProvider>();
             builder.Services.AddScoped<AuthService>();
-            builder.Services.AddBlazoredLocalStorage();
+            builder.Services.AddScoped<GameManager>();
             builder.Services.AddTransient<JamHeaderHandler>();
 
             builder.Services.AddRefitClient<IJamApi>()

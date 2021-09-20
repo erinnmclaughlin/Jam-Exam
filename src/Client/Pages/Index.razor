@@ -1,10 +1,5 @@
 ﻿@page "/"
 
-@if (Error is not null)
-{
-    <p class="text-danger">@Error</p>
-}
-
 @if (Genres is null)
 {
     <Loader LoadText="Loading genres..." />
@@ -19,17 +14,17 @@ else
 
         <div class="carousel">
             <div class="carousel__item prev">
-                <a href="create-game?genreId=@PreviousGenre.Id">
+                <a @onclick="(async () => await GameManager.SelectGenre(PreviousGenre.Id))">
                     <img src="@PreviousGenre.CoverPhoto.Url" width="300" alt="@PreviousGenre.Name" />
                 </a>
             </div>
             <div class="carousel__item active">
-                <a href="create-game?genreId=@CurrentGenre.Id">
+                <a @onclick="(async () => await GameManager.SelectGenre(CurrentGenre.Id))">
                     <img src="@CurrentGenre.CoverPhoto.Url" width="300" alt="@CurrentGenre.Name" />
                 </a>
             </div>
             <div class="carousel__item next">
-                <a href="create-game?genreId=@NextGenre.Id">
+                <a @onclick="(async () => await GameManager.SelectGenre(NextGenre.Id))">
                     <img src="@NextGenre.CoverPhoto.Url" width="300" alt="@NextGenre.Name" />
                 </a>
             </div>

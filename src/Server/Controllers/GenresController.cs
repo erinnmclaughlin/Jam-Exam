@@ -66,6 +66,7 @@ namespace Server.Controllers
         [HttpPost("{genreId}/games")]
         public async Task<IActionResult> CreateGame(string genreId, CreateGameModel command, CancellationToken cancellationToken)
         {
+            Console.WriteLine("Genre Id is " + genreId);
             var genre = await _context.Genres.FirstOrDefaultAsync(x => x.Id.ToString() == genreId, cancellationToken);
 
             if (genre is null)

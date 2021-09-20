@@ -1,6 +1,6 @@
 module.exports = {
     purge: {
-        enabled: true,
+        enabled: false,
         content: [
             './**/*.html',
             './**/*.razor'
@@ -15,5 +15,7 @@ module.exports = {
             opacity: ['disabled'],
         }
     },
-    plugins: [],
+    plugins: [
+        require('@tailwindcss/forms'),
+    ],
 }

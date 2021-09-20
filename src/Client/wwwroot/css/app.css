@@ -90,6 +90,14 @@
     .sidebar {
         @apply flex flex-col w-full md:w-64 text-gray-200 flex-shrink-0;
     }
+
+    select.invalid, input.invalid {
+        @apply border border-red-500 bg-red-300 text-gray-800;
+    }
+
+    .validation-message {
+        @apply text-xs text-red-500 mt-2;
+    }
 }
 
 @layer utilities {
