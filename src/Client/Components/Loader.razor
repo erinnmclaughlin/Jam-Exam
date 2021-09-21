@@ -1,0 +1,34 @@
+﻿<div class="loader @(IsFull ? "full" : "")">
+    <div class='sound-icon'>
+        <div class='sound-wave'>
+            <i class='bar'></i>
+            <i class='bar'></i>
+            <i class='bar'></i>
+            <i class='bar'></i>
+            <i class='bar'></i>
+            <i class='bar'></i>
+            <i class='bar'></i>
+            <i class='bar'></i>
+            <i class='bar'></i>
+            <i class='bar'></i>
+            <i class='bar'></i>
+            <i class='bar'></i>
+            <i class='bar'></i>
+            <i class='bar'></i>
+            <i class='bar'></i>
+            <i class='bar'></i>
+            <i class='bar'></i>
+            <i class='bar'></i>
+            <i class='bar'></i>
+            <i class='bar'></i>
+        </div>
+    </div>
+    <div class="text-gray-100">@LoadText</div>
+</div>
+
+@code {
+
+    [Parameter] public string LoadText { get; set; } = "Loading...";
+
+    [Parameter] public bool IsFull { get; set; }
+} 

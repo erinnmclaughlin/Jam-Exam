@@ -1,6 +1,19 @@
-﻿@page "/login" 
-@layout UnauthorizedLayout 
+﻿@page "/login"
+@layout UnauthorizedLayout
 
-<button class="btn btn-lg btn-success" disabled="@IsLoggingIn" @onclick="LoginUser">
-    Login with Spotify
-</button>
+<div class="max-w-md w-full space-y-8">
+    <div>
+        <img class="mx-auto w-auto" src="img/jam (4).png" />       
+    </div>
+    <div class="mt-8 space-y-6">
+        <div>
+            <button disabled="@IsLoggingIn" @onclick="LoginUser" class="button text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                    <img class="h-5 w-5" src="img/spotify-icons-logos/Spotify_Icon_RGB_White.png" />
+                </span>
+                Sign in with Spotify
+            </button>
+        </div>
+    </div>
+</div>
+    

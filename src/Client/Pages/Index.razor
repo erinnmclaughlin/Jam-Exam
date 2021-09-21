@@ -1,20 +1,36 @@
 ﻿@page "/"
 
-@if (Error is not null)
-{
-    <p class="text-danger">@Error</p>
-}
-
 @if (Genres is null)
 {
-    <p>Loading genres...</p>
+    <Loader LoadText="Loading genres..." />
 }
 else
-{
-    <ul>
-        @foreach (var genre in Genres)
-        {
-            <li><a href="create-game?genreId=@genre.Id">@genre.Name</a></li>
-        }
-    </ul>
+{ 
+    <div class="carousel-wrapper">
+        
+        <h2 class="text-center text-3xl font-bold text-gray-50 mb-6">
+            Select a Genre
+        </h2>
+
+        <div class="carousel">
+            <div class="carousel__item prev">
+                <a @onclick="(async () => await GameManager.SelectGenre(PreviousGenre.Id))">
+                    <img src="@PreviousGenre.CoverPhoto.Url" width="300" alt="@PreviousGenre.Name" />
+                </a>
+            </div>
+            <div class="carousel__item active">
+                <a @onclick="(async () => await GameManager.SelectGenre(CurrentGenre.Id))">
+                    <img src="@CurrentGenre.CoverPhoto.Url" width="300" alt="@CurrentGenre.Name" />
+                </a>
+            </div>
+            <div class="carousel__item next">
+                <a @onclick="(async () => await GameManager.SelectGenre(NextGenre.Id))">
+                    <img src="@NextGenre.CoverPhoto.Url" width="300" alt="@NextGenre.Name" />
+                </a>
+            </div>
+            <div class="carousel__button--next" @onclick="GoToNextIndex"></div>
+            <div class="carousel__button--prev" @onclick="GoToPreviousIndex"></div>
+        </div>
+    </div>
+
 }

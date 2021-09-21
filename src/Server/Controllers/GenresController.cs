@@ -4,6 +4,7 @@ using Server.Authentication;
 using Server.Data;
 using Shared.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,14 +28,28 @@ namespace Server.Controllers
         public async Task<IActionResult> GetGenres(CancellationToken cancellationToken)
         {
             var genres = await _context.Genres
-                .Select(x => new GenreModel
-                {
-                    Id = x.Id.ToString(),
-                    Name = x.Name
-                })
                 .ToListAsync(cancellationToken);
 
-            return Ok(genres);
+            List<GenreModel> models = new();
+            foreach (var genre in genres)
+            {
+                var images = await _api.GetPlaylistCoverImage(genre.SpotifyPlaylistId);
+                var image = images.First();
+
+                models.Add(new GenreModel
+                {
+                    Id = genre.Id.ToString(),
+                    Name = genre.Name,
+                    CoverPhoto = new ImageModel
+                    {
+                        Height = image.Height,
+                        Url = image.Url,
+                        Width = image.Width
+                    }
+                });
+            }
+
+            return Ok(models);
         }
 
         [HttpGet("{genreId}")]
@@ -48,38 +63,30 @@ namespace Server.Controllers
             return Ok(new GenreModel { Id = genre.Id.ToString(), Name = genre.Name });
         }
 
-        [HttpPost("{genreId}/games")]
-        public async Task<IActionResult> CreateGame(string genreId, CreateGameModel command, CancellationToken cancellationToken)
+        [HttpGet("{genreId}/tracks")]
+        public async Task<IActionResult> GetTracksByGenre(string genreId, [FromQuery] int? count, CancellationToken cancellationToken)
         {
+            Console.WriteLine("GenreId is " + genreId);
             var genre = await _context.Genres.FirstOrDefaultAsync(x => x.Id.ToString() == genreId, cancellationToken);
 
             if (genre is null)
                 return NotFound();
 
-            // TODO: add to db
-            //var game = new Game
-            //{
-            //    MaxAnswerTime = 30,
-            //    GenreId = genre.Id,
-            //    NumberOfQuestions = command.NumberOfQuestions,
-            //    StartedOn = DateTime.UtcNow
-            //};
+            var tracks = await _api.GetPlaylistTracks(genre.SpotifyPlaylistId);
 
-            var playlist = await _api.GetPlaylistTracks(genre.SpotifyPlaylistId);
-            var tracks = playlist.Items.Select(x => x.Track)
-                .Where(x => x.Preview_Url != null)
+            var models = tracks.Items
+                .Where(x => !string.IsNullOrEmpty(x.Track.Preview_Url))
                 .OrderBy(x => new Random().Next())
-                .Take(command.NumberOfQuestions)
+                .Take(count ?? 10)
                 .Select(x => new TrackModel
                 {
-                    ArtistIds = x.Artists.Select(a => a.Id).ToArray(),
-                    Id = x.Id,
-                    Name = x.Name,
-                    PreviewUrl = x.Preview_Url
-                })
-                .ToList();
+                    ArtistIds = x.Track.Artists.Select(a => a.Id).ToArray(),
+                    Id = x.Track.Id,
+                    Name = x.Track.Name,
+                    PreviewUrl = x.Track.Preview_Url
+                });
 
-            return Ok(tracks);
+            return Ok(models);
         }
     }
 }

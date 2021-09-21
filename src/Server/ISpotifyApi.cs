@@ -1,5 +1,6 @@
 ﻿using Refit;
 using Server.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Server
@@ -11,6 +12,9 @@ namespace Server
 
         [Get("/playlists/{playlistId}")]
         Task<SpotifyPlaylistModel> GetPlaylist(string playlistId);
+
+        [Get("/playlists/{playlistId}/images")]
+        Task<List<SpotifyImageModel>> GetPlaylistCoverImage(string playlistId);
 
         [Get("/playlists/{playlistId}/tracks")]
         Task<PagedResponseModel<SpotifyPlaylistTrackModel>> GetPlaylistTracks(string playlistId);

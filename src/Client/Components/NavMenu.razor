@@ -1,0 +1,28 @@
+﻿@using Client.Extensions
+
+<AuthorizeView>
+    <div class="navbar">
+        <a href="" class="flex-shrink-0 navbar-item">
+            <img class="navbar-brand h-12" src="img/jam (5).png" />
+            @*<div class="navbar-brand ml-2">Jam Exam</div>*@
+        </a>
+        <div class="navbar-item">
+            <div class="identity">
+                <!-- Profile dropdown -->
+                <div class="ml-3 relative">
+                    <div>
+                        <button class="avatar" @onclick="ToggleMenu">
+                            <img src="@context.User.GetProfileImage()">
+                        </button>
+                    </div>
+                    <div class="avatar-dropdown @(IsOpen ? "" : " hidden")" style="z-index: 1000;">
+                        <!-- Active: "bg-gray-100", Not Active: "" -->
+                        <a class="dropdown-item">Your Profile</a>
+                        <a class="dropdown-item">Settings</a>
+                        <a class="dropdown-item" @onclick="AuthService.Logout">Sign out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</AuthorizeView>

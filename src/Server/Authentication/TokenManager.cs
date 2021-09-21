@@ -88,7 +88,8 @@ namespace Server.Authentication
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.DisplayName),
                 new Claim(JwtRegisteredClaimNames.Exp, spotifyToken.Expires_On.ToString()),
-                new Claim(ClaimTypes.Authentication, spotifyToken.Access_Token)
+                new Claim(ClaimTypes.Authentication, spotifyToken.Access_Token),
+                new Claim("ProfileImageUrl", user.ProfileImageUrl ?? "")
             };
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
@@ -130,33 +131,23 @@ namespace Server.Authentication
 
         private async Task<User> GetCurrentUser(string token)
         {
-            Console.WriteLine("Getting current user...");
-            Console.WriteLine(token);
+            var spotifyUser = await _api.GetCurrentUser(token);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.SpotifyUserId == spotifyUser.Id);
 
-            try
+            if (user is null)
             {
-                var spotifyUser = await _api.GetCurrentUser(token);
-                var user = await _context.Users.FirstOrDefaultAsync(x => x.SpotifyUserId == spotifyUser.Id);
-
-                if (user is null)
+                user = new User
                 {
-                    user = new User
-                    {
-                        DisplayName = spotifyUser.Display_Name,
-                        SpotifyUserId = spotifyUser.Id
-                    };
+                    DisplayName = spotifyUser.Display_Name,
+                    SpotifyUserId = spotifyUser.Id
+                };
 
-                    _context.Users.Add(user);
-                    await _context.SaveChangesAsync();
-                }
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+            }
 
-                return user;
-            }
-            catch (ApiException ex)
-            {
-                Console.WriteLine(ex.Content);
-                return null;
-            }
+            user.ProfileImageUrl = spotifyUser.Images?.FirstOrDefault()?.Url;
+            return user;
         }
     }
 }
