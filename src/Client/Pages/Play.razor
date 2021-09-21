@@ -1,3 +1,12 @@
 ﻿@page "/play"
 
-<p>Time to play!</p>
+@if (GameManager.CurrentTrack is null)
+{
+    <Loader LoadText="Creating game..." />
+}
+else
+{
+    <video autoplay hidden name="media">
+        <source src="@GameManager.CurrentTrack.PreviewUrl" type="audio/mpeg">
+    </video>
+}

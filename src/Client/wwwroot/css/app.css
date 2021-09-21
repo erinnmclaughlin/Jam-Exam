@@ -15,6 +15,10 @@
     .main {
         @apply w-full h-full bg-transparent;
     }
+
+    button {
+        @apply group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md;
+    }
 }
 
 @layer components {

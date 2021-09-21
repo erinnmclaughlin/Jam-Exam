@@ -61,6 +61,31 @@ namespace Server.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("GameQuestionId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("GameQuestionId1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double?>("GuessedIn")
+                        .HasColumnType("float");
+
+                    b.Property<string>("SpotifyGuessId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameQuestionId1");
+
+                    b.ToTable("GameAnswers");
+                });
+
+            modelBuilder.Entity("Server.Data.Entities.GameQuestion", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("GameId")
                         .HasColumnType("uniqueidentifier");
 
@@ -68,22 +93,15 @@ namespace Server.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SpotifyGuessId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("SpotifyTrackId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<double?>("TimeGuessed")
-                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
                     b.HasIndex("GameId");
 
-                    b.ToTable("GameAnswers");
+                    b.ToTable("GameQuestions");
                 });
 
             modelBuilder.Entity("Server.Data.Entities.Genre", b =>
@@ -107,61 +125,61 @@ namespace Server.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("03b32e9a-eacf-4762-a9c1-73572d1ea519"),
+                            Id = new Guid("b0aaca00-b148-4f89-8931-dc0167b3d8f2"),
                             Name = "Classic Rock",
                             SpotifyPlaylistId = "37i9dQZF1DWXRqgorJj26U"
                         },
                         new
                         {
-                            Id = new Guid("7849aff8-87b0-4fbe-88e4-871ec35ed32b"),
+                            Id = new Guid("24473c5d-2722-4d1b-a006-afbd56d5573f"),
                             Name = "Indie",
                             SpotifyPlaylistId = "37i9dQZF1DX2Nc3B70tvx0"
                         },
                         new
                         {
-                            Id = new Guid("85686fa8-b9d0-4de4-8e74-3fb46d878de7"),
+                            Id = new Guid("6144c08e-00b9-45d0-8fa2-8ba3e1505d9c"),
                             Name = "Pop",
                             SpotifyPlaylistId = "37i9dQZF1DXcBWIGoYBM5M"
                         },
                         new
                         {
-                            Id = new Guid("0d44803d-ed47-40e2-973c-6f2230b2e2ba"),
+                            Id = new Guid("7c1aa3ec-36d3-45e7-8180-2813aa294241"),
                             Name = "Hip Hop",
                             SpotifyPlaylistId = "37i9dQZF1DX0XUsuxWHRQd"
                         },
                         new
                         {
-                            Id = new Guid("b52b751f-fba2-4c37-bc3f-283689b9b3a8"),
+                            Id = new Guid("239dd819-bd02-43e1-bec0-6a7c0b0d1335"),
                             Name = "Country",
                             SpotifyPlaylistId = "37i9dQZF1DX1lVhptIYRda"
                         },
                         new
                         {
-                            Id = new Guid("1a4650ee-8b01-4e7d-8cfa-fa54a0582af3"),
+                            Id = new Guid("3796e900-4995-424f-a3fd-71aecefb38a8"),
                             Name = "1960s",
                             SpotifyPlaylistId = "37i9dQZF1DWWzBc3TOlaAV"
                         },
                         new
                         {
-                            Id = new Guid("0c8663ce-a669-43ed-90ff-022bb9197aa6"),
+                            Id = new Guid("075525e1-99e1-4971-a83d-6e9bc26100db"),
                             Name = "1970s",
                             SpotifyPlaylistId = "37i9dQZF1DWTJ7xPn4vNaz"
                         },
                         new
                         {
-                            Id = new Guid("9b3540e0-e9cd-4e04-b46c-c0069d700bd6"),
+                            Id = new Guid("511e3718-0383-43cc-8eee-c0fc0423df2f"),
                             Name = "1980s",
                             SpotifyPlaylistId = "37i9dQZF1DX4UtSsGT1Sbe"
                         },
                         new
                         {
-                            Id = new Guid("785d11c9-5a34-488f-b9cf-a4152a7cc6da"),
+                            Id = new Guid("0ccf0797-aeb4-4497-b309-ae21b17f7df4"),
                             Name = "1990s",
                             SpotifyPlaylistId = "37i9dQZF1DXbTxeAdrVG2l"
                         },
                         new
                         {
-                            Id = new Guid("9495252d-f1a4-4b62-9203-e60e5eaf04c6"),
+                            Id = new Guid("3a3abb17-1ccc-475e-a3ca-3e4a5eee7e78"),
                             Name = "2000s",
                             SpotifyPlaylistId = "37i9dQZF1DX4o1oenSJRJd"
                         });
@@ -232,6 +250,15 @@ namespace Server.Data.Migrations
                 });
 
             modelBuilder.Entity("Server.Data.Entities.GameAnswer", b =>
+                {
+                    b.HasOne("Server.Data.Entities.GameQuestion", "GameQuestion")
+                        .WithMany()
+                        .HasForeignKey("GameQuestionId1");
+
+                    b.Navigation("GameQuestion");
+                });
+
+            modelBuilder.Entity("Server.Data.Entities.GameQuestion", b =>
                 {
                     b.HasOne("Server.Data.Entities.Game", "Game")
                         .WithMany()

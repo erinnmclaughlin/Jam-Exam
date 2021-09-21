@@ -22,8 +22,8 @@ namespace Client
         [Get("/genres/{genreId}")]
         Task<ApiResponse<GenreModel>> GetGenre(string genreId);
 
-        [Post("/genres/{genreId}/games")]
-        Task<ApiResponse<List<TrackModel>>> CreateGame(string genreId, CreateGameModel command);
+        [Get("/genres/{genreId}/tracks")]
+        Task<ApiResponse<List<TrackModel>>> GetTracksByGenre(string genreId, int? count);
 
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace Server.Data.Entities
 {
@@ -7,13 +6,10 @@ namespace Server.Data.Entities
     {
         public Guid Id { get; set; }
 
-        [Required] public string SpotifyTrackId { get; set; }
-        [Required] public string SpotifyArtistId { get; set; }
-        [Required] public string SpotifyGuessId { get; set; }
-        public double? TimeGuessed { get; set; }
-        public bool IsCorrect => SpotifyArtistId == SpotifyGuessId;
+        public string SpotifyGuessId { get; set; }
+        public double? GuessedIn { get; set; }
 
-        public Guid GameId { get; set; }
-        public Game Game { get; set; }
+        public int GameQuestionId { get; set; }
+        public GameQuestion GameQuestion { get; set; }
     }
 }
