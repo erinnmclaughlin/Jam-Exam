@@ -40,6 +40,11 @@ namespace Client.Services
             }
         }
 
+        public void NextTrack()
+        {
+            _currentIndex++; // TODO: if last track do something else
+        }
+
         public async Task<List<GenreModel>> GetGenres()
         {
             var response = await _api.GetGenres();

@@ -6,7 +6,7 @@
 }
 else
 {
-    <video autoplay hidden name="media">
-        <source src="@GameManager.CurrentTrack.PreviewUrl" type="audio/mpeg">
-    </video>
+    <TrackPlayer Url="@GameManager.CurrentTrack.PreviewUrl" />
+
+    <button class="button" @onclick="GameManager.NextTrack">Next Track</button>
 }

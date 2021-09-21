@@ -29,10 +29,10 @@
         </label>
 
         <div class="grid grid-flow-col gap-4">
-            <button type="button" disabled="@IsSubmitting" class="text-white bg-gray-600 hover:bg-gray-700 @DisabledCss()" @onclick="GoToSelectGenre">
+            <button type="button" disabled="@IsSubmitting" class="button text-white bg-gray-600 hover:bg-gray-700 @DisabledCss()" @onclick="GoToSelectGenre">
                 Cancel
             </button>
-            <button type="submit" disabled="@IsSubmitting" class="text-white bg-indigo-600 hover:bg-indigo-700 @DisabledCss()">
+            <button type="submit" disabled="@IsSubmitting" class="button text-white bg-indigo-600 hover:bg-indigo-700 @DisabledCss()">
                 @if (IsSubmitting)
                 {
                     <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

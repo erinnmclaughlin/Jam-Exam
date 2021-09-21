@@ -1,0 +1,20 @@
+﻿@if (_playAudio)
+{ 
+    <video autoplay hidden name="media">
+        <source src="@Url" type="audio/mpeg">
+    </video>
+}
+
+@code {
+
+    private bool _playAudio = true;
+
+    [Parameter] public string Url { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _playAudio = false;
+        await Task.Delay(100);
+        _playAudio = true;
+    }
+}
