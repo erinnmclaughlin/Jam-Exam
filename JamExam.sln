@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "src\Server\Server
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "src\Shared\Shared.csproj", "{F17C4625-F6D7-48BD-A824-D696CD73F452}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp", "src\WebApp\WebApp.csproj", "{FA24E932-01EC-4E5F-BA87-A6FEBE9D70A0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spotify", "src\Spotify\Spotify.csproj", "{C7A71F8C-9147-4123-ADE1-70ECAAAF198C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{F17C4625-F6D7-48BD-A824-D696CD73F452}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F17C4625-F6D7-48BD-A824-D696CD73F452}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F17C4625-F6D7-48BD-A824-D696CD73F452}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA24E932-01EC-4E5F-BA87-A6FEBE9D70A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA24E932-01EC-4E5F-BA87-A6FEBE9D70A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA24E932-01EC-4E5F-BA87-A6FEBE9D70A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA24E932-01EC-4E5F-BA87-A6FEBE9D70A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7A71F8C-9147-4123-ADE1-70ECAAAF198C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7A71F8C-9147-4123-ADE1-70ECAAAF198C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7A71F8C-9147-4123-ADE1-70ECAAAF198C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7A71F8C-9147-4123-ADE1-70ECAAAF198C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

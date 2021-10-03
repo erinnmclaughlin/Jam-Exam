@@ -1,0 +1,14 @@
+﻿@page "/"
+
+@if (ErrorMessage is not null)
+{
+    <p class="text-red-500">@ErrorMessage</p>
+}
+else if (Playlists is null)
+{
+    <Loader LoadText="Loading jams..." />
+}
+else
+{
+    <p>TODO: Display carousel thing</p>
+}
