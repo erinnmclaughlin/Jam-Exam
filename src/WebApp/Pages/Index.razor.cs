@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Logging;
 using Spotify.Models;
-using System;
 using System.Collections.Generic;
-using System.Net.Http;
+using System.Linq;
 using System.Threading.Tasks;
+using WebApp.Components;
 using WebApp.Services;
 
 namespace WebApp.Pages
@@ -14,7 +13,6 @@ namespace WebApp.Pages
     {
         [Inject] GameService GameService { get; set; } = null!;
 
-        private string? ErrorMessage { get; set; }
         private List<Playlist>? Playlists { get; set; }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -26,25 +24,18 @@ namespace WebApp.Pages
             }
         }
 
+        private List<CarouselItem> GetCarouselItems()
+        {
+            return Playlists?.Select(x => new CarouselItem
+            {
+                ImageUrl = x.Images?.First().Url ?? "",
+                Title = x.Name
+            }).ToList()!;
+        }
+
         private async Task LoadPlaylists()
         {
-            if (GameService is null)
-                return;
-
-            try
-            {
-                Playlists = await GameService.GetPlaylistsAsync();
-            }
-            catch (HttpRequestException ex)
-            {
-                ErrorMessage = ex.Message;
-                //Logger.LogError(ex, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                ErrorMessage = "An unexpected error has occurred.";
-                //Logger.LogError(ex, ex.Message);
-            }
+            Playlists = await GameService.GetPlaylistsAsync();
         }
     }
 }

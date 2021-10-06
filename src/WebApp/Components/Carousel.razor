@@ -1,0 +1,11 @@
+﻿<div class="carousel h-full">
+    <div class="carousel-items">
+        @foreach (var item in Items)
+        {
+            <div class="carousel-item" style="@GetCss(item)" @onclick="(() => SelectItem(item))">
+                <img src="@item.ImageUrl" />
+                <h2>@item.DisplayOrder - @item.Title</h2>
+            </div>
+        }
+    </div>
+</div>
