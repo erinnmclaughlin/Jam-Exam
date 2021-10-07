@@ -26,6 +26,7 @@ namespace WebApp
             services.AddSpotifyClient(Configuration);
 
             services.AddScoped<GameService>();
+            services.AddScoped<SearchService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

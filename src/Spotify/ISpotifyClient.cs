@@ -1,5 +1,6 @@
 ﻿using Refit;
 using Spotify.Models;
+using Spotify.Requests;
 using Spotify.Responses;
 using System.Threading.Tasks;
 
@@ -12,5 +13,9 @@ namespace Spotify
 
         [Get("/playlists/{playlistId}/tracks")]
         Task<ApiResponse<PagedResponse<PlaylistTrack>>> GetPlaylistTracks(string playlistId);
+
+        [Get("/search")]
+        Task<ApiResponse<SearchResponse>> Search(SearchRequest request);
+
     }
 }

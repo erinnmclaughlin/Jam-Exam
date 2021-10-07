@@ -1,4 +1,5 @@
 ﻿@page "/play-game"
+@using Blazored.Typeahead
 
 @if (Tracks is null)
 {
@@ -6,6 +7,18 @@
 }
 else
 {
+    <BlazoredTypeahead SearchMethod="@SearchService.SearchArtists" Debounce="500" @bind-Value="SelectedArtist" placeholder="Search artists...">
+        <SelectedTemplate>
+            @context?.Name
+        </SelectedTemplate>
+        <ResultTemplate>
+            @context.Name
+        </ResultTemplate>
+        <NotFoundTemplate>
+            Sorry, there weren't any search results.
+        </NotFoundTemplate>
+    </BlazoredTypeahead>
+
     <button @onclick="NextTrack">Next track</button>
 }
 

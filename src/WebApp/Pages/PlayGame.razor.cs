@@ -13,7 +13,9 @@ namespace WebApp.Pages
         private MusicPlayer? _player;
 
         [Inject] private GameService GameService { get; set; } = null!;
+        [Inject] private SearchService SearchService { get; set; } = null!;
 
+        private Artist? SelectedArtist { get; set; }
         private List<Track>? Tracks { get; set; }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
