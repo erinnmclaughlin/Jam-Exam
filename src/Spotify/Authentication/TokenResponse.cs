@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Spotify.Authentication
 {
-    public class TokenResponse
+    internal class TokenResponse
     {
         private DateTime _expiresOn;
 

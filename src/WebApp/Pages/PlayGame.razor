@@ -1,0 +1,13 @@
+﻿@page "/play-game"
+
+@if (Tracks is null)
+{
+    <Loader LoadText="Tuning the guitar..." />
+}
+else
+{
+    <button @onclick="NextTrack">Next track</button>
+}
+
+
+<MusicPlayer @ref="_player" Url="@GetCurrentTrack()?.PreviewUrl" />

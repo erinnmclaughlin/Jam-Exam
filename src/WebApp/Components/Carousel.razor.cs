@@ -6,15 +6,17 @@ namespace WebApp.Components
 {
     public class CarouselItem
     {
+        public string Id { get; set; } = null!;
         public int DisplayOrder { get; set; }
         public string ImageUrl { get; set; } = null!;
-        public string Title { get; set; } = null!;
     }
 
     public partial class Carousel
     {
         [Inject] private NavigationManager Navigation { get; set; } = null!;
 
+        [Parameter] public EventCallback<string> OnSelect { get; set; }
+        [Parameter] public string? Title { get; set; }
         [Parameter] public List<CarouselItem> Items { get; set; } = null!;
 
         private int Center { get; set; }
@@ -48,25 +50,28 @@ namespace WebApp.Components
             return text;
         }
 
+        private bool IsSelected(CarouselItem item) => Center == item.DisplayOrder;
+
         private void SelectItem(CarouselItem item)
         {
-            if (Center == item.DisplayOrder)
+            if (IsSelected(item))
             {
-                Navigation.NavigateTo("play-game");
+                OnSelect.InvokeAsync(item.Id);
                 return;
             }
 
-            // Shift everything over
             var offset = Center - item.DisplayOrder;
-            Items.ForEach(x => x.DisplayOrder += offset);
-
-            // If something falls off the edge, move it to the opposite end
             Items.ForEach(x =>
             {
+                // Shift the item over
+                x.DisplayOrder += offset;
+
+                // If the item falls off the edge, move it to the opposite end
                 if (x.DisplayOrder < 0)
                     x.DisplayOrder += Items.Count;
                 else if (x.DisplayOrder > Items.Count)
                     x.DisplayOrder -= Items.Count;
+
             });
 
             StateHasChanged();

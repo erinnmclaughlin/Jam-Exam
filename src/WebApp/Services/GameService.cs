@@ -1,17 +1,33 @@
-﻿using Spotify;
+﻿using Microsoft.AspNetCore.Components;
+using Spotify;
 using Spotify.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using WebApp.Extensions;
 
 namespace WebApp.Services
 {
     public class GameService
     {
-        private readonly ISpotifyApi _api;
+        private readonly NavigationManager _nav;
+        private readonly ISpotifyClient _spotify;
 
-        public GameService(ISpotifyApi api)
+        private string? _playlistId;
+        public int _index = 0;
+
+        public int Index => _index;
+
+        public GameService(NavigationManager nav, ISpotifyClient spotify)
         {
-            _api = api;
+            _nav = nav;
+            _spotify = spotify;
+        }
+
+        public void CreateGame(string playlistId)
+        {
+            _playlistId = playlistId;
+            _nav.NavigateTo("play-game");
         }
 
         public async Task<List<Playlist>> GetPlaylistsAsync()
@@ -20,7 +36,7 @@ namespace WebApp.Services
 
             foreach (var seed in GetPlaylistSeeds())
             {
-                var response = await _api.GetPlaylistById(seed.Value);
+                var response = await _spotify.GetPlaylistById(seed.Value);
                 await response.EnsureSuccessStatusCodeAsync();
 
                 var playlist = response.Content!;
@@ -30,6 +46,23 @@ namespace WebApp.Services
 
             return playlists;
         }
+
+        public async Task<List<Track>?> GetTracksAsync()
+        {
+            if (_playlistId is null)
+            {
+                _nav.NavigateTo("");
+                return await Task.FromResult<List<Track>?>(null);
+            }
+
+            var response = await _spotify.GetPlaylistTracks(_playlistId);
+
+            return response.Content!.Items.Select(x => x.Track)
+                .Where(x => !string.IsNullOrWhiteSpace(x.PreviewUrl))
+                .Shuffle().Take(10).ToList();
+        }
+
+        public void NextTrack() => _index++;
 
         private static Dictionary<string, string> GetPlaylistSeeds()
         {

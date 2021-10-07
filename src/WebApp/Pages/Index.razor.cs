@@ -26,11 +26,7 @@ namespace WebApp.Pages
 
         private List<CarouselItem> GetCarouselItems()
         {
-            return Playlists?.Select(x => new CarouselItem
-            {
-                ImageUrl = x.Images?.First().Url ?? "",
-                Title = x.Name
-            }).ToList()!;
+            return Playlists?.Select(x => new CarouselItem { Id = x.Id, ImageUrl = x.Images!.First().Url }).ToList()!;
         }
 
         private async Task LoadPlaylists()

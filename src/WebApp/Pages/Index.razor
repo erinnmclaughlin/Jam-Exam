@@ -6,5 +6,5 @@
 }
 else
 {
-    <Carousel Items="@GetCarouselItems()" />
+    <Carousel Title="Select a Genre 🎸" Items="@GetCarouselItems()" OnSelect="GameService.CreateGame" />
 }

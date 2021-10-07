@@ -9,16 +9,23 @@ namespace Spotify.Extensions
 {
     public static class IServiceCollectionExtensions
     {
-        public static IServiceCollection AddSpotifyClient(this IServiceCollection services, IConfiguration config)
+        public static IServiceCollection AddSpotifyAuthentication(this IServiceCollection services)
         {
-            services.AddRefitClient<IAuthenticationApi>()
+            services.AddRefitClient<ISpotifyAuthClient>()
                     .ConfigureHttpClient(x => x.BaseAddress = new Uri("https://accounts.spotify.com/api"));
 
-            services.AddRefitClient<ISpotifyApi>()
+            services.AddSingleton<TokenService>();
+            services.AddTransient<SpotifyHeaderHandler>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddSpotifyClient(this IServiceCollection services, IConfiguration config)
+        {
+            services.AddRefitClient<ISpotifyClient>()
                     .ConfigureHttpClient(x => x.BaseAddress = new Uri("https://api.spotify.com/v1"))
                     .AddHttpMessageHandler<SpotifyHeaderHandler>();
 
-            services.AddTransient<SpotifyHeaderHandler>();
             services.Configure<SpotifySettings>(config.GetSection("Spotify"));
 
             return services;

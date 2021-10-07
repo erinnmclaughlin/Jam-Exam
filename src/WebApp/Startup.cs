@@ -1,12 +1,9 @@
-using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Spotify.Authentication;
 using Spotify.Extensions;
-using WebApp.Authentication;
 using WebApp.Services;
 
 namespace WebApp
@@ -24,11 +21,11 @@ namespace WebApp
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+
+            services.AddSpotifyAuthentication();
             services.AddSpotifyClient(Configuration);
 
-            services.AddBlazoredLocalStorage();
             services.AddScoped<GameService>();
-            services.AddScoped<ITokenService, TokenService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

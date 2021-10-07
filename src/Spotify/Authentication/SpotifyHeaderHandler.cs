@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace Spotify.Authentication
 {
-    public class SpotifyHeaderHandler : DelegatingHandler
+    internal class SpotifyHeaderHandler : DelegatingHandler
     {
-        private readonly ITokenService _tokenService;
+        private readonly TokenService _tokenService;
 
-        public SpotifyHeaderHandler(ITokenService tokenService)
+        public SpotifyHeaderHandler(TokenService tokenService)
         {
             _tokenService = tokenService;
         }
