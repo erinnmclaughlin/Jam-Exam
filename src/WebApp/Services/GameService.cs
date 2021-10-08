@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApp.Extensions;
+using WebApp.Models;
 
 namespace WebApp.Services
 {
@@ -14,9 +15,17 @@ namespace WebApp.Services
         private readonly ISpotifyClient _spotify;
 
         private string? _playlistId;
-        public int _index = 0;
+        private bool _guessing = true;
+        private int _index = 0;
 
+        public Track? CurrentTrack => Tracks?.ElementAtOrDefault(Index);
+        public bool Guessing => _guessing;
         public int Index => _index;
+        public int Score => Guesses.Count(x => x.IsCorrect);
+
+        public GuessResultModel? LastGuessed { get; private set; }
+        public List<GuessResultModel> Guesses { get; set; } = new();
+        public List<Track>? Tracks { get; private set; }
 
         public GameService(NavigationManager nav, ISpotifyClient spotify)
         {
@@ -47,22 +56,42 @@ namespace WebApp.Services
             return playlists;
         }
 
-        public async Task<List<Track>?> GetTracksAsync()
+        public async Task LoadTracksAsync(int quantity)
         {
+            // Go back to home screen if playlist hasn't been selected.
             if (_playlistId is null)
             {
                 _nav.NavigateTo("");
-                return await Task.FromResult<List<Track>?>(null);
+                return;
             }
 
+            // Get the tracks for the selected playlist
             var response = await _spotify.GetPlaylistTracks(_playlistId);
 
-            return response.Content!.Items.Select(x => x.Track)
+            // Randomize track order and select indicated quantity
+            Tracks = response.Content!.Items.Select(x => x.Track)
                 .Where(x => !string.IsNullOrWhiteSpace(x.PreviewUrl))
-                .Shuffle().Take(10).ToList();
+                .Shuffle().Take(quantity).ToList();
         }
 
-        public void NextTrack() => _index++;
+        public async Task GuessArtist(string artistId)
+        {
+            var response = await _spotify.GetArtistById(artistId);
+            await response.EnsureSuccessStatusCodeAsync();
+
+            var result = new GuessResultModel(response.Content!, CurrentTrack!);
+            Guesses.Add(result);
+            LastGuessed = result;
+
+            _guessing = false;
+        }
+
+        public void NextTrack()
+        {
+            _index++;
+            _guessing = true;
+            LastGuessed = null;
+        }
 
         private static Dictionary<string, string> GetPlaylistSeeds()
         {

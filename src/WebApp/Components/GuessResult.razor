@@ -1,0 +1,9 @@
+﻿@if (Result is null)
+{
+    <Loader LoadText="Guessing..." />
+}
+else
+{
+    <p>@GetResultText()</p>
+    <button @onclick="OnContinue">Continue</button>
+}

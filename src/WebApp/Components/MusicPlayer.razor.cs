@@ -4,7 +4,7 @@ namespace WebApp.Components
 {
     public partial class MusicPlayer
     {
-        private bool _play;
+        private bool _play = true;
 
         [Parameter] public string? Url { get; set; }
 

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Spotify.Models;
-using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using WebApp.Components;
 using WebApp.Services;
@@ -10,34 +9,26 @@ namespace WebApp.Pages
 {
     public partial class PlayGame
     {
-        private MusicPlayer? _player;
+        private MusicPlayer _player = new();
 
         [Inject] private GameService GameService { get; set; } = null!;
         [Inject] private SearchService SearchService { get; set; } = null!;
 
-        private Artist? SelectedArtist { get; set; }
-        private List<Track>? Tracks { get; set; }
+        [Required] private Artist? SelectedArtist { get; set; }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
-                Tracks = await GameService.GetTracksAsync();
-
-                _player?.Play();
+                await GameService.LoadTracksAsync(10);
                 StateHasChanged();
             }
         }
 
-        private async Task NextTrack()
+        private void NextTrack()
         {
-            _player?.Stop();
+            SelectedArtist = null;
             GameService.NextTrack();
-            await Task.Delay(100);
-
-            _player?.Play();
         }
-
-        private Track? GetCurrentTrack() => Tracks?.ElementAtOrDefault(GameService.Index);
     }
 }

@@ -1,12 +1,14 @@
 ﻿@page "/play-game"
 @using Blazored.Typeahead
 
-@if (Tracks is null)
+@if (GameService.Tracks is null)
 {
     <Loader LoadText="Tuning the guitar..." />
 }
-else
+else if (GameService.Guessing)
 {
+    <MusicPlayer @ref="_player" Url="@GameService.CurrentTrack?.PreviewUrl" />
+
     <BlazoredTypeahead SearchMethod="@SearchService.SearchArtists" Debounce="500" @bind-Value="SelectedArtist" placeholder="Search artists...">
         <SelectedTemplate>
             @context?.Name
@@ -19,8 +21,9 @@ else
         </NotFoundTemplate>
     </BlazoredTypeahead>
 
-    <button @onclick="NextTrack">Next track</button>
+    <button disabled="@(SelectedArtist is null)" @onclick="(() => GameService.GuessArtist(SelectedArtist!.Id))">Guess</button>
 }
-
-
-<MusicPlayer @ref="_player" Url="@GetCurrentTrack()?.PreviewUrl" />
+else
+{
+    <GuessResult OnContinue="NextTrack" Result="GameService.LastGuessed" />
+}
