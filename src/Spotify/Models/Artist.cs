@@ -1,4 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace Spotify.Models
 {
@@ -18,5 +20,16 @@ namespace Spotify.Models
 
         [JsonPropertyName("followers.total")]
         public int TotalFollowers { get; set; }
+
+        public Image? GetImageWithClosestWidth(int width)
+        {
+            return Images?.Where(x => x.Width != null).OrderBy(x => Math.Abs(x.Width!.Value - width)).First();
+        }
+    }
+
+    public class ArtistList
+    {
+        [JsonPropertyName("artists")]
+        public Artist[] Artists { get; set; } = null!;
     }
 }

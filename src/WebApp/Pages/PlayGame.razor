@@ -5,7 +5,7 @@
 {
     <Loader LoadText="Tuning the guitar..." />
 }
-else if (GameService.Guessing)
+else if (GameService.PlayTrack)
 {
     <MusicPlayer @ref="_player" Url="@GameService.CurrentTrack?.PreviewUrl" />
 
@@ -21,7 +21,9 @@ else if (GameService.Guessing)
         </NotFoundTemplate>
     </BlazoredTypeahead>
 
-    <button disabled="@(SelectedArtist is null)" @onclick="(() => GameService.GuessArtist(SelectedArtist!.Id))">Guess</button>
+    <button disabled="@(GameService.Guessing)" @onclick="(() => GameService.GuessArtist(SelectedArtist!.Id))">
+        @(GameService.Guessing ? "Guessing..." : "Guess")
+    </button>
 }
 else
 {

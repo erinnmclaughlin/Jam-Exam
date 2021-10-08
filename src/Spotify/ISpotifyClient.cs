@@ -2,12 +2,16 @@
 using Spotify.Models;
 using Spotify.Requests;
 using Spotify.Responses;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Spotify
 {
     public interface ISpotifyClient
     {
+        [Get("/artists")]
+        Task<ApiResponse<ArtistList>> GetArtists(IEnumerable<string> ids);
+
         [Get("/artists/{artistId}")]
         Task<ApiResponse<Artist>> GetArtistById(string artistId);
 

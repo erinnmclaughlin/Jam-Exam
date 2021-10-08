@@ -15,15 +15,14 @@ namespace WebApp.Services
         private readonly ISpotifyClient _spotify;
 
         private string? _playlistId;
-        private bool _guessing = true;
-        private int _index = 0;
 
         public Track? CurrentTrack => Tracks?.ElementAtOrDefault(Index);
-        public bool Guessing => _guessing;
-        public int Index => _index;
+        public bool Guessing { get; private set; }
+        public int Index { get; private set; } = 0;
+        public bool PlayTrack { get; private set; } = true;
         public int Score => Guesses.Count(x => x.IsCorrect);
 
-        public GuessResultModel? LastGuessed { get; private set; }
+        public GuessResultModel? LastGuessed => Guesses.LastOrDefault();
         public List<GuessResultModel> Guesses { get; set; } = new();
         public List<Track>? Tracks { get; private set; }
 
@@ -76,21 +75,28 @@ namespace WebApp.Services
 
         public async Task GuessArtist(string artistId)
         {
-            var response = await _spotify.GetArtistById(artistId);
+            Guessing = true;
+
+            var ids = new List<string> { artistId };
+            ids.AddRange(CurrentTrack!.Artists.Select(x => x.Id));
+
+            var response = await _spotify.GetArtists(ids.Distinct());
             await response.EnsureSuccessStatusCodeAsync();
 
-            var result = new GuessResultModel(response.Content!, CurrentTrack!);
-            Guesses.Add(result);
-            LastGuessed = result;
+            var artists = response.Content!.Artists;
+            var guessedArtist = artists.First(x => x.Id == artistId);
+            var trackArtists = artists.Where(x => CurrentTrack.Artists.Select(a => a.Id).Contains(x.Id)).ToArray();
+            CurrentTrack.Artists = trackArtists;
+            Guesses.Add(new GuessResultModel(guessedArtist, CurrentTrack));
 
-            _guessing = false;
+            PlayTrack = false;
+            Guessing = false;
         }
 
         public void NextTrack()
         {
-            _index++;
-            _guessing = true;
-            LastGuessed = null;
+            Index++;
+            PlayTrack = true;
         }
 
         private static Dictionary<string, string> GetPlaylistSeeds()

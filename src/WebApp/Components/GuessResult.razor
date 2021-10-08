@@ -5,5 +5,26 @@
 else
 {
     <p>@GetResultText()</p>
+
+    <p>Track: @Result.Track.Name</p>
+
+    @if (Result.Track.Artists.Count() > 1)
+    {
+        <p>There were multiple correct answers for this track!</p>
+    }
+
+    @foreach (var artist in Result.Track.Artists)
+    {
+        <img src="@artist.GetImageWithClosestWidth(50)?.Url" />
+        <p>Artist: @artist.Name</p>
+    }
+
+    @if (Result.IsCorrect == false)
+    {
+        <p>You guessed...</p>
+        <img src="@Result.GuessedArtist.GetImageWithClosestWidth(50)?.Url" />
+        <p>Aritst: @Result.GuessedArtist.Name</p>
+    }
+
     <button @onclick="OnContinue">Continue</button>
 }
