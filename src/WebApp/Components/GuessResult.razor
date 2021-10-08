@@ -7,6 +7,7 @@ else
     <p>@GetResultText()</p>
 
     <p>Track: @Result.Track.Name</p>
+    <p>Album: @Result.Track.Album?.Name (@Result.Track.Album?.ReleaseDate)</p>
 
     @if (Result.Track.Artists.Count() > 1)
     {

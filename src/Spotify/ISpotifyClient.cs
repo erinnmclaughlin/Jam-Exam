@@ -9,6 +9,9 @@ namespace Spotify
 {
     public interface ISpotifyClient
     {
+        [Get("/albums/{albumId}")]
+        Task<ApiResponse<Album>> GetAlbumById(string albumId);
+
         [Get("/artists")]
         Task<ApiResponse<ArtistList>> GetArtists(IEnumerable<string> ids);
 
@@ -23,5 +26,8 @@ namespace Spotify
 
         [Get("/search")]
         Task<ApiResponse<SearchResponse>> Search(SearchRequest request);
+
+        [Get("/tracks/{trackId}")]
+        Task<ApiResponse<Track>> GetTrackById(string trackId);
     }
 }

@@ -77,17 +77,13 @@ namespace WebApp.Services
         {
             Guessing = true;
 
-            var ids = new List<string> { artistId };
-            ids.AddRange(CurrentTrack!.Artists.Select(x => x.Id));
+            var artistIds = CurrentTrack!.Artists.Select(x => x.Id).Append(artistId).Distinct();
+            var artists = await GetArtistDetails(artistIds);
 
-            var response = await _spotify.GetArtists(ids.Distinct());
-            await response.EnsureSuccessStatusCodeAsync();
+            CurrentTrack.Album = await GetAlbumDetails(CurrentTrack.Album!.Id);
+            CurrentTrack.Artists = artists.Where(x => CurrentTrack.Artists.Any(a => a.Id == x.Id)).ToArray();            
 
-            var artists = response.Content!.Artists;
-            var guessedArtist = artists.First(x => x.Id == artistId);
-            var trackArtists = artists.Where(x => CurrentTrack.Artists.Select(a => a.Id).Contains(x.Id)).ToArray();
-            CurrentTrack.Artists = trackArtists;
-            Guesses.Add(new GuessResultModel(guessedArtist, CurrentTrack));
+            Guesses.Add(new GuessResultModel(artists.First(x => x.Id == artistId), CurrentTrack!));
 
             PlayTrack = false;
             Guessing = false;
@@ -97,6 +93,18 @@ namespace WebApp.Services
         {
             Index++;
             PlayTrack = true;
+        }
+
+        private async Task<Album> GetAlbumDetails(string id)
+        {
+            var response = await _spotify.GetAlbumById(id);
+            return response.Content!;
+        }
+
+        private async Task<Artist[]> GetArtistDetails(IEnumerable<string> ids)
+        {
+            var response = await _spotify.GetArtists(ids);
+            return response.Content!.Artists;
         }
 
         private static Dictionary<string, string> GetPlaylistSeeds()
