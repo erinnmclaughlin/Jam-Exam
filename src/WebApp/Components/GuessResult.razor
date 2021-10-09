@@ -1,0 +1,31 @@
+﻿@if (Result is null)
+{
+    <Loader LoadText="Guessing..." />
+}
+else
+{
+    <p>@GetResultText()</p>
+
+    <p>Track: @Result.Track.Name</p>
+    <p>Album: @Result.Track.Album?.Name (@Result.Track.Album?.ReleaseDate)</p>
+
+    @if (Result.Track.Artists.Count() > 1)
+    {
+        <p>There were multiple correct answers for this track!</p>
+    }
+
+    @foreach (var artist in Result.Track.Artists)
+    {
+        <img src="@artist.GetImageWithClosestWidth(50)?.Url" />
+        <p>Artist: @artist.Name</p>
+    }
+
+    @if (Result.IsCorrect == false)
+    {
+        <p>You guessed...</p>
+        <img src="@Result.GuessedArtist.GetImageWithClosestWidth(50)?.Url" />
+        <p>Aritst: @Result.GuessedArtist.Name</p>
+    }
+
+    <button @onclick="OnContinue">Continue</button>
+}

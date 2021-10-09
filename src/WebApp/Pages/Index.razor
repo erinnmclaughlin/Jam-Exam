@@ -1,0 +1,10 @@
+﻿@page "/"
+
+@if (Playlists is null)
+{
+    <Loader LoadText="Loading jams..." />
+}
+else
+{
+    <Carousel Title="Select a Genre 🎸" Items="@GetCarouselItems()" OnSelect="GameService.CreateGame" />
+}

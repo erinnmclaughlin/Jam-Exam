@@ -1,0 +1,37 @@
+﻿.carousel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 80%;
+    margin: auto;
+}
+
+.carousel-items {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    min-height: 400px;
+    perspective: 1000px;
+    overflow: hidden;
+}
+
+.carousel-item {
+    position: absolute;
+    width: 350px;
+    text-align: center;
+    transition: transform 0.4s;
+    -webkit-transform-style: preserve-3d;
+    cursor: pointer;
+}
+
+    .carousel-item img {
+        width: 350px;
+        height: 350px;
+        transition: 0.25s;
+    }
+
+        .carousel-item img:hover {
+            box-shadow: 0 0.5em 0.5em -0.4em #000;
+            transform: translateY(-0.75em);
+        }

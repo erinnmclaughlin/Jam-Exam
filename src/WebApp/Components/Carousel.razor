@@ -1,0 +1,15 @@
+﻿<div class="carousel h-full">
+    @if (Title is not null)
+    {
+        <h4 class="text-4xl font-semibold tracking-wide text-center">@Title</h4>
+    }
+
+    <div class="carousel-items">
+        @foreach (var item in Items)
+        {
+            <div class="carousel-item" style="@GetCss(item)" @onclick="(() => SelectItem(item))">
+                <img src="@item.ImageUrl" />
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,26 @@
+﻿::deep .blazored-typeahead {
+    border-color: rgba(31, 41, 55, 1);
+}
+
+::deep .blazored-typeahead__input {
+    background-color: rgba(55, 65, 81, 1);
+}
+
+::deep .blazored-typeahead__results {
+    border: none;
+    background-color: rgba(55, 65, 81, 1);
+    color: white;
+}
+
+::deep .blazored-typeahead__result {
+    border-top: 1px solid rgba(75, 85, 99, 1);
+    border-bottom: 1px solid rgba(75, 85, 99, 1);
+}
+
+.play-game {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 80%;
+    margin: auto;
+}
