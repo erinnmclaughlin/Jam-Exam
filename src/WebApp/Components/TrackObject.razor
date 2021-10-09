@@ -1,0 +1,26 @@
+﻿<div class="flex flex-start pb-3">
+    <a class="mr-2 h-16 w-16 hover:shadow" href="@Track.Uri">
+        <img src="@Track.Album!.Images!.Last().Url" />
+    </a>
+    <div class="flex flex-col self-baseline">
+        <div class="text-sm font-semibold truncate">
+            <span>@(IsCorrect ? "✔️" : "❌")</span>
+            <a class="hover:underline" href="@Track.Uri">@Track.Name</a>
+        </div>
+        <div class="text-xs truncate">
+            <a class="hover:underline" href="@Track.Album!.Uri">@Track.Album.Name</a>
+            <span>(@Track.Album.ReleaseDate)</span>
+        </div>
+
+        <div class="text-xs text-gray-300 mt-3">
+            @foreach (var artist in Track.Artists)
+            {
+                <a class="hover:underline" href="@artist.Uri">@artist.Name</a>
+                @if (Track.Artists.Last() != artist)
+                {
+                    <span> &middot; </span>
+                }
+            }
+        </div>
+    </div>
+</div>

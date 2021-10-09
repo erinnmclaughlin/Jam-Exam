@@ -14,11 +14,10 @@ namespace WebApp.Services
         private readonly NavigationManager _nav;
         private readonly ISpotifyClient _spotify;
 
-        private string? _playlistId;
-
         public Track? CurrentTrack => Tracks?.ElementAtOrDefault(Index);
         public bool Guessing { get; private set; }
         public int Index { get; private set; } = 0;
+        public Playlist? Playlist { get; private set; }
         public bool PlayTrack { get; private set; } = true;
         public int Score => Guesses.Count(x => x.IsCorrect);
 
@@ -32,9 +31,10 @@ namespace WebApp.Services
             _spotify = spotify;
         }
 
-        public void CreateGame(string playlistId)
+        public async Task CreateGame(string playlistId)
         {
-            _playlistId = playlistId;
+            var response = await _spotify.GetPlaylistById(playlistId);
+            Playlist = response.Content;
             _nav.NavigateTo("play-game");
         }
 
@@ -57,14 +57,14 @@ namespace WebApp.Services
         public async Task LoadTracksAsync(int quantity)
         {
             // Go back to home screen if playlist hasn't been selected.
-            if (_playlistId is null)
+            if (Playlist is null)
             {
                 _nav.NavigateTo("");
                 return;
             }
 
             // Get the tracks for the selected playlist
-            var response = await _spotify.GetPlaylistTracks(_playlistId);
+            var response = await _spotify.GetPlaylistTracks(Playlist.Id);
 
             // Randomize track order and select indicated quantity
             Tracks = response.Content!.Items.Select(x => x.Track)

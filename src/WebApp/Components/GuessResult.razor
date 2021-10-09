@@ -1,20 +1,12 @@
-﻿@if (Result is null)
-{
-    <Loader LoadText="Guessing..." />
-}
-else
-{
+﻿<div>
     <p>@GetResultText()</p>
 
-    <p>Track: @Result.Track.Name</p>
-    <p>Album: @Result.Track.Album?.Name (@Result.Track.Album?.ReleaseDate)</p>
-
-    @if (Result.Track.Artists.Count() > 1)
+    @if (Track.Artists.Count() > 1)
     {
         <p>There were multiple correct answers for this track!</p>
     }
 
-    @foreach (var artist in Result.Track.Artists)
+    @foreach (var artist in Track.Artists)
     {
         <img src="@artist.GetImageWithClosestWidth(50)?.Url" />
         <p>Artist: @artist.Name</p>
@@ -28,4 +20,4 @@ else
     }
 
     <button @onclick="OnContinue">Continue</button>
-}
+</div>

@@ -7,32 +7,53 @@
 {
     <Loader LoadText="Tuning the guitar..." />
 }
-else if (GameService.PlayTrack)
-{
-    <MusicPlayer @ref="_player" Url="@GameService.CurrentTrack?.PreviewUrl" />
-
-    <div class="play-game h-full">
-
-        <h4 class="text-4xl font-semibold tracking-wide text-center">Guess the Artist</h4>
-
-        <BlazoredTypeahead SearchMethod="@SearchService.SearchArtists" Debounce="500" Disabled="GameService.Guessing"
-                           Value="@SelectedArtist"
-                           ValueChanged="((Artist? x) => GameService.GuessArtist(x?.Id))"
-                           ValueExpression="(() => SelectedArtist)"
-                           placeholder="Search artists...">
-            <SelectedTemplate>
-                @context?.Name
-            </SelectedTemplate>
-            <ResultTemplate>
-                @context.Name
-            </ResultTemplate>
-            <NotFoundTemplate>
-                Sorry, there weren't any search results.
-            </NotFoundTemplate>
-        </BlazoredTypeahead>
-    </div>
-}
 else
 {
-    <GuessResult OnContinue="NextTrack" Result="GameService.LastGuessed" />
+    <div class="container h-full mx-auto flex flex-col">
+
+        <a class="hover:underline text-sm" href="">Choose a different playlist</a>
+        
+        <p class="text-4xl">@GameService.Playlist?.Name</p>
+
+        @if (GameService.PlayTrack)
+        {
+            <MusicPlayer @ref="_player" Url="@GameService.CurrentTrack?.PreviewUrl" />
+
+            <div class="search rounded-lg px-2 items-center">
+                <WebApp.Icons.SearchIcon />
+                <BlazoredTypeahead SearchMethod="@SearchService.SearchArtists" Debounce="500" Disabled="GameService.Guessing"
+                                   Value="@SelectedArtist"
+                                   ValueChanged="((Artist? x) => GameService.GuessArtist(x?.Id))"
+                                   ValueExpression="(() => SelectedArtist)"
+                                   placeholder="Search artists...">
+                    <SelectedTemplate>
+                        @context?.Name
+                    </SelectedTemplate>
+                    <ResultTemplate>
+                        <div class="flex flex-row">
+                            <img class="h-12 w-12" src="@context.Images?.LastOrDefault()?.Url" />
+                            <div class="ml-2">
+                                @context.Name
+                            </div>
+                        </div>
+                    </ResultTemplate>
+                    <NotFoundTemplate>
+                        Sorry, there weren't any search results.
+                    </NotFoundTemplate>
+                </BlazoredTypeahead>
+            </div>
+            
+        }
+        else
+        {
+            <GuessResult OnContinue="NextTrack" Result="GameService.LastGuessed!" />
+        }
+        
+        <div class="mt-auto mb-8 max-h-64 overflow-y-scroll">
+            <History Results="GameService.Guesses" />
+        </div>
+
+    </div>
+    
 }
+

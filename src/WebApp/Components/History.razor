@@ -1,0 +1,9 @@
+﻿@if (Results.Any())
+{
+    <div class="bg-gray-800 rounded-xl pt-3 px-3">
+        @foreach (var result in Results)
+        {
+            <TrackObject Track="result.Track" IsCorrect="result.IsCorrect" />
+        }
+    </div>
+}
