@@ -44,11 +44,10 @@ namespace WebApp.Services
 
             foreach (var seed in GetPlaylistSeeds())
             {
-                var response = await _spotify.GetPlaylistById(seed.Value);
+                var response = await _spotify.GetPlaylistById(seed);
                 await response.EnsureSuccessStatusCodeAsync();
 
                 var playlist = response.Content!;
-                playlist.Name = seed.Key;
                 playlists.Add(playlist);
             }
 
@@ -91,8 +90,16 @@ namespace WebApp.Services
 
         public void NextTrack()
         {
-            Index++;
-            PlayTrack = true;
+            if (Index == Tracks!.Count - 1)
+            {
+                _nav.NavigateTo("game-over");
+            }
+            else
+            {
+                Index++;
+                PlayTrack = true;
+            }
+            
         }
 
         private async Task<Album> GetAlbumDetails(string id)
@@ -107,20 +114,20 @@ namespace WebApp.Services
             return response.Content!.Artists;
         }
 
-        private static Dictionary<string, string> GetPlaylistSeeds()
+        private static string[] GetPlaylistSeeds()
         {
-            return new Dictionary<string, string>
+            return new string[]
             {
-                { "Classic Rock", "37i9dQZF1DWXRqgorJj26U" },
-                { "Indie", "37i9dQZF1DX2Nc3B70tvx0" },
-                { "Pop", "37i9dQZF1DXcBWIGoYBM5M" },
-                { "Hip Hop", "37i9dQZF1DX0XUsuxWHRQd" },
-                { "Country", "37i9dQZF1DX1lVhptIYRda" },
-                { "1960s", "37i9dQZF1DWWzBc3TOlaAV" },
-                { "1970s", "37i9dQZF1DWTJ7xPn4vNaz" },
-                { "1980s", "37i9dQZF1DX4UtSsGT1Sbe" },
-                { "1990s", "37i9dQZF1DXbTxeAdrVG2l" },
-                { "2000s", "37i9dQZF1DX4o1oenSJRJd" }
+                "37i9dQZF1DWXRqgorJj26U", // Classic Rock
+                "37i9dQZF1DX2Nc3B70tvx0", // Indie
+                "37i9dQZF1DXcBWIGoYBM5M", // Pop
+                "37i9dQZF1DX0XUsuxWHRQd", // Hip Hop
+                "37i9dQZF1DX1lVhptIYRda", // Country
+                "37i9dQZF1DWWzBc3TOlaAV", // 1960's
+                "37i9dQZF1DWTJ7xPn4vNaz", // 1970's
+                "37i9dQZF1DX4UtSsGT1Sbe", // 1980's
+                "37i9dQZF1DXbTxeAdrVG2l", // 1990's
+                "37i9dQZF1DX4o1oenSJRJd"  // 2000's
             };
         }
     }
