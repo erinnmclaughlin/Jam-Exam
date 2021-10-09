@@ -1,6 +1,8 @@
 ﻿@page "/play-game"
 @using Blazored.Typeahead
 
+@using Spotify.Models
+
 @if (GameService.Tracks is null)
 {
     <Loader LoadText="Tuning the guitar..." />
@@ -9,21 +11,26 @@ else if (GameService.PlayTrack)
 {
     <MusicPlayer @ref="_player" Url="@GameService.CurrentTrack?.PreviewUrl" />
 
-    <BlazoredTypeahead SearchMethod="@SearchService.SearchArtists" Debounce="500" @bind-Value="SelectedArtist" placeholder="Search artists...">
-        <SelectedTemplate>
-            @context?.Name
-        </SelectedTemplate>
-        <ResultTemplate>
-            @context.Name
-        </ResultTemplate>
-        <NotFoundTemplate>
-            Sorry, there weren't any search results.
-        </NotFoundTemplate>
-    </BlazoredTypeahead>
+    <div class="play-game h-full">
 
-    <button disabled="@(GameService.Guessing)" @onclick="(() => GameService.GuessArtist(SelectedArtist!.Id))">
-        @(GameService.Guessing ? "Guessing..." : "Guess")
-    </button>
+        <h4 class="text-4xl font-semibold tracking-wide text-center">Guess the Artist</h4>
+
+        <BlazoredTypeahead SearchMethod="@SearchService.SearchArtists" Debounce="500" Disabled="GameService.Guessing"
+                           Value="@SelectedArtist"
+                           ValueChanged="((Artist? x) => GameService.GuessArtist(x?.Id))"
+                           ValueExpression="(() => SelectedArtist)"
+                           placeholder="Search artists...">
+            <SelectedTemplate>
+                @context?.Name
+            </SelectedTemplate>
+            <ResultTemplate>
+                @context.Name
+            </ResultTemplate>
+            <NotFoundTemplate>
+                Sorry, there weren't any search results.
+            </NotFoundTemplate>
+        </BlazoredTypeahead>
+    </div>
 }
 else
 {

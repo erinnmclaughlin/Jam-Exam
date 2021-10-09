@@ -72,8 +72,11 @@ namespace WebApp.Services
                 .Shuffle().Take(quantity).ToList();
         }
 
-        public async Task GuessArtist(string artistId)
+        public async Task GuessArtist(string? artistId)
         {
+            if (artistId is null)
+                return;
+
             Guessing = true;
 
             var artistIds = CurrentTrack!.Artists.Select(x => x.Id).Append(artistId).Distinct();
@@ -127,7 +130,8 @@ namespace WebApp.Services
                 "37i9dQZF1DWTJ7xPn4vNaz", // 1970's
                 "37i9dQZF1DX4UtSsGT1Sbe", // 1980's
                 "37i9dQZF1DXbTxeAdrVG2l", // 1990's
-                "37i9dQZF1DX4o1oenSJRJd"  // 2000's
+                "37i9dQZF1DX4o1oenSJRJd", // 2000's
+                "6i2Qd6OpeRBAzxfscNXeWp", // All Time Hits
             };
         }
     }
