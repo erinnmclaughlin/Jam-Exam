@@ -4,7 +4,10 @@ namespace WebApp.Models
 {
     public class HighScoreModel
     {
-        [Required, MinLength(3, ErrorMessage = "Name must be at least 3 characters!"), MaxLength(50, ErrorMessage = "Name cannot exceed 50 characters!")]
+        [Required (ErrorMessage = "You must enter a value!")]
+        [MinLength(3, ErrorMessage = "Name must be at least 3 characters!")]
+        [MaxLength(50, ErrorMessage = "Name cannot exceed 50 characters!")]
+        [RegularExpression("^[a-zA-Z -]*$", ErrorMessage = "Name can contain only letters, whitespace, or hyphens.")]
         public string? Name { get; set; }
 
         public string PlaylistId { get; private set; }

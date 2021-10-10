@@ -1,4 +1,4 @@
-﻿.validation-message {
+﻿::deep .validation-message {
     font-size: small;
     color: palevioletred;
 }

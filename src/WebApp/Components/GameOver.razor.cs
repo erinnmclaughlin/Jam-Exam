@@ -25,7 +25,9 @@ namespace WebApp.Components
 
         private async Task OnValidSubmit()
         {
+            // TODO: Save somewhere
             Saved = true;
+            await Task.Delay(0); // temp, to get rid of warning.
         }
     }
 }

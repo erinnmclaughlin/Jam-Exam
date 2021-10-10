@@ -15,9 +15,6 @@ namespace Spotify
         [Get("/artists")]
         Task<ApiResponse<ArtistList>> GetArtists(IEnumerable<string> ids);
 
-        [Get("/artists/{artistId}")]
-        Task<ApiResponse<Artist>> GetArtistById(string artistId);
-
         [Get("/playlists/{playlistId}")]
         Task<ApiResponse<Playlist>> GetPlaylistById(string playlistId);
 
@@ -26,8 +23,5 @@ namespace Spotify
 
         [Get("/search")]
         Task<ApiResponse<SearchResponse>> Search(SearchRequest request);
-
-        [Get("/tracks/{trackId}")]
-        Task<ApiResponse<Track>> GetTrackById(string trackId);
     }
 }
