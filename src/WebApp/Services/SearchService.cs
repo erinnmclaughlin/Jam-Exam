@@ -19,7 +19,7 @@ namespace WebApp.Services
         {
             var response = await _spotify.Search(new SearchRequest
             {
-                Limit = 10,
+                Limit = 5,
                 SearchText = searchText,
                 Types = new List<string> { "artist" }
             });
