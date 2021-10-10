@@ -1,0 +1,29 @@
+﻿<a href="@Artist.Uri" class="mt-4 flex bg-gray-800 p-3 rounded-xl shadow-xl transition ease-in-out hover:bg-gray-700">
+    <img class="rounded-full h-24 w-24 object-cover mr-2 shadow-xl" src="@Artist.Images?.FirstOrDefault()?.Url" />
+    <div class="w-64 flex flex-col justify-between">
+
+        <div>
+            <p class="truncate font-semibold" href="@Artist.Uri">@Artist.Name</p>
+            @if (Artist.Followers is not null)
+            {
+                <p class="text-gray-400">@Artist.Followers.Total.ToString("N0") Followers</p>
+            }
+        </div>
+
+        <div class="text-gray-400 text-xs truncate">
+            @if (Artist.Genres is not null)
+            {
+                foreach (var genre in Artist.Genres)
+                {
+                    <span>@genre</span>
+
+                    if (genre != Artist.Genres.Last())
+                    {
+                        <span> &middot; </span>
+                    }
+                }
+            }
+        </div>
+
+    </div>
+</a>

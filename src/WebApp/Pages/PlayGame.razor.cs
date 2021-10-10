@@ -36,5 +36,16 @@ namespace WebApp.Pages
                 StateHasChanged();
             }
         }
+
+        private string GetResultText()
+        {
+            if (GameService.LastGuessed!.GuessedArtist is null)
+                return "Time's Up!";
+
+            if (GameService.LastGuessed!.IsCorrect)
+                return "Rock On!";
+
+            return "Oh, Drumsticks!";
+        }
     }
 }

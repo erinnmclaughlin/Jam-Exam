@@ -17,76 +17,88 @@ else
                     <span class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500">@GameService.Playlist?.Name</span>
                 </p>
 
-                @if (GameService.GameOver)
-                {
-                    <GameOver />
-                }
-                else
-                {
-                    <div class="flex flex-col h-full items-center justify-center">
-                        <div class="flex flex-row">
+                <div class="flex flex-col h-full items-center justify-center">
+                    @if (GameService.GameOver)
+                    {
+                        <GameOver />
+                    }
+                    else
+                    {
+                        <div class="mb-12">
+                            <div class="flex flex-row">
 
-                            <img class="h-96 w-96 transition ease-in filter @(GameService.PlayTrack ? "blur-lg" : "")" src="@GameService.CurrentTrack?.Album?.Images?.FirstOrDefault()?.Url" />
+                                <img class="h-96 w-96 transition ease-in filter @(GameService.PlayTrack ? "blur-lg" : "")" src="@GameService.CurrentTrack?.Album?.Images?.FirstOrDefault()?.Url" />
 
-                            <div class="h-96 w-96 ml-12">
-                                @if (GameService.PlayTrack)
-                                {
-                                    <MusicPlayer @ref="_player" Url="@GameService.CurrentTrack?.PreviewUrl" />
+                                <div class="h-96 w-96 ml-24">
+                                    @if (GameService.PlayTrack)
+                                    {
+                                        <MusicPlayer @ref="_player" Url="@GameService.CurrentTrack?.PreviewUrl" />
 
-                                    <div class="flex flex-col items-center h-full" style="justify-content: space-around;">
+                                        <div class="flex flex-col items-center h-full" style="justify-content: space-around;">
 
-                                        <div class="search rounded-lg px-2 items-center w-full">
-                                            <WebApp.Icons.SearchIcon />
+                                            <div class="search rounded-lg px-2 items-center w-full">
+                                                <WebApp.Icons.SearchIcon />
 
-                                            <BlazoredTypeahead SearchMethod="@SearchService.SearchArtists" Debounce="500" Disabled="GameService.Guessing"
-                                                               Value="@SelectedArtist"
-                                                               ValueChanged="((Artist x) => GameService.GuessArtist(x.Id))"
-                                                               ValueExpression="(() => SelectedArtist)"
-                                                               placeholder="Search artists..." autofocus>
-                                                <SelectedTemplate>
-                                                    @context?.Name
-                                                </SelectedTemplate>
-                                                <ResultTemplate>
-                                                    <div class="flex flex-row">
-                                                        <img class="h-12 w-12" src="@context.Images?.LastOrDefault()?.Url" />
-                                                        <div class="ml-2">
-                                                            @context.Name
+                                                <BlazoredTypeahead SearchMethod="@SearchService.SearchArtists" Debounce="500" Disabled="GameService.Guessing"
+                                                                   Value="@SelectedArtist"
+                                                                   ValueChanged="((Artist x) => GameService.GuessArtist(x.Id))"
+                                                                   ValueExpression="(() => SelectedArtist)"
+                                                                   placeholder="Search artists..." autofocus>
+                                                    <SelectedTemplate>
+                                                        @context?.Name
+                                                    </SelectedTemplate>
+                                                    <ResultTemplate>
+                                                        <div class="flex flex-row">
+                                                            <img class="h-12 w-12" src="@context.Images?.LastOrDefault()?.Url" />
+                                                            <div class="ml-2">
+                                                                @context.Name
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </ResultTemplate>
-                                                <NotFoundTemplate>
-                                                    Sorry, there weren't any search results.
-                                                </NotFoundTemplate>
-                                            </BlazoredTypeahead>
-                                        </div>
+                                                    </ResultTemplate>
+                                                    <NotFoundTemplate>
+                                                        Sorry, there weren't any search results.
+                                                    </NotFoundTemplate>
+                                                </BlazoredTypeahead>
+                                            </div>
 
-                                        <Timer />
-                                    </div>
-                                }
-                                else
-                                {
-                                    <GuessResult />
-                                }
+                                            <Timer />
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <GuessResult />
+                                    }
+                                </div>
                             </div>
                         </div>
 
-                        <div class="h-80 max-h-80">
+                        <div class="flex flex-row h-64 max-h-64">
                             @if (GameService.PlayTrack)
                             {
-                                <Loader LoadText="" />
+                                <div class="mt-20">
+                                    <Loader LoadText="" />
+                                </div>
                             }
                             else
                             {
-                                <div class="flex flex-col h-full justify-center">
-                                    <p>@GameService.LastGuessed!.GetEmoji() Result Text here</p>
+                                <div class="flex h-full items-center justify-center w-96">
+                                    <p class="text-3xl font-bold">@GameService.LastGuessed!.GetEmoji() @GetResultText()</p>
+                                </div>
 
-                                    <button @onclick="GameService.NextTrack">Continue</button>
+                                <div class="w-96 ml-24 flex flex-col justify-center">
+                                    @if (GameService.LastGuessed!.GuessedArtist is not null)
+                                    {
+                                        <p>You Guessed:</p>
+                                        <ArtistCard Artist="GameService.LastGuessed!.GuessedArtist!" />
+                                    }
+
+                                    <button @onclick="GameService.NextTrack" class="ml-auto bg-purple-500 hover:bg-purple-400 mt-3 p-2 rounded shadow-xl">Continue</button>
                                 </div>
                             }
                         </div>
-                       
-                    </div>
-                }
+                    }
+                </div>
+                
             </div>
             <div class="w-96 h-full bg-gradient-to-b from-gray-800 to-gray-900 rounded-xl p-3 shadow-lg">
                 <History />
