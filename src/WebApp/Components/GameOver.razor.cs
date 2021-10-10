@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using System.Threading.Tasks;
+using WebApp.Database;
 using WebApp.Models;
 using WebApp.Services;
 
@@ -7,9 +9,12 @@ namespace WebApp.Components
 {
     public partial class GameOver
     {
+        [Inject] private JamDbContext DbContext { get; set; } = null!;
+
         private EditContext? EditContext { get; set; }
         private HighScoreModel? ScoreModel { get; set; }
 
+        private bool Saving { get; set; }
         private bool Saved { get; set; }
 
         protected override void OnInitialized()
@@ -25,9 +30,10 @@ namespace WebApp.Components
 
         private async Task OnValidSubmit()
         {
-            // TODO: Save somewhere
+            Saving = true;
+            DbContext.HighScores.Add(ScoreModel!);
+            await DbContext.SaveChangesAsync();
             Saved = true;
-            await Task.Delay(0); // temp, to get rid of warning.
         }
     }
 }
