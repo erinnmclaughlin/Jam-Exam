@@ -16,6 +16,7 @@ namespace WebApp.Pages
         {
             if (firstRender)
             {
+                GameService.Reset();
                 await LoadPlaylists();
                 StateHasChanged();
             }

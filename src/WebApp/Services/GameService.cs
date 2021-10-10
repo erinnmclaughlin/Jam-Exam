@@ -120,11 +120,7 @@ namespace WebApp.Services
             Playlist = response.Content;
 
             // Reset game items
-            Index = 0;
-            GameOver = false;
-            Guessing = false;
-            PlayTrack = true;
-            Tracks = null;
+            Reset();
 
             // Navigate to the play game page
             _nav.NavigateTo("play-game");
@@ -193,6 +189,17 @@ namespace WebApp.Services
                 Index++;
                 PlayTrack = true;
             }  
+        }
+
+        public void Reset()
+        {
+            // Reset game items
+            Index = 0;
+            Tracks = null;
+            Guesses = new();
+            GameOver = false;
+            Guessing = false;
+            PlayTrack = true;
         }
 
         public async Task Timeout()
