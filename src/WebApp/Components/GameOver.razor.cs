@@ -48,6 +48,8 @@ namespace WebApp.Components
             DbContext.HighScores.Add(ScoreModel!);
             await DbContext.SaveChangesAsync();
             Saved = true;
+
+            GameService.OnScoreSaved.Invoke();
         }
     }
 }
