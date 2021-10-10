@@ -17,7 +17,7 @@ namespace WebApp.Components
         [Parameter] public EventCallback<string> OnSelect { get; set; }
         [Parameter] public string? Title { get; set; }
         [Parameter] public List<CarouselItem>? Items { get; set; }
-
+        
         private int Center { get; set; }
 
         protected override void OnParametersSet()

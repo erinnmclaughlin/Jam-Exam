@@ -13,24 +13,27 @@ namespace WebApp.Pages
 
         private List<CarouselItem>? Items { get; set; }
 
-        protected override async Task OnInitializedAsync()
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            GameService.Reset();
-
-            if (PlaylistService.Playlists is null)
-                await PlaylistService.LoadPlaylists();
-
-            if (Items is null)
+            if (firstRender)
             {
-                var items = PlaylistService.Playlists!.Select(x => new CarouselItem { Id = x.Id, ImageUrl = x.Images!.First().Url }).ToList()!;
+                GameService.Reset();
 
-                foreach (var item in items)
-                    item.DisplayOrder = items.IndexOf(item);
+                if (PlaylistService.Playlists is null)
+                    await PlaylistService.LoadPlaylists();
 
-                Items = items;
-            }
+                if (Items is null)
+                {
+                    var items = PlaylistService.Playlists!.Select(x => new CarouselItem { Id = x.Id, ImageUrl = x.Images!.First().Url }).ToList()!;
 
-            await InvokeAsync(StateHasChanged);
+                    foreach (var item in items)
+                        item.DisplayOrder = items.IndexOf(item);
+
+                    Items = items;
+                }
+
+                await InvokeAsync(StateHasChanged);
+            }           
         }
 
         private async Task CreateGame(string playlistId)

@@ -22,19 +22,16 @@ namespace WebApp.Pages
             GC.SuppressFinalize(this);
         }
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
+        protected override async Task OnInitializedAsync()
         {
-            if (firstRender)
-            {
-                GameService.PropertyChanged += async (o, e) => await InvokeAsync(StateHasChanged);
+            GameService.PropertyChanged += async (o, e) => await InvokeAsync(StateHasChanged);
 
-                if (GameService.Playlist is null)
-                    Navigation.NavigateTo("");
-                else
-                    await GameService.LoadTracksAsync(10);
+            if (GameService.Playlist is null)
+                Navigation.NavigateTo("");
+            else
+                await GameService.LoadTracksAsync(10);
 
-                await InvokeAsync(StateHasChanged);
-            }
+            await InvokeAsync(StateHasChanged);
         }
 
         private string GetResultText()
