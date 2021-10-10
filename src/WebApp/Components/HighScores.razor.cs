@@ -11,7 +11,7 @@ namespace WebApp.Components
 {
     public partial class HighScores : IDisposable
     {
-        [Inject] private JamDbContext DbContext { get; set; } = null!;
+        [Inject] private IDbContextFactory<JamDbContext> DbContext { get; set; } = null!;
 
         private List<HighScoreModel>? Scores { get; set; }
 
@@ -29,7 +29,9 @@ namespace WebApp.Components
 
         private async Task LoadScores()
         {
-            Scores = await DbContext.HighScores
+            using var context = DbContext.CreateDbContext();
+
+            Scores = await context.HighScores
                 .Where(x => x.PlaylistId == GameService.Playlist!.Id)
                 .OrderByDescending(x => x.Correct)
                 .Take(100)

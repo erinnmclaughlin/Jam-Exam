@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using WebApp.Database;
 using WebApp.Models;
@@ -9,7 +10,7 @@ namespace WebApp.Components
 {
     public partial class GameOver
     {
-        [Inject] private JamDbContext DbContext { get; set; } = null!;
+        [Inject] private IDbContextFactory<JamDbContext> DbContext { get; set; } = null!;
 
         private EditContext? EditContext { get; set; }
         private HighScoreModel? ScoreModel { get; set; }
@@ -45,8 +46,9 @@ namespace WebApp.Components
             Saving = true;
             await InvokeAsync(StateHasChanged);
 
-            DbContext.HighScores.Add(ScoreModel!);
-            await DbContext.SaveChangesAsync();
+            using var context = DbContext.CreateDbContext();
+            context.HighScores.Add(ScoreModel!);
+            await context.SaveChangesAsync();
             Saved = true;
 
             GameService.OnScoreSaved.Invoke();

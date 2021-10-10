@@ -25,7 +25,7 @@ namespace WebApp
             services.AddServerSideBlazor();
 
             // Add database
-            services.AddDbContext<JamDbContext>(x => x.UseSqlServer(Configuration.GetConnectionString("Default")));
+            services.AddDbContextFactory<JamDbContext>(x => x.UseSqlServer(Configuration.GetConnectionString("Default")));
 
             // Register Spotify services in DI
             services.AddSpotifyAuthentication();
