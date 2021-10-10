@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
-using Spotify;
+﻿using Spotify;
 using Spotify.Models;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,6 +9,9 @@ using WebApp.Models;
 
 namespace WebApp.Services
 {
+    /// <summary>
+    /// Service for holding current state of game
+    /// </summary>
     public class GameService : INotifyPropertyChanged
     {
         private readonly ISpotifyClient _spotify;
@@ -36,6 +38,9 @@ namespace WebApp.Services
         /// </summary>
         public int Score => Guesses.Count(x => x.IsCorrect);
 
+        /// <summary>
+        /// Indicates if the game has ended
+        /// </summary>
         public bool GameOver
         {
             get => _gameOver;
@@ -137,6 +142,12 @@ namespace WebApp.Services
                 .Shuffle().Take(quantity).ToList();
         }
 
+        /// <summary>
+        /// Gets detailed information about the track artist(s) and guessed artist. The two are compared
+        /// to determine if the selected artist is a match.
+        /// </summary>
+        /// <param name="artistId"></param>
+        /// <returns></returns>
         public async Task GuessArtist(string artistId)
         {
             Guessing = true;
@@ -153,6 +164,9 @@ namespace WebApp.Services
             Guessing = false;
         }
 
+        /// <summary>
+        /// Gets the next track in the list, or ends the game if the current track is the last.
+        /// </summary>
         public void NextTrack()
         {
             if (Index == Tracks!.Count - 1)
@@ -166,6 +180,9 @@ namespace WebApp.Services
             }  
         }
 
+        /// <summary>
+        /// Resets game parameters to default values.
+        /// </summary>
         public void Reset()
         {
             // Reset game items
@@ -177,6 +194,10 @@ namespace WebApp.Services
             PlayTrack = true;
         }
 
+        /// <summary>
+        /// Handles case where user fails to guess artist in the given amount of time.
+        /// </summary>
+        /// <returns></returns>
         public async Task Timeout()
         {
             Guessing = true;
@@ -192,12 +213,22 @@ namespace WebApp.Services
             Guessing = false;
         }
 
+        /// <summary>
+        /// Queries the Spotify API for album details
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         private async Task<Album> GetAlbumDetails(string id)
         {
             var response = await _spotify.GetAlbumById(id);
             return response.Content!;
         }
 
+        /// <summary>
+        /// Queries the Spotify API for artist details
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
         private async Task<Artist[]> GetArtistDetails(IEnumerable<string> ids)
         {
             var response = await _spotify.GetArtists(ids);

@@ -22,9 +22,11 @@ namespace WebApp
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
+            // Register Spotify services in DI
             services.AddSpotifyAuthentication();
             services.AddSpotifyClient(Configuration);
 
+            // Register app services in DI
             services.AddScoped<GameService>();
             services.AddSingleton<PlaylistService>();
             services.AddSingleton<SearchService>();

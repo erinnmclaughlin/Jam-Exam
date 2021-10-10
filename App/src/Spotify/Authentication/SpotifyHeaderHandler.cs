@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace Spotify.Authentication
 {
+    /// <summary>
+    /// Intercepts the API call & ensures a valid auth token is obtained and attached to the request header
+    /// </summary>
     internal class SpotifyHeaderHandler : DelegatingHandler
     {
         private readonly TokenService _tokenService;

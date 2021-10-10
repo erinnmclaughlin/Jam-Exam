@@ -15,11 +15,19 @@ namespace WebApp.Services
             _spotify = spotify;
         }
 
-        public async Task<IEnumerable<Artist>?> SearchArtists(string searchText)
+        /// <summary>
+        /// Queries spotify API for artists.
+        /// </summary>
+        /// <param name="searchText"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<Artist>?> SearchArtists(string searchText, int limit = 5)
         {
+            if (limit <= 0)
+                limit = 1;
+
             var response = await _spotify.Search(new SearchRequest
             {
-                Limit = 5,
+                Limit = limit,
                 SearchText = searchText,
                 Types = new List<string> { "artist" }
             });

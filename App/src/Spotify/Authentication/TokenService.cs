@@ -19,6 +19,10 @@ namespace Spotify.Authentication
             _settings = spotifyOptions.Value;
         }
 
+        /// <summary>
+        /// Returns the token for the Spotify API
+        /// </summary>
+        /// <returns></returns>
         public async Task<TokenResponse> GetTokenAsync()
         {
             if (_currentToken?.IsExpired != false)
@@ -27,6 +31,10 @@ namespace Spotify.Authentication
             return _currentToken;
         }
 
+        /// <summary>
+        /// Requests a new auth token from the Spotify authentication API
+        /// </summary>
+        /// <returns></returns>
         private async Task<TokenResponse> RequestNewTokenAsync()
         {
             var base64 = $"{_settings.ClientId}:{_settings.ClientSecret}".EncodeBase64();
