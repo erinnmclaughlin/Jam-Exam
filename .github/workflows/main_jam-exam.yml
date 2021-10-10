@@ -28,12 +28,6 @@ jobs:
       - name: dotnet publish
         run: dotnet publish src/WebApp/WebApp.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
-      - name: Update database
-        run: |
-          dotnet tool install --global dotnet-ef
-          dotnet tool restore
-          dotnet ef database update -c JamDbContext -p src/WebApp/WebApp.csproj --connection "${{ secrets.CONNECTION_STRING }}"
-
   deploy:
     runs-on: windows-latest
     needs: build
