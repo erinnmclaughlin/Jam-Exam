@@ -32,7 +32,7 @@ jobs:
         run: |
           dotnet tool install --global dotnet-ef
           dotnet tool restore
-          dotnet ef database update -c JamDbContext -p src/WebApp/WebApp.csproj --connection ${{ secrets.CONNECTION_STRING }}
+          dotnet ef database update -c JamDbContext -p src/WebApp/WebApp.csproj --connection "${{ secrets.CONNECTION_STRING }}"
 
   deploy:
     runs-on: windows-latest
