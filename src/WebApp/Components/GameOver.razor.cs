@@ -28,9 +28,23 @@ namespace WebApp.Components
             base.OnInitialized();
         }
 
+        private string GetButtonCss()
+        {
+            if (Saving)
+            {
+                return "opacity-50 cursor-not-allowed";
+            }
+            else
+            {
+                return "hover:bg-green-400";
+            }
+        }
+
         private async Task OnValidSubmit()
         {
             Saving = true;
+            await InvokeAsync(StateHasChanged);
+
             DbContext.HighScores.Add(ScoreModel!);
             await DbContext.SaveChangesAsync();
             Saved = true;
