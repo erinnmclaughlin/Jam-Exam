@@ -9,6 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spotify", "src\Spotify\Spot
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{48AA3D10-8A35-4C03-ADB2-016F82A05353}"
 	ProjectSection(SolutionItems) = preProject
+		.github\workflows\main_jam-exam.yml = .github\workflows\main_jam-exam.yml
 		README.md = README.md
 	EndProjectSection
 EndProject

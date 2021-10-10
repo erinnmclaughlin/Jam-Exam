@@ -1,5 +1,6 @@
 ﻿using Spotify;
 using Spotify.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace WebApp.Services
         private bool _playTrack = true;
 
         public event PropertyChangedEventHandler? PropertyChanged;
+        public Action OnScoreSaved;
 
         /// <summary>
         /// The track that is currently playing
