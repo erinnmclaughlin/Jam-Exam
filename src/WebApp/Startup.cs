@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Spotify.Extensions;
+using WebApp.Database;
 using WebApp.Services;
 
 namespace WebApp
@@ -21,6 +23,9 @@ namespace WebApp
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+
+            // Add database
+            services.AddDbContext<JamDbContext>(x => x.UseSqlServer(Configuration.GetConnectionString("Default")));
 
             // Register Spotify services in DI
             services.AddSpotifyAuthentication();
