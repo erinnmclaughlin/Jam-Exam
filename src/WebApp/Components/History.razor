@@ -3,6 +3,6 @@
 <div class="overflow-y-auto overflow-x-hidden" style="height: 94%;">
     @foreach (var result in Results)
     {
-        <TrackObject Track="result.Track" IsCorrect="result.IsCorrect" />
+        <TrackObject Track="result.Track" IsCorrect="result.IsCorrect" Timeout="result.GuessedArtist is null" />
     }
 </div>

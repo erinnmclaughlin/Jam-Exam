@@ -5,14 +5,14 @@ namespace WebApp.Models
 {
     public class GuessResultModel
     {
-        public Artist GuessedArtist { get; set; }
+        public Artist? GuessedArtist { get; set; }
         public Track Track { get; set; }
-        public bool IsCorrect => Track.Artists.Any(x => x.Id == GuessedArtist.Id);
+        public bool IsCorrect => GuessedArtist is not null && Track.Artists.Any(x => x.Id == GuessedArtist.Id);
 
-        public GuessResultModel(Artist artist, Track track)
+        public GuessResultModel(Track track, Artist? artist = null)
         {
-            GuessedArtist = artist;
             Track = track;
+            GuessedArtist = artist;
         }
     }
 }

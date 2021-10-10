@@ -1,20 +1,20 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System;
 using System.Threading.Tasks;
+using WebApp.Services;
 
 namespace WebApp.Components
 {
     public partial class Timer
     {
-        [Parameter] public int TotalSeconds { get; set; }
-        [Parameter] public EventCallback OnTimeOut { get; set; }
+        [Inject] private GameService GameService { get; set; } = null!;
 
         private int CurrentSeconds { get; set; }
         private string TimerText => new DateTime().AddSeconds(CurrentSeconds).ToString("mm:ss");
 
         protected override async Task OnInitializedAsync()
         {
-            CurrentSeconds = TotalSeconds;
+            CurrentSeconds = 30;
             await Countdown();
         }
 
@@ -25,15 +25,21 @@ namespace WebApp.Components
             StateHasChanged();
 
             if (CurrentSeconds == 0)
-                await OnTimeOut.InvokeAsync();
-            else
+            {
+                await GameService.Timeout();
+                return;
+            }
+            else if (GameService.PlayTrack == true)
+            {
                 await Countdown();
+            }
+            
         }
 
         private int GetDashArray()
         {
-            var timeFraction = (double)CurrentSeconds / TotalSeconds;
-            return (int)(283 * timeFraction - (1.0 / TotalSeconds) * (1.0 - timeFraction));
+            var timeFraction = CurrentSeconds / 30.0;
+            return (int)(283 * timeFraction - (1.0 / 30.0) * (1.0 - timeFraction));
         }
     }
 }

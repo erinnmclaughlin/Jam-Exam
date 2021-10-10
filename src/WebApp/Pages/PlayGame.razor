@@ -1,6 +1,6 @@
 ﻿@page "/play-game"
+@implements IDisposable
 @using Blazored.Typeahead
-
 @using Spotify.Models
 
 @if (GameService.Tracks is null)
@@ -25,9 +25,9 @@ else
 
                         <img class="h-96 w-96 filter blur-lg" src="@GameService.CurrentTrack?.Album?.Images?.FirstOrDefault()?.Url" />
 
-                        <div class="h-96 w-96 ml-12">
+                        <div class="h-96 w-96 ml-12 flex flex-col items-center" style="justify-content: space-around;">
 
-                            <div class="search rounded-lg px-2 items-center">
+                            <div class="search rounded-lg px-2 items-center w-full">
                                 <WebApp.Icons.SearchIcon />
 
                                 <BlazoredTypeahead SearchMethod="@SearchService.SearchArtists" Debounce="500" Disabled="GameService.Guessing"
@@ -52,8 +52,8 @@ else
                                 </BlazoredTypeahead>
                             </div>
 
-                            <Timer TotalSeconds="30" />
-                        </div>                        
+                            <Timer />
+                        </div>
                     </div>
                 }
                 else
@@ -65,7 +65,7 @@ else
             <div class="w-96 h-full bg-gray-800 rounded-xl p-3 shadow-lg">
                 <History Results="GameService.Guesses" />
             </div>
-        </div>        
+        </div>
     </div>
 }
 

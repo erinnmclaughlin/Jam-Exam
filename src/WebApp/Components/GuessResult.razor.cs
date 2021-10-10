@@ -11,6 +11,12 @@ namespace WebApp.Components
 
         public Track Track => Result.Track;
 
-        private string GetResultText() => Result!.IsCorrect ? "You guessed it!" : "Womp womp.";
+        private string GetResultText()
+        {
+            if (Result.GuessedArtist is null)
+                return "Times up!";
+
+            return Result!.IsCorrect ? "You guessed it!" : "Womp womp.";
+        }
     }
 }

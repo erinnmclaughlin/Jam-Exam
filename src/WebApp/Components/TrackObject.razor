@@ -4,7 +4,7 @@
     </a>
     <div class="flex flex-col self-baseline w-72">
         <div class="text-sm font-semibold truncate">
-            <span>@(IsCorrect ? "✔️" : "❌")</span>
+            <span>@GetEmoji()</span>
             <a class="hover:underline" href="@Track.Uri">@Track.Name</a>
         </div>
         <div class="text-xs truncate">
@@ -12,7 +12,7 @@
             <span>(@Track.Album.ReleaseDate)</span>
         </div>
 
-        <div class="text-xs text-gray-300 mt-3">
+        <div class="text-xs truncate text-gray-300 mt-3">
             @foreach (var artist in Track.Artists)
             {
                 <a class="hover:underline" href="@artist.Uri">@artist.Name</a>

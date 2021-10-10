@@ -12,7 +12,7 @@
         <p>Artist: @artist.Name</p>
     }
 
-    @if (Result.IsCorrect == false)
+    @if (Result.IsCorrect == false && Result.GuessedArtist is not null)
     {
         <p>You guessed...</p>
         <img src="@Result.GuessedArtist.GetImageWithClosestWidth(50)?.Url" />
