@@ -28,12 +28,16 @@ jobs:
       - name: dotnet publish
         run: dotnet publish src/WebApp/WebApp.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
-      - name: Update Database
-        run: |
-          dotnet new tool-manifest
-          dotnet tool install dotnet-ef
-          dotnet ef database update --project src/WebApp/WebApp.csproj --context JamDbContext --connection "${{ secrets.CONNECTION_STRING }}"
+      - name: Generate scripts
+        run: dotnet ef migrations script --output ${{env.DOTNET_ROOT}}/sql/sql-script.sql --idempotent --context JamDbContext
 
+
+      - name: Azure SQL Deploy
+        uses: Azure/sql-action@v1
+        with:
+          server-name: jam-exam.database.windows.net
+          connection-string: ${{ secrets.CONNECTION_STRING }}
+          sql-file: ${{env.DOTNET_ROOT}}/sql/sql-script.sql
         
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
