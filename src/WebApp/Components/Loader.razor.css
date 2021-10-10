@@ -1,6 +1,5 @@
 ﻿.loader {
     display: flex;
-    height: calc(100vh);
     justify-content: center;
     align-items: center;
     flex-direction: column;

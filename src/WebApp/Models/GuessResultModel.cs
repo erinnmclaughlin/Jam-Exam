@@ -14,5 +14,13 @@ namespace WebApp.Models
             Track = track;
             GuessedArtist = artist;
         }
+
+        public string GetEmoji()
+        {
+            if (GuessedArtist is null)
+                return "⏱️";
+
+            return IsCorrect ? "✔️" : "❌";
+        }
     }
 }

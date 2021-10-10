@@ -6,6 +6,9 @@ namespace Spotify.Models
 {
     public class Artist : ModelBase
     {
+        [JsonPropertyName("followers")]
+        public Followers? Followers { get; set; }
+
         [JsonPropertyName("genres")]
         public string[]? Genres { get; set; }
 
@@ -17,9 +20,6 @@ namespace Spotify.Models
 
         [JsonPropertyName("popularity")]
         public int Popularity { get; set; }
-
-        [JsonPropertyName("followers.total")]
-        public int TotalFollowers { get; set; }
 
         public Image? GetImageWithClosestWidth(int width)
         {

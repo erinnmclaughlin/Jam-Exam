@@ -1,23 +1,43 @@
-﻿<div>
-    <p>@GetResultText()</p>
+﻿<div class="flex flex-col h-full justify-between">
 
-    @if (Track.Artists.Count() > 1)
-    {
-        <p>There were multiple correct answers for this track!</p>
-    }
+    <div class="flex flex-col">
+        <a href="@Track.Uri" class="font-bold text-lg truncate hover:underline">@Track.Name</a>
+        <a href="@Track.Album!.Uri" class="truncate hover:underline">@Track.Album!.Name (@Track.Album!.ReleaseDate)</a>
+    </div>
 
-    @foreach (var artist in Track.Artists)
-    {
-        <img src="@artist.GetImageWithClosestWidth(50)?.Url" />
-        <p>Artist: @artist.Name</p>
-    }
+    <div class="h-full max-h-80 overflow-y-scroll pr-2">
+        @foreach (var artist in Track.Artists)
+        {
+            <a href="@artist.Uri" class="mt-4 flex bg-gray-800 p-3 rounded-xl shadow-xl transition ease-in-out hover:bg-gray-700">
+                <img class="rounded-full h-24 w-24 object-cover mr-2 shadow-xl" src="@artist.Images?.FirstOrDefault()?.Url" />
+                <div class="w-64 flex flex-col justify-between">
 
-    @if (Result.IsCorrect == false && Result.GuessedArtist is not null)
-    {
-        <p>You guessed...</p>
-        <img src="@Result.GuessedArtist.GetImageWithClosestWidth(50)?.Url" />
-        <p>Aritst: @Result.GuessedArtist.Name</p>
-    }
+                    <div>
+                        <p class="truncate font-semibold" href="@artist.Uri">@artist.Name</p>
+                        @if (artist.Followers is not null)
+                        {
+                            <p class="text-gray-400">@artist.Followers.Total.ToString("N0") Followers</p>
+                        }
+                    </div>
 
-    <button @onclick="GameService.NextTrack">Continue</button>
+                    <div class="text-gray-400 text-xs truncate">
+                        @if (artist.Genres is not null)
+                        {
+                            foreach (var genre in artist.Genres)
+                            {
+                                <span>@genre</span>
+
+                                if (genre != artist.Genres.Last())
+                                {
+                                    <span> &middot; </span>
+                                }
+                            }
+                        }
+                    </div>
+
+                </div>
+            </a>
+
+        }
+    </div>    
 </div>

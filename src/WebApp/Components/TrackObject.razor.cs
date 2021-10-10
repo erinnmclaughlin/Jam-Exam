@@ -1,20 +1,13 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Spotify.Models;
+using WebApp.Models;
 
 namespace WebApp.Components
 {
     public partial class TrackObject
     {
-        [Parameter] public Track Track { get; set; } = null!;
-        [Parameter] public bool IsCorrect { get; set; }
-        [Parameter] public bool Timeout { get; set; }
+        [Parameter] public GuessResultModel Result { get; set; } = null!;
 
-        private string GetEmoji()
-        {
-            if (Timeout)
-                return "⏱️";
-
-            return IsCorrect ? "✔️" : "❌";
-        }
+        private Track Track => Result.Track;
     }
 }

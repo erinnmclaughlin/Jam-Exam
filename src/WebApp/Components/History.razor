@@ -1,10 +1,10 @@
 ﻿@implements IDisposable
 
-<p class="section-title text-2xl text-purple-400 font-semibold tracking-wide mb-2">Results</p>
+<p class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500 text-3xl">Results</p>
 
 <div class="overflow-y-auto overflow-x-hidden" style="height: 94%;">
     @foreach (var result in GameService.Guesses)
     {
-        <TrackObject Track="result.Track" IsCorrect="result.IsCorrect" Timeout="result.GuessedArtist is null" />
+        <TrackObject Result="result" />
     }
 </div>
