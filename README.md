@@ -1,8 +1,11 @@
-﻿# 🎸 Jam Exam
+<p align="center">
+  <img height="225" src="https://user-images.githubusercontent.com/22223146/136709184-c7ab26db-8425-43a1-96ea-f5d18c752912.png" />
+</p>
 
-**Jam Exam** is a web application built with .NET 5 and [Blazor](https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor).
-
-Try out the [Demo](https://jam-exam.azurewebsites.net/)!
+## Play Online
+Try out the [demo app](https://jam-exam.azurewebsites.net/) on Azure!
+<br/>
+<sup>_Note that it may take a few minutes to load up initially._</sup>
 
 ## Installation Instructions
 1. Clone this repository.
