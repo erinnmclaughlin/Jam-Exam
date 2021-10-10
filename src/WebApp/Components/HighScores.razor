@@ -1,0 +1,32 @@
+﻿<p class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500 text-3xl mb-3">High Scores</p>
+
+<div class="overflow-y-auto overflow-x-hidden h-44">
+    @if (Scores is null)
+    {
+        <div class="flex">
+            <WebApp.Icons.Spinner />
+            <div>Loading scores...</div>
+        </div>
+    }
+    else if (!Scores.Any())
+    {
+        <p>Didn't find any user scores!</p>
+    }
+    else
+    {
+        foreach (var score in Scores)
+        {
+            <div class="flex h-16 items-center">
+                <div class="w-16 h-16 flex justify-center items-center text-2xl font-semibold">
+                    @(Scores.IndexOf(score) + 1)
+                </div>
+                <div>
+                    @score.Name (@score.Correct / @score.Total)
+                    <div>@score.Timestamp.ToLocalTime()</div>
+                </div>
+            </div>
+        }
+    }
+
+
+</div>

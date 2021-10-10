@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApp.Models
 {
@@ -15,6 +16,8 @@ namespace WebApp.Models
         public string PlaylistId { get; private set; }
         public int Correct { get; private set; }
         public int Total { get; private set; }
+
+        public DateTime Timestamp { get; private set; } = DateTime.UtcNow;
 
         public HighScoreModel(string playlistId, int correct, int total)
         {
