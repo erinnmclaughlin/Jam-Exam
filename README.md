@@ -1,10 +1,8 @@
 ﻿# 🎸 Jam Exam
 
-**Jam Exam** is a web application build with .NET 5 and [Blazor](https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor)! Select a genre and take the exam!
+**Jam Exam** is a web application built with .NET 5 and [Blazor](https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor).
 
-A demo of this application can be found [here](https://jam-exam.azurewebsites.net/).
-<br/>
-<small>**Note that it may take a minute or two to load initially (it's hosted for free!).**</small>
+Try out the [Demo](https://jam-exam.azurewebsites.net/)!
 
 ## Installation Instructions
 1. Clone this repository.
@@ -12,5 +10,4 @@ A demo of this application can be found [here](https://jam-exam.azurewebsites.ne
 3. Edit the `appsettings.json` in the root of the `WebApp` project and edit the Spotify section to include your own client id and client secret.
 4. **Have fun jamming! 🤘**
 
-
-<small>This project was created as a part of SWENG 861 at Penn State University. For more information, visit the [program website](https://www.worldcampus.psu.edu/degrees-and-certificates/software-engineering-masters/courses).</small>
+<sub>**This project was created as a part of SWENG 861 at Penn State University. For more information, visit the [program website](https://www.worldcampus.psu.edu/degrees-and-certificates/software-engineering-masters/courses).**</sub>
