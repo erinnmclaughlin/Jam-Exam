@@ -43,7 +43,7 @@ else
                                                                    Value="@SelectedArtist"
                                                                    ValueChanged="((Artist x) => GameService.GuessArtist(x.Id))"
                                                                    ValueExpression="(() => SelectedArtist)"
-                                                                   placeholder="Search artists..." autofocus>
+                                                                   placeholder="Search artists...">
                                                     <SelectedTemplate>
                                                         @context?.Name
                                                     </SelectedTemplate>
@@ -51,7 +51,7 @@ else
                                                         <div class="flex flex-row">
                                                             <img class="h-12 w-12" src="@context.Images?.LastOrDefault()?.Url" />
                                                             <div class="ml-2">
-                                                                @context.Name
+                                                                @context?.Name
                                                             </div>
                                                         </div>
                                                     </ResultTemplate>
