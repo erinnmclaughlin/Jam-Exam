@@ -28,9 +28,6 @@ jobs:
       - name: dotnet publish
         run: dotnet publish src/WebApp/WebApp.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
-      - name: Generate scripts
-        run: dotnet ef migrations script --output ${{env.DOTNET_ROOT}}/sql/sql-script.sql --idempotent --context JamDbContext
-        
       - name: Update database
         run: |
           dotnet tool install --global dotnet-ef
