@@ -12,7 +12,6 @@ namespace WebApp.Services
 {
     public class GameService : INotifyPropertyChanged
     {
-        private readonly NavigationManager _nav;
         private readonly ISpotifyClient _spotify;
 
         private bool _gameOver;
@@ -102,9 +101,8 @@ namespace WebApp.Services
         /// </summary>
         public List<Track>? Tracks { get; private set; }
 
-        public GameService(NavigationManager nav, ISpotifyClient spotify)
+        public GameService(ISpotifyClient spotify)
         {
-            _nav = nav;
             _spotify = spotify;
         }
 
@@ -121,29 +119,6 @@ namespace WebApp.Services
 
             // Reset game items
             Reset();
-
-            // Navigate to the play game page
-            _nav.NavigateTo("play-game");
-        }
-
-        /// <summary>
-        /// Gets a list of playlists supported by the app.
-        /// </summary>
-        /// <returns>A list of playlists</returns>
-        public async Task<List<Playlist>> GetPlaylistsAsync()
-        {
-            var playlists = new List<Playlist>();
-
-            foreach (var seed in GetPlaylistSeeds())
-            {
-                var response = await _spotify.GetPlaylistById(seed);
-                await response.EnsureSuccessStatusCodeAsync();
-
-                var playlist = response.Content!;
-                playlists.Add(playlist);
-            }
-
-            return playlists;
         }
 
         /// <summary>
@@ -229,22 +204,5 @@ namespace WebApp.Services
             return response.Content!.Artists;
         }
 
-        private static string[] GetPlaylistSeeds()
-        {
-            return new string[]
-            {
-                "37i9dQZF1DWXRqgorJj26U", // Classic Rock
-                "37i9dQZF1DX2Nc3B70tvx0", // Indie
-                "37i9dQZF1DXcBWIGoYBM5M", // Pop
-                "37i9dQZF1DX0XUsuxWHRQd", // Hip Hop
-                "37i9dQZF1DX1lVhptIYRda", // Country
-                "37i9dQZF1DWWzBc3TOlaAV", // 1960's
-                "37i9dQZF1DWTJ7xPn4vNaz", // 1970's
-                "37i9dQZF1DX4UtSsGT1Sbe", // 1980's
-                "37i9dQZF1DXbTxeAdrVG2l", // 1990's
-                "37i9dQZF1DX4o1oenSJRJd", // 2000's
-                "6i2Qd6OpeRBAzxfscNXeWp", // All Time Hits
-            };
-        }
     }
 }

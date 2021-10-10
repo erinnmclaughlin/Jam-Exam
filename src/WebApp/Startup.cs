@@ -25,8 +25,9 @@ namespace WebApp
             services.AddSpotifyAuthentication();
             services.AddSpotifyClient(Configuration);
 
-            services.AddScoped<GameService>();
-            services.AddScoped<SearchService>();
+            services.AddSingleton<GameService>();
+            services.AddSingleton<PlaylistService>();
+            services.AddSingleton<SearchService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -4,10 +4,18 @@ using WebApp.Services;
 
 namespace WebApp.Components
 {
-    public partial class Timer
+    public partial class Timer : IDisposable
     {
+        private bool _forceStop;
+
         private int CurrentSeconds { get; set; }
         private string TimerText => new DateTime().AddSeconds(CurrentSeconds).ToString("mm:ss");
+
+        public void Dispose()
+        {
+            _forceStop = true;
+            GC.SuppressFinalize(this);
+        }
 
         protected override async Task OnInitializedAsync()
         {
@@ -19,14 +27,14 @@ namespace WebApp.Components
         {
             await Task.Delay(1000);
             CurrentSeconds--;
-            StateHasChanged();
+            await InvokeAsync(StateHasChanged);
 
             if (CurrentSeconds == 0)
             {
                 await GameService.Timeout();
                 return;
             }
-            else if (GameService.PlayTrack == true)
+            else if (GameService.PlayTrack == true && !_forceStop)
             {
                 await Countdown();
             }

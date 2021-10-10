@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace WebApp.Components
 {
@@ -15,26 +16,27 @@ namespace WebApp.Components
     {
         [Parameter] public EventCallback<string> OnSelect { get; set; }
         [Parameter] public string? Title { get; set; }
-        [Parameter] public List<CarouselItem> Items { get; set; } = null!;
+        [Parameter] public List<CarouselItem>? Items { get; set; }
 
         private int Center { get; set; }
 
         protected override void OnParametersSet()
         {
-            foreach (var item in Items)
-                item.DisplayOrder = Items.IndexOf(item);
-
-            Center = Items.Count / 2;
+            if (Items is not null)
+            {
+                Center = Items.Count / 2;
+            }
+            
             base.OnParametersSet();
         }
 
         private string GetCss(CarouselItem item)
         {
             if (item.DisplayOrder == Center)
-                return $"z-index: {Items.Count}";
+                return $"z-index: {Items!.Count}";
 
             var offset = Center - item.DisplayOrder;
-            int zindex = Items.Count - Math.Abs(offset);
+            int zindex = Items!.Count - Math.Abs(offset);
 
             int translateX = offset * 300;
             int translateZ = Math.Abs(offset) * -90;
@@ -50,16 +52,16 @@ namespace WebApp.Components
 
         private bool IsSelected(CarouselItem item) => Center == item.DisplayOrder;
 
-        private void SelectItem(CarouselItem item)
+        private async Task SelectItem(CarouselItem item)
         {
             if (IsSelected(item))
             {
-                OnSelect.InvokeAsync(item.Id);
+                await OnSelect.InvokeAsync(item.Id);
                 return;
             }
 
             var offset = Center - item.DisplayOrder;
-            Items.ForEach(x =>
+            Items!.ForEach(x =>
             {
                 // Shift the item over
                 x.DisplayOrder += offset;
@@ -72,7 +74,7 @@ namespace WebApp.Components
 
             });
 
-            StateHasChanged();
+            await InvokeAsync(StateHasChanged);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace WebApp.Pages
 
         public void Dispose()
         {
-            GameService.PropertyChanged -= (o, e) => StateHasChanged();
+            GameService.PropertyChanged -= async (o, e) => await InvokeAsync(StateHasChanged);
             GC.SuppressFinalize(this);
         }
 
@@ -26,14 +26,14 @@ namespace WebApp.Pages
         {
             if (firstRender)
             {
-                GameService.PropertyChanged += (o,e) => StateHasChanged();
+                GameService.PropertyChanged += async (o, e) => await InvokeAsync(StateHasChanged);
 
                 if (GameService.Playlist is null)
                     Navigation.NavigateTo("");
                 else
                     await GameService.LoadTracksAsync(10);
-                
-                StateHasChanged();
+
+                await InvokeAsync(StateHasChanged);
             }
         }
 

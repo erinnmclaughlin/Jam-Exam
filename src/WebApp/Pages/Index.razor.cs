@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Spotify.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,26 +9,34 @@ namespace WebApp.Pages
 {
     public partial class Index : ComponentBase
     {
-        private List<Playlist>? Playlists { get; set; }
+        [Inject] private PlaylistService PlaylistService { get; set; } = null!;
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
+        private List<CarouselItem>? Items { get; set; }
+
+        protected override async Task OnInitializedAsync()
         {
-            if (firstRender)
+            GameService.Reset();
+
+            if (PlaylistService.Playlists is null)
+                await PlaylistService.LoadPlaylists();
+
+            if (Items is null)
             {
-                GameService.Reset();
-                await LoadPlaylists();
-                StateHasChanged();
+                var items = PlaylistService.Playlists!.Select(x => new CarouselItem { Id = x.Id, ImageUrl = x.Images!.First().Url }).ToList()!;
+
+                foreach (var item in items)
+                    item.DisplayOrder = items.IndexOf(item);
+
+                Items = items;
             }
+
+            await InvokeAsync(StateHasChanged);
         }
 
-        private List<CarouselItem> GetCarouselItems()
+        private async Task CreateGame(string playlistId)
         {
-            return Playlists?.Select(x => new CarouselItem { Id = x.Id, ImageUrl = x.Images!.First().Url }).ToList()!;
-        }
-
-        private async Task LoadPlaylists()
-        {
-            Playlists = await GameService.GetPlaylistsAsync();
+            await GameService.CreateGame(playlistId);
+            Navigation.NavigateTo("play-game");
         }
     }
 }

@@ -6,13 +6,13 @@ namespace WebApp.Components
     {
         public void Dispose()
         {
-            GameService.PropertyChanged -= (o, e) => StateHasChanged();
+            GameService.PropertyChanged -= async (o, e) => await InvokeAsync(StateHasChanged);
             GC.SuppressFinalize(this);
         }
 
         protected override void OnInitialized()
         {
-            GameService.PropertyChanged += (o, e) => StateHasChanged();
+            GameService.PropertyChanged += async (o, e) => await InvokeAsync(StateHasChanged);
             base.OnInitialized();
         }
     }
