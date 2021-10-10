@@ -23,7 +23,7 @@ namespace Spotify.Models
 
         public Image? GetImageWithClosestWidth(int width)
         {
-            return Images?.Where(x => x.Width != null).OrderBy(x => Math.Abs(x.Width!.Value - width)).First();
+            return Images?.Where(x => x.Width != null).OrderBy(x => Math.Abs(x.Width!.Value - width)).FirstOrDefault();
         }
     }
 

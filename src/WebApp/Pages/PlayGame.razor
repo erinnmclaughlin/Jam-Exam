@@ -9,51 +9,54 @@
 }
 else
 {
-    <div class="container h-full mx-auto flex flex-col">
+    <div class="container h-full mx-auto">
+        <div class="flex py-5 h-full">
+            <div class="flex-grow bg-gray-800 rounded-lg mr-5 shadow-lg p-5">
 
-        <a class="hover:underline text-sm" href="">Choose a different playlist</a>
-        
-        <p class="text-4xl">@GameService.Playlist?.Name</p>
+                <p class="font-semibold mb-2 tracking-widest text-purple-400 text-xl">
+                    <span>🎵 </span>
+                    <span class="section-title text-2xl">@GameService.Playlist?.Name</span>
+                </p>
 
-        @if (GameService.PlayTrack)
-        {
-            <MusicPlayer @ref="_player" Url="@GameService.CurrentTrack?.PreviewUrl" />
+                @if (GameService.PlayTrack)
+                {
+                    <MusicPlayer @ref="_player" Url="@GameService.CurrentTrack?.PreviewUrl" />
 
-            <div class="search rounded-lg px-2 items-center">
-                <WebApp.Icons.SearchIcon />
-                <BlazoredTypeahead SearchMethod="@SearchService.SearchArtists" Debounce="500" Disabled="GameService.Guessing"
-                                   Value="@SelectedArtist"
-                                   ValueChanged="((Artist? x) => GameService.GuessArtist(x?.Id))"
-                                   ValueExpression="(() => SelectedArtist)"
-                                   placeholder="Search artists...">
-                    <SelectedTemplate>
-                        @context?.Name
-                    </SelectedTemplate>
-                    <ResultTemplate>
-                        <div class="flex flex-row">
-                            <img class="h-12 w-12" src="@context.Images?.LastOrDefault()?.Url" />
-                            <div class="ml-2">
-                                @context.Name
-                            </div>
-                        </div>
-                    </ResultTemplate>
-                    <NotFoundTemplate>
-                        Sorry, there weren't any search results.
-                    </NotFoundTemplate>
-                </BlazoredTypeahead>
+                    <div class="search rounded-lg px-2 items-center">
+                        <WebApp.Icons.SearchIcon />
+                        <BlazoredTypeahead SearchMethod="@SearchService.SearchArtists" Debounce="500" Disabled="GameService.Guessing"
+                                           Value="@SelectedArtist"
+                                           ValueChanged="((Artist? x) => GameService.GuessArtist(x?.Id))"
+                                           ValueExpression="(() => SelectedArtist)"
+                                           placeholder="Search artists...">
+                            <SelectedTemplate>
+                                @context?.Name
+                            </SelectedTemplate>
+                            <ResultTemplate>
+                                <div class="flex flex-row">
+                                    <img class="h-12 w-12" src="@context.Images?.LastOrDefault()?.Url" />
+                                    <div class="ml-2">
+                                        @context.Name
+                                    </div>
+                                </div>
+                            </ResultTemplate>
+                            <NotFoundTemplate>
+                                Sorry, there weren't any search results.
+                            </NotFoundTemplate>
+                        </BlazoredTypeahead>
+                    </div>
+
+                }
+                else
+                {
+                    <GuessResult OnContinue="NextTrack" Result="GameService.LastGuessed!" />
+                }
             </div>
-            
-        }
-        else
-        {
-            <GuessResult OnContinue="NextTrack" Result="GameService.LastGuessed!" />
-        }
-        
-        <div class="mt-auto mb-8 max-h-64 overflow-y-scroll">
-            <History Results="GameService.Guesses" />
-        </div>
 
+            <div class="w-96 h-full bg-gray-800 rounded-xl p-3 shadow-lg">
+                <History Results="GameService.Guesses" />
+            </div>
+        </div>        
     </div>
-    
 }
 

@@ -1,8 +1,8 @@
-﻿<div class="flex flex-start pb-3">
-    <a class="mr-2 h-16 w-16 hover:shadow" href="@Track.Uri">
+﻿<div class="flex flex-start py-3">
+    <a class="mr-2 h-16 w-16 hover:shadow flex-none" href="@Track.Uri">
         <img src="@Track.Album!.Images!.Last().Url" />
     </a>
-    <div class="flex flex-col self-baseline">
+    <div class="flex flex-col self-baseline w-72">
         <div class="text-sm font-semibold truncate">
             <span>@(IsCorrect ? "✔️" : "❌")</span>
             <a class="hover:underline" href="@Track.Uri">@Track.Name</a>

@@ -23,6 +23,11 @@
     border-bottom: 1px solid rgba(75, 85, 99, 1);
 }
 
+::deep .section-title {
+    -webkit-text-stroke: 1px black;
+    text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
 .search {
     display: flex;
     flex-direction: row;
