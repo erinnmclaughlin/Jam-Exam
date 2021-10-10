@@ -2,6 +2,28 @@
     <p class="text-4xl font-semibold mb-5">
         Game Over
     </p>
+
+    <div class="mb-5">
+        @if (Saved)
+        {
+            <p>Score saved!</p>
+        }
+        else
+        { 
+            <EditForm EditContext="EditContext" OnValidSubmit="OnValidSubmit">
+                <DataAnnotationsValidator />
+
+                <div class="flex flex-row">
+                    <InputText @bind-Value="@ScoreModel!.Name" class="flex-grow bg-gray-700 px-2 rounded-l-lg" placeholder="Enter your name..." />
+                    <button class="bg-green-500 hover:bg-green-400 px-3 py-2 rounded-r-lg">Save Score</button>
+                </div>
+                <ValidationMessage For="(() => ScoreModel!.Name)" />
+
+            </EditForm>
+        }
+        
+    </div>
+
     <p class="mb-5">You got @GameService.Score out of @GameService.Tracks!.Count correct!</p>
 
     <a class="bg-purple-500 hover:bg-purple-400 px-3 py-2 rounded-xl" href="">New Game</a>
