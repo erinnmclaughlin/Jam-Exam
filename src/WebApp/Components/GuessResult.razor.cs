@@ -1,14 +1,11 @@
-﻿using Microsoft.AspNetCore.Components;
-using Spotify.Models;
+﻿using Spotify.Models;
 using WebApp.Models;
 
 namespace WebApp.Components
 {
     public partial class GuessResult
     {
-        [Parameter] public EventCallback OnContinue { get; set; }
-        [Parameter] public GuessResultModel Result { get; set; } = null!;
-
+        private GuessResultModel Result => GameService.LastGuessed!;
         public Track Track => Result.Track;
 
         private string GetResultText()
@@ -16,7 +13,7 @@ namespace WebApp.Components
             if (Result.GuessedArtist is null)
                 return "Times up!";
 
-            return Result!.IsCorrect ? "You guessed it!" : "Womp womp.";
+            return Result.IsCorrect ? "You guessed it!" : "Womp womp.";
         }
     }
 }

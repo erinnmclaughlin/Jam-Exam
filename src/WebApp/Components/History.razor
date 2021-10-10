@@ -1,7 +1,9 @@
-﻿<p class="section-title text-2xl text-purple-400 font-semibold tracking-wide mb-2">Results</p>
+﻿@implements IDisposable
+
+<p class="section-title text-2xl text-purple-400 font-semibold tracking-wide mb-2">Results</p>
 
 <div class="overflow-y-auto overflow-x-hidden" style="height: 94%;">
-    @foreach (var result in Results)
+    @foreach (var result in GameService.Guesses)
     {
         <TrackObject Track="result.Track" IsCorrect="result.IsCorrect" Timeout="result.GuessedArtist is null" />
     }

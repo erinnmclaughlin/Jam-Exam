@@ -12,8 +12,6 @@ namespace WebApp.Pages
     {
         private MusicPlayer _player = new();
 
-        [Inject] private GameService GameService { get; set; } = null!;
-        [Inject] private NavigationManager Navigation { get; set; } = null!;
         [Inject] private SearchService SearchService { get; set; } = null!;
 
         [Required] private Artist? SelectedArtist { get; set; }
@@ -37,12 +35,6 @@ namespace WebApp.Pages
                 
                 StateHasChanged();
             }
-        }
-
-        private void NextTrack()
-        {
-            SelectedArtist = null;
-            GameService.NextTrack();
         }
     }
 }

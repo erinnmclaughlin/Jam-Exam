@@ -5,9 +5,13 @@
 
 @using WebApp.Components
 @using WebApp.Layouts
+@using WebApp.Services
 
 @using System.Net.Http
 @using System.Net.Http.Json
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.JSInterop
+
+@inject GameService GameService
+@inject NavigationManager Navigation

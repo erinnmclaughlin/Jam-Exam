@@ -8,11 +8,8 @@ using WebApp.Services;
 
 namespace WebApp.Pages
 {
-
     public partial class Index : ComponentBase
     {
-        [Inject] GameService GameService { get; set; } = null!;
-
         private List<Playlist>? Playlists { get; set; }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)

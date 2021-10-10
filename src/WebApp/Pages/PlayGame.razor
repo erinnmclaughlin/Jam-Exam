@@ -11,61 +11,68 @@ else
 {
     <div class="container h-full mx-auto">
         <div class="flex py-5 h-full">
-            <div class="flex-grow bg-gray-800 rounded-lg mr-5 shadow-lg p-5">
 
+            <div class="flex-grow bg-gradient-to-b from-gray-800 to-gray-900 rounded-lg mr-5 shadow-lg p-5">
                 <p class="font-semibold mb-2 tracking-widest text-purple-400 text-xl">
                     <span>🎵 </span>
                     <span class="section-title text-2xl">@GameService.Playlist?.Name</span>
                 </p>
 
-                @if (GameService.PlayTrack)
+                @if (GameService.GameOver)
                 {
-                    <div class="flex h-full items-center justify-center">
-                        <MusicPlayer @ref="_player" Url="@GameService.CurrentTrack?.PreviewUrl" />
-
-                        <img class="h-96 w-96 filter blur-lg" src="@GameService.CurrentTrack?.Album?.Images?.FirstOrDefault()?.Url" />
-
-                        <div class="h-96 w-96 ml-12 flex flex-col items-center" style="justify-content: space-around;">
-
-                            <div class="search rounded-lg px-2 items-center w-full">
-                                <WebApp.Icons.SearchIcon />
-
-                                <BlazoredTypeahead SearchMethod="@SearchService.SearchArtists" Debounce="500" Disabled="GameService.Guessing"
-                                                   Value="@SelectedArtist"
-                                                   ValueChanged="((Artist? x) => GameService.GuessArtist(x?.Id))"
-                                                   ValueExpression="(() => SelectedArtist)"
-                                                   placeholder="Search artists...">
-                                    <SelectedTemplate>
-                                        @context?.Name
-                                    </SelectedTemplate>
-                                    <ResultTemplate>
-                                        <div class="flex flex-row">
-                                            <img class="h-12 w-12" src="@context.Images?.LastOrDefault()?.Url" />
-                                            <div class="ml-2">
-                                                @context.Name
-                                            </div>
-                                        </div>
-                                    </ResultTemplate>
-                                    <NotFoundTemplate>
-                                        Sorry, there weren't any search results.
-                                    </NotFoundTemplate>
-                                </BlazoredTypeahead>
-                            </div>
-
-                            <Timer />
-                        </div>
-                    </div>
+                    <GameOver />
                 }
                 else
                 {
-                    <GuessResult OnContinue="NextTrack" Result="GameService.LastGuessed!" />
+                    <div class="flex h-full items-center justify-center">
+                        <img class="h-96 w-96 transition ease-in filter @(GameService.PlayTrack ? "blur-lg" : "")" src="@GameService.CurrentTrack?.Album?.Images?.FirstOrDefault()?.Url" />
+
+                        <div class="h-96 w-96 ml-12">
+                            @if (GameService.PlayTrack)
+                            {
+                                <MusicPlayer @ref="_player" Url="@GameService.CurrentTrack?.PreviewUrl" />
+
+                                <div class="flex flex-col items-center h-full" style="justify-content: space-around;">
+
+                                    <div class="search rounded-lg px-2 items-center w-full">
+                                        <WebApp.Icons.SearchIcon />
+
+                                        <BlazoredTypeahead SearchMethod="@SearchService.SearchArtists" Debounce="500" Disabled="GameService.Guessing"
+                                                           Value="@SelectedArtist"
+                                                           ValueChanged="((Artist x) => GameService.GuessArtist(x.Id))"
+                                                           ValueExpression="(() => SelectedArtist)"
+                                                           placeholder="Search artists..." autofocus>
+                                            <SelectedTemplate>
+                                                @context?.Name
+                                            </SelectedTemplate>
+                                            <ResultTemplate>
+                                                <div class="flex flex-row">
+                                                    <img class="h-12 w-12" src="@context.Images?.LastOrDefault()?.Url" />
+                                                    <div class="ml-2">
+                                                        @context.Name
+                                                    </div>
+                                                </div>
+                                            </ResultTemplate>
+                                            <NotFoundTemplate>
+                                                Sorry, there weren't any search results.
+                                            </NotFoundTemplate>
+                                        </BlazoredTypeahead>
+                                    </div>
+
+                                    <Timer />
+                                </div>
+                            }
+                            else
+                            {
+                                <GuessResult />
+                            }
+                        </div>                    
+                    </div>
                 }
             </div>
-
-            <div class="w-96 h-full bg-gray-800 rounded-xl p-3 shadow-lg">
-                <History Results="GameService.Guesses" />
+            <div class="w-96 h-full bg-gradient-to-b from-gray-800 to-gray-900 rounded-xl p-3 shadow-lg">
+                <History />
             </div>
         </div>
     </div>
 }
-

@@ -13,8 +13,6 @@ namespace WebApp.Components
 
     public partial class Carousel
     {
-        [Inject] private NavigationManager Navigation { get; set; } = null!;
-
         [Parameter] public EventCallback<string> OnSelect { get; set; }
         [Parameter] public string? Title { get; set; }
         [Parameter] public List<CarouselItem> Items { get; set; } = null!;

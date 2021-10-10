@@ -15,6 +15,7 @@ namespace WebApp.Services
         private readonly NavigationManager _nav;
         private readonly ISpotifyClient _spotify;
 
+        private bool _gameOver;
         private bool _guessing;
         private int _index;
         private bool _playTrack = true;
@@ -35,6 +36,16 @@ namespace WebApp.Services
         /// The current score of the game
         /// </summary>
         public int Score => Guesses.Count(x => x.IsCorrect);
+
+        public bool GameOver
+        {
+            get => _gameOver;
+            private set
+            {
+                _gameOver = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(GameOver)));
+            }
+        }
 
         /// <summary>
         /// Indicates whether the app is in the process of guessing. Controls should be disabled when this is true
@@ -108,6 +119,13 @@ namespace WebApp.Services
             var response = await _spotify.GetPlaylistById(playlistId);
             Playlist = response.Content;
 
+            // Reset game items
+            Index = 0;
+            GameOver = false;
+            Guessing = false;
+            PlayTrack = true;
+            Tracks = null;
+
             // Navigate to the play game page
             _nav.NavigateTo("play-game");
         }
@@ -168,7 +186,7 @@ namespace WebApp.Services
         {
             if (Index == Tracks!.Count - 1)
             {
-                _nav.NavigateTo("game-over");
+                GameOver = true;
             }
             else
             {

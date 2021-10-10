@@ -1,11 +1,19 @@
-﻿using Microsoft.AspNetCore.Components;
-using System.Collections.Generic;
-using WebApp.Models;
+﻿using System;
 
 namespace WebApp.Components
 {
-    public partial class History
+    public partial class History : IDisposable
     {
-        [Parameter] public IEnumerable<GuessResultModel> Results { get; set; } = null!;
+        public void Dispose()
+        {
+            GameService.PropertyChanged -= (o, e) => StateHasChanged();
+            GC.SuppressFinalize(this);
+        }
+
+        protected override void OnInitialized()
+        {
+            GameService.PropertyChanged += (o, e) => StateHasChanged();
+            base.OnInitialized();
+        }
     }
 }

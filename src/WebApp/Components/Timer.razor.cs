@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using WebApp.Services;
 
@@ -7,8 +6,6 @@ namespace WebApp.Components
 {
     public partial class Timer
     {
-        [Inject] private GameService GameService { get; set; } = null!;
-
         private int CurrentSeconds { get; set; }
         private string TimerText => new DateTime().AddSeconds(CurrentSeconds).ToString("mm:ss");
 

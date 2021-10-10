@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
 using WebApp.Services;
 
-namespace WebApp.Pages
+namespace WebApp.Components
 {
     public partial class GameOver
     {
-        [Inject] private GameService GameService { get; set; } = null!;
+        
+
     }
 }
