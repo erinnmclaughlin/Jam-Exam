@@ -27,6 +27,13 @@ jobs:
 
       - name: dotnet publish
         run: dotnet publish src/WebApp/WebApp.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
+
+      - name: Update Database
+        run: |
+          dotnet new tool-manifest
+          dotnet tool install dotnet-ef
+          dotnet ef database update --project src/WebApp/WebApp.csproj --context JamDbContext --connection "${{ secrets.CONNECTION_STRING }}"
+
         
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
