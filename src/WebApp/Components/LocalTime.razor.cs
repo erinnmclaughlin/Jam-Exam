@@ -16,8 +16,7 @@ namespace WebApp.Components
         {
             if (firstRender)
             {
-                var local = await TimeZoneService.ToLocalTime(UtcTime);
-               
+                Local = await TimeZoneService.ToLocalTime(UtcTime);
                 StateHasChanged();
             }
         }
