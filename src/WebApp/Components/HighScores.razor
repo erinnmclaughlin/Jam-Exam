@@ -1,4 +1,6 @@
-﻿<p class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500 text-3xl mb-3">High Scores</p>
+﻿@using BlazorTime
+
+<p class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500 text-3xl mb-3">High Scores</p>
 
 <div class="overflow-y-auto overflow-x-hidden h-44">
     @if (Scores is null)
@@ -22,7 +24,10 @@
                 </div>
                 <div class="text-gray-200">
                     @score.Name (@score.Correct / @score.Total)
-                    <div class="text-sm text-gray-400">@score.Timestamp.ToLocalTime()</div>
+
+                    <p class="text-sm text-gray-400">
+                        <ToLocal DateTime="score.Timestamp" Format="ddd mmm dd yyyy hh:MM:ss TT"></ToLocal>
+                    </p>
                 </div>
             </div>
         }
