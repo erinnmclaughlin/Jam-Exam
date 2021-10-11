@@ -1,4 +1,4 @@
-﻿@using BlazorTime
+﻿@inject TimeZoneService TimeZoneService
 
 <p class="bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500 text-3xl mb-3">High Scores</p>
 
@@ -26,7 +26,7 @@
                     @score.Name (@score.Correct / @score.Total)
 
                     <p class="text-sm text-gray-400">
-                        <ToLocal DateTime="score.Timestamp" Format="ddd mmm dd yyyy hh:MM:ss TT"></ToLocal>
+                        <LocalTime UtcTime="score.Timestamp" />
                     </p>
                 </div>
             </div>

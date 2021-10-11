@@ -33,6 +33,7 @@ namespace WebApp
 
             // Register app services in DI
             services.AddScoped<GameService>();
+            services.AddScoped<TimeZoneService>();
             services.AddSingleton<PlaylistService>();
             services.AddSingleton<SearchService>();
         }

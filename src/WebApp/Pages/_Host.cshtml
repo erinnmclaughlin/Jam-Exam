@@ -21,6 +21,10 @@
     <component type="typeof(App)" render-mode="ServerPrerendered" />
     <script src="_framework/blazor.server.js"></script>
     <script src="_content/Blazored.Typeahead/blazored-typeahead.js"></script>
-    <script src="_content/BlazorTime/blazorTime.js"></script>
+    <script>
+        function getTimezoneOffset() {
+            return new Date().getTimezoneOffset();
+        }
+    </script>
 </body>
 </html>
