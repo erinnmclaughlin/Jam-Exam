@@ -1,6 +1,9 @@
-﻿/* https://codepen.io/azouaoui-med/pen/wpBadb */
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /*------scroll bar---------------------*/
+/* https://codepen.io/azouaoui-med/pen/wpBadb */
 
 ::-webkit-scrollbar {
     width: 5px;

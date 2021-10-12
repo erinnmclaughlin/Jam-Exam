@@ -33,10 +33,8 @@ html {
 */
 
 html {
-  line-height: 1.15;
-  /* 1 */
-  -webkit-text-size-adjust: 100%;
-  /* 2 */
+  line-height: 1.15; /* 1 */
+  -webkit-text-size-adjust: 100%; /* 2 */
 }
 
 /*
@@ -80,10 +78,8 @@ Grouping content
 */
 
 hr {
-  height: 0;
-  /* 1 */
-  color: inherit;
-  /* 2 */
+  height: 0; /* 1 */
+  color: inherit; /* 2 */
 }
 
 /*
@@ -124,10 +120,8 @@ pre {
 		Consolas,
 		'Liberation Mono',
 		Menlo,
-		monospace;
-  /* 1 */
-  font-size: 1em;
-  /* 2 */
+		monospace; /* 1 */
+  font-size: 1em; /* 2 */
 }
 
 /**
@@ -169,10 +163,8 @@ Tabular data
 */
 
 table {
-  text-indent: 0;
-  /* 1 */
-  border-color: inherit;
-  /* 2 */
+  text-indent: 0; /* 1 */
+  border-color: inherit; /* 2 */
 }
 
 /*
@@ -190,14 +182,10 @@ input,
 optgroup,
 select,
 textarea {
-  font-family: inherit;
-  /* 1 */
-  font-size: 100%;
-  /* 1 */
-  line-height: 1.15;
-  /* 1 */
-  margin: 0;
-  /* 2 */
+  font-family: inherit; /* 1 */
+  font-size: 100%; /* 1 */
+  line-height: 1.15; /* 1 */
+  margin: 0; /* 2 */
 }
 
 /**
@@ -206,8 +194,7 @@ Remove the inheritance of text transform in Edge and Firefox.
 */
 
 button,
-select {
-  /* 1 */
+select { /* 1 */
   text-transform: none;
 }
 
@@ -279,10 +266,8 @@ Correct the cursor style of increment and decrement buttons in Safari.
 */
 
 [type='search'] {
-  -webkit-appearance: textfield;
-  /* 1 */
-  outline-offset: -2px;
-  /* 2 */
+  -webkit-appearance: textfield; /* 1 */
+  outline-offset: -2px; /* 2 */
 }
 
 /**
@@ -299,10 +284,8 @@ Remove the inner padding in Chrome and Safari on macOS.
 */
 
 ::-webkit-file-upload-button {
-  -webkit-appearance: button;
-  /* 1 */
-  font: inherit;
-  /* 2 */
+  -webkit-appearance: button; /* 1 */
+  font: inherit; /* 2 */
 }
 
 /*
@@ -373,10 +356,8 @@ ul {
  */
 
 html {
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  /* 1 */
-  line-height: 1.5;
-  /* 2 */
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; /* 1 */
+  line-height: 1.5; /* 2 */
 }
 
 /**
@@ -418,14 +399,10 @@ body {
 *,
 ::before,
 ::after {
-  box-sizing: border-box;
-  /* 1 */
-  border-width: 0;
-  /* 2 */
-  border-style: solid;
-  /* 2 */
-  border-color: currentColor;
-  /* 2 */
+  box-sizing: border-box; /* 1 */
+  border-width: 0; /* 2 */
+  border-style: solid; /* 2 */
+  border-color: currentColor; /* 2 */
 }
 
 /*
@@ -568,10 +545,8 @@ audio,
 iframe,
 embed,
 object {
-  display: block;
-  /* 1 */
-  vertical-align: middle;
-  /* 2 */
+  display: block; /* 1 */
+  vertical-align: middle; /* 2 */
 }
 
 /**
@@ -736,6 +711,7 @@ video {
 }
 
 .sticky {
+  position: -webkit-sticky;
   position: sticky;
 }
 
@@ -27958,342 +27934,6 @@ video {
   --tw-placeholder-opacity: 1;
 }
 
-.caret-transparent {
-  caret-color: transparent;
-}
-
-.caret-current {
-  caret-color: currentColor;
-}
-
-.caret-black {
-  caret-color: #000;
-}
-
-.caret-white {
-  caret-color: #fff;
-}
-
-.caret-gray-50 {
-  caret-color: #f9fafb;
-}
-
-.caret-gray-100 {
-  caret-color: #f3f4f6;
-}
-
-.caret-gray-200 {
-  caret-color: #e5e7eb;
-}
-
-.caret-gray-300 {
-  caret-color: #d1d5db;
-}
-
-.caret-gray-400 {
-  caret-color: #9ca3af;
-}
-
-.caret-gray-500 {
-  caret-color: #6b7280;
-}
-
-.caret-gray-600 {
-  caret-color: #4b5563;
-}
-
-.caret-gray-700 {
-  caret-color: #374151;
-}
-
-.caret-gray-800 {
-  caret-color: #1f2937;
-}
-
-.caret-gray-900 {
-  caret-color: #111827;
-}
-
-.caret-red-50 {
-  caret-color: #fef2f2;
-}
-
-.caret-red-100 {
-  caret-color: #fee2e2;
-}
-
-.caret-red-200 {
-  caret-color: #fecaca;
-}
-
-.caret-red-300 {
-  caret-color: #fca5a5;
-}
-
-.caret-red-400 {
-  caret-color: #f87171;
-}
-
-.caret-red-500 {
-  caret-color: #ef4444;
-}
-
-.caret-red-600 {
-  caret-color: #dc2626;
-}
-
-.caret-red-700 {
-  caret-color: #b91c1c;
-}
-
-.caret-red-800 {
-  caret-color: #991b1b;
-}
-
-.caret-red-900 {
-  caret-color: #7f1d1d;
-}
-
-.caret-yellow-50 {
-  caret-color: #fffbeb;
-}
-
-.caret-yellow-100 {
-  caret-color: #fef3c7;
-}
-
-.caret-yellow-200 {
-  caret-color: #fde68a;
-}
-
-.caret-yellow-300 {
-  caret-color: #fcd34d;
-}
-
-.caret-yellow-400 {
-  caret-color: #fbbf24;
-}
-
-.caret-yellow-500 {
-  caret-color: #f59e0b;
-}
-
-.caret-yellow-600 {
-  caret-color: #d97706;
-}
-
-.caret-yellow-700 {
-  caret-color: #b45309;
-}
-
-.caret-yellow-800 {
-  caret-color: #92400e;
-}
-
-.caret-yellow-900 {
-  caret-color: #78350f;
-}
-
-.caret-green-50 {
-  caret-color: #ecfdf5;
-}
-
-.caret-green-100 {
-  caret-color: #d1fae5;
-}
-
-.caret-green-200 {
-  caret-color: #a7f3d0;
-}
-
-.caret-green-300 {
-  caret-color: #6ee7b7;
-}
-
-.caret-green-400 {
-  caret-color: #34d399;
-}
-
-.caret-green-500 {
-  caret-color: #10b981;
-}
-
-.caret-green-600 {
-  caret-color: #059669;
-}
-
-.caret-green-700 {
-  caret-color: #047857;
-}
-
-.caret-green-800 {
-  caret-color: #065f46;
-}
-
-.caret-green-900 {
-  caret-color: #064e3b;
-}
-
-.caret-blue-50 {
-  caret-color: #eff6ff;
-}
-
-.caret-blue-100 {
-  caret-color: #dbeafe;
-}
-
-.caret-blue-200 {
-  caret-color: #bfdbfe;
-}
-
-.caret-blue-300 {
-  caret-color: #93c5fd;
-}
-
-.caret-blue-400 {
-  caret-color: #60a5fa;
-}
-
-.caret-blue-500 {
-  caret-color: #3b82f6;
-}
-
-.caret-blue-600 {
-  caret-color: #2563eb;
-}
-
-.caret-blue-700 {
-  caret-color: #1d4ed8;
-}
-
-.caret-blue-800 {
-  caret-color: #1e40af;
-}
-
-.caret-blue-900 {
-  caret-color: #1e3a8a;
-}
-
-.caret-indigo-50 {
-  caret-color: #eef2ff;
-}
-
-.caret-indigo-100 {
-  caret-color: #e0e7ff;
-}
-
-.caret-indigo-200 {
-  caret-color: #c7d2fe;
-}
-
-.caret-indigo-300 {
-  caret-color: #a5b4fc;
-}
-
-.caret-indigo-400 {
-  caret-color: #818cf8;
-}
-
-.caret-indigo-500 {
-  caret-color: #6366f1;
-}
-
-.caret-indigo-600 {
-  caret-color: #4f46e5;
-}
-
-.caret-indigo-700 {
-  caret-color: #4338ca;
-}
-
-.caret-indigo-800 {
-  caret-color: #3730a3;
-}
-
-.caret-indigo-900 {
-  caret-color: #312e81;
-}
-
-.caret-purple-50 {
-  caret-color: #f5f3ff;
-}
-
-.caret-purple-100 {
-  caret-color: #ede9fe;
-}
-
-.caret-purple-200 {
-  caret-color: #ddd6fe;
-}
-
-.caret-purple-300 {
-  caret-color: #c4b5fd;
-}
-
-.caret-purple-400 {
-  caret-color: #a78bfa;
-}
-
-.caret-purple-500 {
-  caret-color: #8b5cf6;
-}
-
-.caret-purple-600 {
-  caret-color: #7c3aed;
-}
-
-.caret-purple-700 {
-  caret-color: #6d28d9;
-}
-
-.caret-purple-800 {
-  caret-color: #5b21b6;
-}
-
-.caret-purple-900 {
-  caret-color: #4c1d95;
-}
-
-.caret-pink-50 {
-  caret-color: #fdf2f8;
-}
-
-.caret-pink-100 {
-  caret-color: #fce7f3;
-}
-
-.caret-pink-200 {
-  caret-color: #fbcfe8;
-}
-
-.caret-pink-300 {
-  caret-color: #f9a8d4;
-}
-
-.caret-pink-400 {
-  caret-color: #f472b6;
-}
-
-.caret-pink-500 {
-  caret-color: #ec4899;
-}
-
-.caret-pink-600 {
-  caret-color: #db2777;
-}
-
-.caret-pink-700 {
-  caret-color: #be185d;
-}
-
-.caret-pink-800 {
-  caret-color: #9d174d;
-}
-
-.caret-pink-900 {
-  caret-color: #831843;
-}
-
 .opacity-0 {
   opacity: 0;
 }
@@ -32240,8 +31880,50 @@ video {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.content-none {
-  content: none;
+/*------scroll bar---------------------*/
+
+/* https://codepen.io/azouaoui-med/pen/wpBadb */
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-button {
+  width: 0px;
+  height: 0px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #525965;
+  border: 0px none #ffffff;
+  border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #525965;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: #525965;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+
+::-webkit-scrollbar-track:hover {
+  background: transparent;
+}
+
+::-webkit-scrollbar-track:active {
+  background: transparent;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 @media (min-width: 640px) {
@@ -32381,6 +32063,7 @@ video {
   }
 
   .sm\:sticky {
+    position: -webkit-sticky;
     position: sticky;
   }
 
@@ -63608,6 +63291,7 @@ video {
   }
 
   .md\:sticky {
+    position: -webkit-sticky;
     position: sticky;
   }
 
@@ -94835,6 +94519,7 @@ video {
   }
 
   .lg\:sticky {
+    position: -webkit-sticky;
     position: sticky;
   }
 
@@ -126062,6 +125747,7 @@ video {
   }
 
   .xl\:sticky {
+    position: -webkit-sticky;
     position: sticky;
   }
 
@@ -157289,6 +156975,7 @@ video {
   }
 
   .\32xl\:sticky {
+    position: -webkit-sticky;
     position: sticky;
   }
 
