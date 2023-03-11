@@ -4,7 +4,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/github/workflow/status/erinnmclaughlin/Jam-Exam/main_jam-exam.yml" />
+  <img src="https://img.shields.io/github/actions/workflow/status/erinnmclaughlin/jam-exam/main_jam-exam.yml" />
   <img src="https://img.shields.io/github/last-commit/erinnmclaughlin/Jam-Exam" />
   <img src="https://img.shields.io/gitlab/coverage/erinnmclaughlin/Jam-Exam/main" />
   <img src="https://img.shields.io/github/license/erinnmclaughlin/Jam-Exam" />
