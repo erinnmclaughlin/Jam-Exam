@@ -19,7 +19,7 @@ namespace WebApp.Services
         private bool _playTrack = true;
 
         public event PropertyChangedEventHandler? PropertyChanged;
-        public Action OnScoreSaved;
+        public Action? OnScoreSaved;
 
         /// <summary>
         /// The track that is currently playing
@@ -114,13 +114,9 @@ namespace WebApp.Services
         /// </summary>
         /// <param name="playlistId"></param>
         /// <returns></returns>
-        public async Task CreateGame(string playlistId)
+        public void CreateGame(Spotify.Models.Playlist playlist)
         {
-            // Get the playlist details
-            var response = await _spotify.GetPlaylistById(playlistId);
-            Playlist = response.Content;
-
-            // Reset game items
+            Playlist = playlist;
             Reset();
         }
 

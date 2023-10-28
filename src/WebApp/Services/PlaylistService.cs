@@ -1,57 +1,47 @@
-﻿using Spotify;
+﻿using Microsoft.EntityFrameworkCore;
+using Spotify;
 using Spotify.Models;
+using WebApp.Database;
 
-namespace WebApp.Services
+namespace WebApp.Services;
+
+public sealed class PlaylistService
 {
-    public class PlaylistService
+    private readonly List<Playlist> _inMemoryCache = new(); //TODO: Use local storage
+
+    private readonly IDbContextFactory<JamDbContext> _dbContextFactory;
+    private readonly ISpotifyClient _spotify;
+
+    public PlaylistService(IDbContextFactory<JamDbContext> dbContextFactory, ISpotifyClient spotify)
     {
-        private readonly ISpotifyClient _spotify;
+        _dbContextFactory = dbContextFactory;
+        _spotify = spotify;
+    }
 
-        public PlaylistService(ISpotifyClient spotify)
+    /// <summary>
+    /// Gets a list of playlists supported by the app.
+    /// </summary>
+    public async Task<Playlist[]> LoadPlaylistsAsync()
+    {
+        if (_inMemoryCache.Count == 0)
         {
-            _spotify = spotify;
-        }
+            var playlistIds = await GetPlaylistIdsAsync();
 
-        /// <summary>
-        /// The playlists available to choose from
-        /// </summary>
-        public List<Playlist>? Playlists { get; private set; }
-
-        /// <summary>
-        /// Gets a list of playlists supported by the app.
-        /// </summary>
-        public async Task LoadPlaylists()
-        {
-            var playlists = new List<Playlist>();
-
-            foreach (var seed in GetPlaylistSeeds())
+            foreach (var id in playlistIds)
             {
-                var response = await _spotify.GetPlaylistById(seed);
-                await response.EnsureSuccessStatusCodeAsync();
+                var response = await _spotify.GetPlaylistById(id);
 
-                var playlist = response.Content!;
-                playlists.Add(playlist);
+                if (response.Content is not null)
+                    _inMemoryCache.Add(response.Content);
             }
-
-            Playlists = playlists;
         }
 
-        private static string[] GetPlaylistSeeds()
-        {
-            return new string[]
-            {
-                "37i9dQZF1DWXRqgorJj26U", // Classic Rock
-                "37i9dQZF1DX2Nc3B70tvx0", // Indie
-                "37i9dQZF1DXcBWIGoYBM5M", // Pop
-                "37i9dQZF1DX0XUsuxWHRQd", // Hip Hop
-                "37i9dQZF1DX1lVhptIYRda", // Country
-                "37i9dQZF1DWWzBc3TOlaAV", // 1960's
-                "37i9dQZF1DWTJ7xPn4vNaz", // 1970's
-                "37i9dQZF1DX4UtSsGT1Sbe", // 1980's
-                "37i9dQZF1DXbTxeAdrVG2l", // 1990's
-                "37i9dQZF1DX4o1oenSJRJd", // 2000's
-                "6i2Qd6OpeRBAzxfscNXeWp", // All Time Hits
-            };
-        }
+        return _inMemoryCache.ToArray();
+    }
+
+    private async Task<string[]> GetPlaylistIdsAsync()
+    {
+        using var dbContext = _dbContextFactory.CreateDbContext();
+        return await dbContext.Playlists.Select(p => p.SpotifyId).ToArrayAsync();
     }
 }
