@@ -1,21 +1,10 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="h-full flex flex-col">
-    <div class="flex w-full justify-between pt-5 container mx-auto">
-
-        <a href="">
-            <img src="img/jam-logo.png" />
-        </a>
-
-        <div>
-            <a href="https://github.com/erinnmclaughlin/Jam-Exam" target="_blank" class="text-gray-200 text-opacity-50 hover:text-opacity-80">
-                <WebApp.Icons.GitHubIcon />
-            </a>
-        </div>
-
-    </div>
-
-    <div class="h-full max-h-full">
+<div id="main-layout">
+    <a id="github-link" href="https://github.com/erinnmclaughlin/Jam-Exam" target="_blank" class="text-gray-200 text-opacity-50 hover:text-opacity-80">
+        <GitHubIcon />
+    </a>
+    <main>
         @Body
-    </div>
+    </main>
 </div>

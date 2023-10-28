@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebApp.Models
 {
-    public class HighScoreModel
+    public class HighScore
     {
         public int Id { get; set; }
 
@@ -19,7 +19,7 @@ namespace WebApp.Models
 
         public DateTime Timestamp { get; private set; } = DateTime.UtcNow;
 
-        public HighScoreModel(string playlistId, int correct, int total)
+        public HighScore(string playlistId, int correct, int total)
         {
             PlaylistId = playlistId;
             Correct = correct;

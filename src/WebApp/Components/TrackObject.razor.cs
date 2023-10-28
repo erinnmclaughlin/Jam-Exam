@@ -6,7 +6,7 @@ namespace WebApp.Components
 {
     public partial class TrackObject
     {
-        [Parameter] public GuessResultModel Result { get; set; } = null!;
+        [Parameter] public Models.GuessResult Result { get; set; } = null!;
 
         private Track Track => Result.Track;
     }

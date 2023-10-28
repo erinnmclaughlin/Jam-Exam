@@ -13,7 +13,7 @@ namespace WebApp.Components
     {
         [Inject] private IDbContextFactory<JamDbContext> DbContext { get; set; } = null!;
 
-        private List<HighScoreModel>? Scores { get; set; }
+        private List<HighScore>? Scores { get; set; }
 
         public void Dispose()
         {

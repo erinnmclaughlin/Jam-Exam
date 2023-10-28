@@ -5,7 +5,7 @@ namespace WebApp.Components
 {
     public partial class GuessResult
     {
-        private GuessResultModel Result => GameService.LastGuessed!;
+        private Models.GuessResult Result => GameService.LastGuessed!;
         public Track Track => Result.Track;
     }
 }

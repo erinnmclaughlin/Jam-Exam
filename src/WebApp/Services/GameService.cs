@@ -33,7 +33,7 @@ namespace WebApp.Services
         /// <summary>
         /// The result of the last guess
         /// </summary>
-        public GuessResultModel? LastGuessed => Guesses.LastOrDefault();
+        public GuessResult? LastGuessed => Guesses.LastOrDefault();
 
         /// <summary>
         /// The current score of the game
@@ -101,7 +101,7 @@ namespace WebApp.Services
         /// <summary>
         /// The history of guesses made by the user
         /// </summary>
-        public List<GuessResultModel> Guesses { get; set; } = new();
+        public List<GuessResult> Guesses { get; set; } = new();
 
         /// <summary>
         /// The tracks selected from the playlist to include in the game
@@ -160,7 +160,7 @@ namespace WebApp.Services
             CurrentTrack.Album = await GetAlbumDetails(CurrentTrack.Album!.Id);
             CurrentTrack.Artists = artists.Where(x => CurrentTrack.Artists.Any(a => a.Id == x.Id)).ToArray();            
 
-            Guesses.Add(new GuessResultModel(CurrentTrack, artists.First(x => x.Id == artistId)));
+            Guesses.Add(new GuessResult(CurrentTrack, artists.First(x => x.Id == artistId)));
 
             PlayTrack = false;
             Guessing = false;
@@ -209,7 +209,7 @@ namespace WebApp.Services
             CurrentTrack.Album = await GetAlbumDetails(CurrentTrack.Album!.Id);
             CurrentTrack.Artists = artists.Where(x => CurrentTrack.Artists.Any(a => a.Id == x.Id)).ToArray();
 
-            Guesses.Add(new GuessResultModel(CurrentTrack));
+            Guesses.Add(new GuessResult(CurrentTrack));
 
             PlayTrack = false;
             Guessing = false;

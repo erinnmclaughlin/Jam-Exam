@@ -1,0 +1,20 @@
+﻿/* CSS rules should be mobile-first */
+
+#main-layout {
+    min-height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    display: flex;
+    flex-grow: 1;
+    width: 100%;
+}
+
+#github-link {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+}

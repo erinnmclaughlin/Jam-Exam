@@ -5,7 +5,7 @@ namespace WebApp.Database
 {
     public class JamDbContext : DbContext
     {
-        public DbSet<HighScoreModel> HighScores => Set<HighScoreModel>();
+        public DbSet<HighScore> HighScores => Set<HighScore>();
 
         public JamDbContext(DbContextOptions<JamDbContext> options) : base(options)
         {

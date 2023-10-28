@@ -13,7 +13,7 @@ namespace WebApp.Components
         [Inject] private IDbContextFactory<JamDbContext> DbContext { get; set; } = null!;
 
         private EditContext? EditContext { get; set; }
-        private HighScoreModel? ScoreModel { get; set; }
+        private HighScore? ScoreModel { get; set; }
 
         private bool Saving { get; set; }
         private bool Saved { get; set; }
@@ -23,7 +23,7 @@ namespace WebApp.Components
             if (GameService.Playlist is null)
                 Navigation.NavigateTo("");
 
-            ScoreModel = new HighScoreModel(GameService.Playlist!.Id, GameService.Score, GameService.Tracks!.Count);
+            ScoreModel = new HighScore(GameService.Playlist!.Id, GameService.Score, GameService.Tracks!.Count);
             EditContext = new(ScoreModel);
 
             base.OnInitialized();
