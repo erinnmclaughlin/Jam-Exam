@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WebApp.Components
+﻿namespace WebApp.Components
 {
     public partial class History : IDisposable
     {

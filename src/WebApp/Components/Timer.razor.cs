@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using WebApp.Services;
+﻿using WebApp.Services;
 
 namespace WebApp.Components
 {

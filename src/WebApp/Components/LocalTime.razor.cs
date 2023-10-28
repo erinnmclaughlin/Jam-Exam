@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using System;
-using System.Threading.Tasks;
 using WebApp.Services;
 
 namespace WebApp.Components

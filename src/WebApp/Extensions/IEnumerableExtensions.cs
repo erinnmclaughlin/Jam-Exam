@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace WebApp.Extensions
+﻿namespace WebApp.Extensions
 {
     public static class IEnumerableExtensions
     {

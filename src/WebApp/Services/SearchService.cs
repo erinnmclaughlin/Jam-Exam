@@ -1,8 +1,6 @@
 ﻿using Spotify;
 using Spotify.Models;
 using Spotify.Requests;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace WebApp.Services
 {

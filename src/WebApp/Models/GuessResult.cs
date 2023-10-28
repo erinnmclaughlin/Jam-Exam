@@ -1,5 +1,4 @@
 ﻿using Spotify.Models;
-using System.Linq;
 
 namespace WebApp.Models
 {
