@@ -23,7 +23,7 @@
                     @(Scores.IndexOf(score) + 1)
                 </div>
                 <div class="text-gray-200">
-                    @score.Name (@score.Correct / @score.Total)
+                    @score.PlayerName (@score.TotalCorrect / @score.TotalGuessed)
 
                     <p class="text-sm text-gray-400">
                         <LocalTime UtcTime="score.Timestamp" />

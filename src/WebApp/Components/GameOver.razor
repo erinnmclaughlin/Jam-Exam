@@ -10,11 +10,11 @@
         }
         else
         { 
-            <EditForm EditContext="EditContext" OnValidSubmit="OnValidSubmit">
+            <EditForm Model="this" OnValidSubmit="OnValidSubmit">
                 <DataAnnotationsValidator />
 
                 <div class="flex flex-row">
-                    <InputText @bind-Value="@ScoreModel!.Name" class="flex-grow bg-gray-700 px-2 rounded-l-lg" placeholder="Enter your name..." />
+                    <InputText @bind-Value="PlayerName" class="flex-grow bg-gray-700 px-2 rounded-l-lg" placeholder="Enter your name..." />
                     <button disabled="@Saving" class="flex items-center px-3 py-2 rounded-r-lg bg-green-500 @GetButtonCss()">
                         @if (Saving)
                         {
@@ -23,7 +23,7 @@
                         <div>Save Score</div>                        
                     </button>
                 </div>
-                <ValidationMessage For="(() => ScoreModel!.Name)" />
+                <ValidationMessage For="() => PlayerName" />
 
             </EditForm>
         }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using WebApp.Database;
@@ -12,22 +11,10 @@ namespace WebApp.Components
     {
         [Inject] private IDbContextFactory<JamDbContext> DbContext { get; set; } = null!;
 
-        private EditContext? EditContext { get; set; }
-        private HighScore? ScoreModel { get; set; }
+        private string? PlayerName { get; set; }
 
         private bool Saving { get; set; }
         private bool Saved { get; set; }
-
-        protected override void OnInitialized()
-        {
-            if (GameService.Playlist is null)
-                Navigation.NavigateTo("");
-
-            ScoreModel = new HighScore(GameService.Playlist!.Id, GameService.Score, GameService.Tracks!.Count);
-            EditContext = new(ScoreModel);
-
-            base.OnInitialized();
-        }
 
         private string GetButtonCss()
         {
@@ -43,13 +30,27 @@ namespace WebApp.Components
 
         private async Task OnValidSubmit()
         {
+            if (Saving) return;
+
             Saving = true;
             await InvokeAsync(StateHasChanged);
 
-            using var context = DbContext.CreateDbContext();
-            context.HighScores.Add(ScoreModel!);
-            await context.SaveChangesAsync();
+            using (var context = DbContext.CreateDbContext())
+            {
+                var playlistId = await context.Playlists.SingleAsync(x => x.SpotifyId == GameService.Playlist!.Id);
+
+                context.GameResults.Add(new GameResult
+                {
+                    PlayerName = string.IsNullOrWhiteSpace(PlayerName) ? null : PlayerName,
+                    TotalCorrect = GameService.Score,
+                    TotalGuessed = GameService.Tracks!.Count
+                });
+
+                await context.SaveChangesAsync();
+            }
+                
             Saved = true;
+            Saving = false;
 
             GameService.OnScoreSaved.Invoke();
         }

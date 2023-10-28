@@ -7,7 +7,6 @@ namespace WebApp.Database
     {
         public DbSet<Playlist> Playlists => Set<Playlist>();
         public DbSet<GameResult> GameResults => Set<GameResult>();
-        public DbSet<HighScore> HighScores => Set<HighScore>();
 
         public JamDbContext(DbContextOptions<JamDbContext> options) : base(options)
         {

@@ -13,7 +13,7 @@ namespace WebApp.Components
     {
         [Inject] private IDbContextFactory<JamDbContext> DbContext { get; set; } = null!;
 
-        private List<HighScore>? Scores { get; set; }
+        private List<GameResult>? Scores { get; set; }
 
         public void Dispose()
         {
@@ -31,9 +31,9 @@ namespace WebApp.Components
         {
             using var context = DbContext.CreateDbContext();
 
-            Scores = await context.HighScores
-                .Where(x => x.PlaylistId == GameService.Playlist!.Id)
-                .OrderByDescending(x => x.Correct)
+            Scores = await context.GameResults
+                .Where(x => x.Playlist.SpotifyId == GameService.Playlist!.Id)
+                .OrderByDescending(x => x.TotalCorrect)
                 .Take(100)
                 .ToListAsync();
 

@@ -31,9 +31,11 @@ namespace WebApp.Database.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("PlayerName")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("PlaylistId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
@@ -48,40 +50,11 @@ namespace WebApp.Database.Migrations
 
                     b.HasIndex("PlayerName");
 
+                    b.HasIndex("PlaylistId");
+
                     b.HasIndex("Timestamp");
 
                     b.ToTable("GameResults");
-                });
-
-            modelBuilder.Entity("WebApp.Models.HighScore", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Correct")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("PlaylistId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Total")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("HighScores");
                 });
 
             modelBuilder.Entity("WebApp.Models.Playlist", b =>
@@ -176,6 +149,17 @@ namespace WebApp.Database.Migrations
                             Name = "All Time Hits",
                             SpotifyId = "6i2Qd6OpeRBAzxfscNXeWp"
                         });
+                });
+
+            modelBuilder.Entity("WebApp.Models.GameResult", b =>
+                {
+                    b.HasOne("WebApp.Models.Playlist", "Playlist")
+                        .WithMany()
+                        .HasForeignKey("PlaylistId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Playlist");
                 });
 #pragma warning restore 612, 618
         }
