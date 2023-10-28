@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using WebApp.Database;
 using WebApp.Models;
@@ -11,6 +12,7 @@ namespace WebApp.Components
     {
         [Inject] private IDbContextFactory<JamDbContext> DbContext { get; set; } = null!;
 
+        [MaxLength(100, ErrorMessage = "Player name cannot exceed 100 characters.")]
         private string? PlayerName { get; set; }
 
         private bool Saving { get; set; }
