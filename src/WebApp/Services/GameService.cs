@@ -96,7 +96,7 @@ namespace WebApp.Services
         /// <summary>
         /// The playlist selected by the user
         /// </summary>
-        public Playlist? Playlist { get; private set; }
+        public Spotify.Models.Playlist? Playlist { get; private set; }
 
         /// <summary>
         /// The history of guesses made by the user
