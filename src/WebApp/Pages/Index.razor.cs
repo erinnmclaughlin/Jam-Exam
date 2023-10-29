@@ -34,15 +34,4 @@ public partial class Index : ComponentBase
             await InvokeAsync(StateHasChanged);
         }           
     }
-
-    private void CreateGame(string playlistId)
-    {
-        var playlist = Playlists?.Single(p => p.Id == playlistId);
-
-        if (playlist is not null)
-        {
-            GameService.CreateGame(playlist);
-            Navigation.NavigateTo("play-game");
-        }
-    }
 }

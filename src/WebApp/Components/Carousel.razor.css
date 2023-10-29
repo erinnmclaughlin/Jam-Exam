@@ -18,7 +18,7 @@
 
 .carousel-item {
     position: absolute;
-    width: 350px;
+    width: 200px;
     text-align: center;
     transition: transform 0.4s;
     -webkit-transform-style: preserve-3d;
@@ -26,8 +26,8 @@
 }
 
     .carousel-item img {
-        width: 350px;
-        height: 350px;
+        width: 200px;
+        height: 200px;
         transition: 0.25s;
     }
 
@@ -35,3 +35,14 @@
             box-shadow: 0 0.5em 0.5em -0.4em #000;
             transform: translateY(-0.75em);
         }
+
+@media (min-width: 640px) {
+    .carousel-item {
+        width: 350px;
+    }
+
+        .carousel-item img {
+            width: 350px;
+            height: 350px;
+        }
+}

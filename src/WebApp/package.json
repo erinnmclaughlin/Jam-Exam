@@ -4,14 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "buildcss": "postcss wwwroot/css/app.css -o wwwroot/css/app.min.css"
+    "buildcss": "postcss wwwroot/css/app.css -o wwwroot/css/app.css"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "autoprefixer": "^10.4.16",
-    "postcss": "^8.4.31",
-    "postcss-cli": "^9.1.0",
-    "tailwindcss": "^2.2.19"
+    "modern-normalize": "^2.0.0"
   }
 }

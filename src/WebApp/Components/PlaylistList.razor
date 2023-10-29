@@ -1,0 +1,11 @@
+﻿<div>
+    @foreach (var playlist in Playlists)
+    {
+        <PlaylistCard Playlist="playlist" />
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public required Spotify.Models.Playlist[] Playlists { get; set; }
+}

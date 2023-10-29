@@ -1,6 +1,6 @@
 ﻿@if (Items is null)
 {
-    <Loader LoadText="Loading tracks..." />
+    <Loader  />
 }
 else
 {
@@ -13,9 +13,16 @@ else
         <div class="carousel-items">
             @foreach (var item in Items)
             {
-                <div class="carousel-item" style="@GetCss(item)" @onclick="(() => SelectItem(item))">
+                <!-- Mobile -->
+                <div class="carousel-item sm:hidden" style="@GetCss(item, true)" @onclick="(() => SelectItem(item))">
                     <img src="@item.ImageUrl" />
                 </div>
+
+                <!-- Desktop -->
+                <div class="carousel-item hidden sm:block" style="@GetCss(item, false)" @onclick="(() => SelectItem(item))">
+                    <img src="@item.ImageUrl" />
+                </div>
+
             }
         </div>
     </div>

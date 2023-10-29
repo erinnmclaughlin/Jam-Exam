@@ -27,7 +27,7 @@ public partial class Carousel
         base.OnParametersSet();
     }
 
-    private string GetCss(CarouselItem item)
+    private string GetCss(CarouselItem item, bool isMobile)
     {
         if (item.DisplayOrder == Center)
             return $"z-index: {Items!.Count}";
@@ -35,7 +35,7 @@ public partial class Carousel
         var offset = Center - item.DisplayOrder;
         int zindex = Items!.Count - Math.Abs(offset);
 
-        int translateX = offset * 300;
+        int translateX = offset * (isMobile ? 150 : 300);
         int translateZ = Math.Abs(offset) * -90;
         int rotateY = (offset * -10) - 5;
 

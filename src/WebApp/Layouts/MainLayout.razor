@@ -1,10 +1,16 @@
 ﻿@inherits LayoutComponentBase
 
 <div id="main-layout">
-    <a id="github-link" href="https://github.com/erinnmclaughlin/Jam-Exam" target="_blank" class="text-gray-200 text-opacity-50 hover:text-opacity-80">
-        <GitHubIcon />
-    </a>
+    <header>
+        <div class="container">
+            <a id="github-link" href="https://github.com/erinnmclaughlin/Jam-Exam" target="_blank" class="text-gray-200 text-opacity-50 hover:text-opacity-80">
+                <GitHubIcon />
+            </a>
+        </div>
+    </header>
     <main>
-        @Body
+        <div class="container">
+            @Body
+        </div>
     </main>
 </div>

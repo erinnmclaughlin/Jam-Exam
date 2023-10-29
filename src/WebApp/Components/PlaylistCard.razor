@@ -1,0 +1,20 @@
+﻿<button type="button" @onclick="OnClick" class="playlist-card wrapper">
+    <div class="cover-image">
+        <img src="@Playlist.Images?.FirstOrDefault()?.Url" alt="Cover image for @Playlist.Name">
+    </div>
+    <div class="playlist-card-content">
+        <h4 class="title">@Playlist.Name</h4>
+        <div class="description">@Playlist.Description</div>
+    </div>
+</button>
+
+@code {
+    [Parameter, EditorRequired]
+    public required Spotify.Models.Playlist Playlist { get; set; }
+
+    private void OnClick()
+    {
+        GameService.CreateGame(Playlist);
+        Navigation.NavigateTo("play-game");        
+    }
+}

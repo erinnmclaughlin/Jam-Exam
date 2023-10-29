@@ -1,0 +1,86 @@
+﻿.wrapper {
+    --background: rgba(255, 255, 255, 0.1);
+    --background-hover: rgba(255, 255, 255, 0.2);
+    --border: 1px solid #475569;
+    --color: #94a3b8;
+    --color-title: #cbd5e1;
+    --cover-image-size: 100px;
+    --playlist-card-description-display: block;
+}
+
+.playlist-card {
+    display: flex;
+    padding: 0.75rem;
+    gap: 0.66rem;
+    color: var(--color);
+    background: var(--background);
+    border-radius: 0.25rem;
+    transition: background linear 0.1s;
+    cursor: pointer;
+    text-align: left;
+    border: 0;
+}
+
+    .playlist-card:hover {
+        background: var(--background-hover);
+    }
+
+    .playlist-card .cover-image {
+        flex-shrink: 0;
+    }
+
+        .playlist-card .cover-image img {
+            width: var(--cover-image-size);
+            height: var(--cover-image-size);
+        }
+
+    .playlist-card .playlist-card-content {
+        display: flex;
+        flex-direction: column;
+        gap: 0.33rem;
+        overflow: hidden;
+    }
+
+    .playlist-card .playlist-card-content .title {
+        font-weight: 600;
+        color: var(--color-title);
+        line-height: 1;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        margin: 0;
+    }
+
+        .playlist-card .playlist-card-content .description {
+            display: var(--playlist-card-description-display);
+            white-space: pre-wrap;
+            font-size: 0.8rem;
+            line-height: 1.33;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            padding-right: 2rem;
+        }
+
+    .playlist-card footer {
+        display: flex;
+        border-top: var(--border);
+        overflow: hidden;
+        padding: 0.75rem 1.5rem;
+    }
+
+        .playlist-card footer button {
+            padding: 0.75rem 1rem;
+            background-color: yellow;
+            color: black;
+            font-weight: 600;
+            width: 100%;
+            height: 100%;
+            border-radius: 0.33rem;
+        }
+
+@media (min-width: 600px) {
+    .wrapper {
+        --playlist-card-description-display: block;
+    }
+}
