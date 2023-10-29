@@ -2,32 +2,31 @@
 using Spotify.Models;
 using Spotify.Requests;
 
-namespace WebApp.Services
+namespace WebApp.Services;
+
+public class SearchService
 {
-    public class SearchService
+    private readonly ISpotifyClient _spotify;
+
+    public SearchService(ISpotifyClient spotify)
     {
-        private readonly ISpotifyClient _spotify;
+        _spotify = spotify;
+    }
 
-        public SearchService(ISpotifyClient spotify)
+    /// <summary>
+    /// Queries spotify API for artists.
+    /// </summary>
+    /// <param name="searchText"></param>
+    /// <returns></returns>
+    public async Task<IEnumerable<Artist>?> SearchArtists(string searchText)
+    {
+        var response = await _spotify.Search(new SearchRequest
         {
-            _spotify = spotify;
-        }
+            Limit = 5,
+            SearchText = searchText,
+            Types = new List<string> { "artist" }
+        });
 
-        /// <summary>
-        /// Queries spotify API for artists.
-        /// </summary>
-        /// <param name="searchText"></param>
-        /// <returns></returns>
-        public async Task<IEnumerable<Artist>?> SearchArtists(string searchText)
-        {
-            var response = await _spotify.Search(new SearchRequest
-            {
-                Limit = 5,
-                SearchText = searchText,
-                Types = new List<string> { "artist" }
-            });
-
-            return response.Content?.Artists?.Items;
-        }
+        return response.Content?.Artists?.Items;
     }
 }

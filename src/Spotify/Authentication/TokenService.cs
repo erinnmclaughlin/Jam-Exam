@@ -4,47 +4,46 @@ using Spotify.Settings;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Spotify.Authentication
+namespace Spotify.Authentication;
+
+internal class TokenService
 {
-    internal class TokenService
+    private readonly ISpotifyAuthClient _api;
+    private readonly SpotifySettings _settings;
+
+    private TokenResponse? _currentToken;
+
+    public TokenService(ISpotifyAuthClient api, IOptions<SpotifySettings> spotifyOptions)
     {
-        private readonly ISpotifyAuthClient _api;
-        private readonly SpotifySettings _settings;
+        _api = api;
+        _settings = spotifyOptions.Value;
+    }
 
-        private TokenResponse? _currentToken;
+    /// <summary>
+    /// Returns the token for the Spotify API
+    /// </summary>
+    /// <returns></returns>
+    public async Task<TokenResponse> GetTokenAsync()
+    {
+        if (_currentToken?.IsExpired != false)
+            _currentToken = await RequestNewTokenAsync();
 
-        public TokenService(ISpotifyAuthClient api, IOptions<SpotifySettings> spotifyOptions)
+        return _currentToken;
+    }
+
+    /// <summary>
+    /// Requests a new auth token from the Spotify authentication API
+    /// </summary>
+    /// <returns></returns>
+    private async Task<TokenResponse> RequestNewTokenAsync()
+    {
+        var base64 = $"{_settings.ClientId}:{_settings.ClientSecret}".EncodeBase64();
+        var headers = new Dictionary<string, string>
         {
-            _api = api;
-            _settings = spotifyOptions.Value;
-        }
+            { "Authorization", $"Basic {base64}" }
+        };
 
-        /// <summary>
-        /// Returns the token for the Spotify API
-        /// </summary>
-        /// <returns></returns>
-        public async Task<TokenResponse> GetTokenAsync()
-        {
-            if (_currentToken?.IsExpired != false)
-                _currentToken = await RequestNewTokenAsync();
-
-            return _currentToken;
-        }
-
-        /// <summary>
-        /// Requests a new auth token from the Spotify authentication API
-        /// </summary>
-        /// <returns></returns>
-        private async Task<TokenResponse> RequestNewTokenAsync()
-        {
-            var base64 = $"{_settings.ClientId}:{_settings.ClientSecret}".EncodeBase64();
-            var headers = new Dictionary<string, string>
-            {
-                { "Authorization", $"Basic {base64}" }
-            };
-
-            var response = await _api.RequestToken(new TokenRequest(), headers);
-            return response.Content!;
-        }
+        var response = await _api.RequestToken(new TokenRequest(), headers);
+        return response.Content!;
     }
 }

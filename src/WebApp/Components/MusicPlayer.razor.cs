@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace WebApp.Components
+namespace WebApp.Components;
+
+public partial class MusicPlayer
 {
-    public partial class MusicPlayer
-    {
-        [Parameter] public string? Url { get; set; }
-    }
+    [Parameter] public string? Url { get; set; }
 }

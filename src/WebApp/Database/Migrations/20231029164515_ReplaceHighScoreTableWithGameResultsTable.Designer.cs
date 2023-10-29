@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApp.Database;
 
@@ -11,9 +12,11 @@ using WebApp.Database;
 namespace WebApp.Database.Migrations
 {
     [DbContext(typeof(JamDbContext))]
-    partial class JamDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231029164515_ReplaceHighScoreTableWithGameResultsTable")]
+    partial class ReplaceHighScoreTableWithGameResultsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

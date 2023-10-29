@@ -1,77 +1,76 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace WebApp.Components
+namespace WebApp.Components;
+
+public class CarouselItem
 {
-    public class CarouselItem
+    public string Id { get; set; } = null!;
+    public int DisplayOrder { get; set; }
+    public string ImageUrl { get; set; } = null!;
+}
+
+public partial class Carousel
+{
+    [Parameter] public EventCallback<string> OnSelect { get; set; }
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public List<CarouselItem>? Items { get; set; }
+    
+    private int Center { get; set; }
+
+    protected override void OnParametersSet()
     {
-        public string Id { get; set; } = null!;
-        public int DisplayOrder { get; set; }
-        public string ImageUrl { get; set; } = null!;
+        if (Items is not null)
+        {
+            Center = Items.Count / 2;
+        }
+        
+        base.OnParametersSet();
     }
 
-    public partial class Carousel
+    private string GetCss(CarouselItem item)
     {
-        [Parameter] public EventCallback<string> OnSelect { get; set; }
-        [Parameter] public string? Title { get; set; }
-        [Parameter] public List<CarouselItem>? Items { get; set; }
-        
-        private int Center { get; set; }
+        if (item.DisplayOrder == Center)
+            return $"z-index: {Items!.Count}";
 
-        protected override void OnParametersSet()
+        var offset = Center - item.DisplayOrder;
+        int zindex = Items!.Count - Math.Abs(offset);
+
+        int translateX = offset * 300;
+        int translateZ = Math.Abs(offset) * -90;
+        int rotateY = (offset * -10) - 5;
+
+        var text = $"z-index: {zindex}; transform: translateX({translateX}px) translateZ({translateZ}px) rotateY({rotateY}deg);";
+
+        if (offset > 3)
+            text += "content-visibility: hidden;";
+
+        return text;
+    }
+
+    private bool IsSelected(CarouselItem item) => Center == item.DisplayOrder;
+
+    private async Task SelectItem(CarouselItem item)
+    {
+        if (IsSelected(item))
         {
-            if (Items is not null)
-            {
-                Center = Items.Count / 2;
-            }
-            
-            base.OnParametersSet();
+            await OnSelect.InvokeAsync(item.Id);
+            return;
         }
 
-        private string GetCss(CarouselItem item)
+        var offset = Center - item.DisplayOrder;
+        Items!.ForEach(x =>
         {
-            if (item.DisplayOrder == Center)
-                return $"z-index: {Items!.Count}";
+            // Shift the item over
+            x.DisplayOrder += offset;
 
-            var offset = Center - item.DisplayOrder;
-            int zindex = Items!.Count - Math.Abs(offset);
+            // If the item falls off the edge, move it to the opposite end
+            if (x.DisplayOrder < 0)
+                x.DisplayOrder += Items.Count;
+            else if (x.DisplayOrder > Items.Count)
+                x.DisplayOrder -= Items.Count;
 
-            int translateX = offset * 300;
-            int translateZ = Math.Abs(offset) * -90;
-            int rotateY = (offset * -10) - 5;
+        });
 
-            var text = $"z-index: {zindex}; transform: translateX({translateX}px) translateZ({translateZ}px) rotateY({rotateY}deg);";
-
-            if (offset > 3)
-                text += "content-visibility: hidden;";
-
-            return text;
-        }
-
-        private bool IsSelected(CarouselItem item) => Center == item.DisplayOrder;
-
-        private async Task SelectItem(CarouselItem item)
-        {
-            if (IsSelected(item))
-            {
-                await OnSelect.InvokeAsync(item.Id);
-                return;
-            }
-
-            var offset = Center - item.DisplayOrder;
-            Items!.ForEach(x =>
-            {
-                // Shift the item over
-                x.DisplayOrder += offset;
-
-                // If the item falls off the edge, move it to the opposite end
-                if (x.DisplayOrder < 0)
-                    x.DisplayOrder += Items.Count;
-                else if (x.DisplayOrder > Items.Count)
-                    x.DisplayOrder -= Items.Count;
-
-            });
-
-            await InvokeAsync(StateHasChanged);
-        }
+        await InvokeAsync(StateHasChanged);
     }
 }

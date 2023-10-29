@@ -3,37 +3,36 @@ using Microsoft.EntityFrameworkCore;
 using WebApp.Database;
 using WebApp.Models;
 
-namespace WebApp.Components
+namespace WebApp.Components;
+
+public partial class HighScores : IDisposable
 {
-    public partial class HighScores : IDisposable
+    [Inject] private IDbContextFactory<JamDbContext> DbContext { get; set; } = null!;
+
+    private List<GameResult>? Scores { get; set; }
+
+    public void Dispose()
     {
-        [Inject] private IDbContextFactory<JamDbContext> DbContext { get; set; } = null!;
+        GameService.OnScoreSaved -= async () => await LoadScores();
+        GC.SuppressFinalize(this);
+    }
 
-        private List<GameResult>? Scores { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadScores();
+        GameService.OnScoreSaved += async () => await LoadScores();
+    }
 
-        public void Dispose()
-        {
-            GameService.OnScoreSaved -= async () => await LoadScores();
-            GC.SuppressFinalize(this);
-        }
+    private async Task LoadScores()
+    {
+        using var context = DbContext.CreateDbContext();
 
-        protected override async Task OnInitializedAsync()
-        {
-            await LoadScores();
-            GameService.OnScoreSaved += async () => await LoadScores();
-        }
+        Scores = await context.GameResults
+            .Where(x => x.PlaylistId == GameService.Playlist!.Id)
+            .OrderByDescending(x => x.TotalCorrect)
+            .Take(100)
+            .ToListAsync();
 
-        private async Task LoadScores()
-        {
-            using var context = DbContext.CreateDbContext();
-
-            Scores = await context.GameResults
-                .Where(x => x.Playlist.SpotifyId == GameService.Playlist!.Id)
-                .OrderByDescending(x => x.TotalCorrect)
-                .Take(100)
-                .ToListAsync();
-
-            StateHasChanged();
-        }
+        StateHasChanged();
     }
 }

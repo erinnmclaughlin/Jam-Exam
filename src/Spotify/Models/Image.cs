@@ -1,16 +1,15 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Spotify.Models
+namespace Spotify.Models;
+
+public class Image
 {
-    public class Image
-    {
-        [JsonPropertyName("height")]
-        public int? Height { get; set; }
+    [JsonPropertyName("height")]
+    public int? Height { get; set; }
 
-        [JsonPropertyName("url")]
-        public string Url { get; set; } = null!;
+    [JsonPropertyName("url")]
+    public string Url { get; set; } = null!;
 
-        [JsonPropertyName("width")]
-        public int? Width { get; set; }
-    }
+    [JsonPropertyName("width")]
+    public int? Width { get; set; }
 }

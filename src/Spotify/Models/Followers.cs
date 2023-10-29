@@ -1,10 +1,9 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Spotify.Models
+namespace Spotify.Models;
+
+public class Followers
 {
-    public class Followers
-    {
-        [JsonPropertyName("total")]
-        public int Total { get; set; }
-    }
+    [JsonPropertyName("total")]
+    public int Total { get; set; }
 }

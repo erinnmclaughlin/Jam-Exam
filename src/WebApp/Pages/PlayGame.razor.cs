@@ -4,43 +4,42 @@ using System.ComponentModel.DataAnnotations;
 using WebApp.Components;
 using WebApp.Services;
 
-namespace WebApp.Pages
+namespace WebApp.Pages;
+
+public partial class PlayGame : IDisposable
 {
-    public partial class PlayGame : IDisposable
+    private MusicPlayer _player = new();
+
+    [Inject] private SearchService SearchService { get; set; } = null!;
+
+    [Required] private Artist? SelectedArtist { get; set; }
+
+    public void Dispose()
     {
-        private MusicPlayer _player = new();
+        GameService.PropertyChanged -= async (o, e) => await InvokeAsync(StateHasChanged);
+        GC.SuppressFinalize(this);
+    }
 
-        [Inject] private SearchService SearchService { get; set; } = null!;
+    protected override async Task OnInitializedAsync()
+    {
+        GameService.PropertyChanged += async (o, e) => await InvokeAsync(StateHasChanged);
 
-        [Required] private Artist? SelectedArtist { get; set; }
+        if (GameService.Playlist is null)
+            Navigation.NavigateTo("");
+        else
+            await GameService.LoadTracksAsync(10);
 
-        public void Dispose()
-        {
-            GameService.PropertyChanged -= async (o, e) => await InvokeAsync(StateHasChanged);
-            GC.SuppressFinalize(this);
-        }
+        await InvokeAsync(StateHasChanged);
+    }
 
-        protected override async Task OnInitializedAsync()
-        {
-            GameService.PropertyChanged += async (o, e) => await InvokeAsync(StateHasChanged);
+    private string GetResultText()
+    {
+        if (GameService.LastGuessed!.GuessedArtist is null)
+            return "Time's Up!";
 
-            if (GameService.Playlist is null)
-                Navigation.NavigateTo("");
-            else
-                await GameService.LoadTracksAsync(10);
+        if (GameService.LastGuessed!.IsCorrect)
+            return "Rock On!";
 
-            await InvokeAsync(StateHasChanged);
-        }
-
-        private string GetResultText()
-        {
-            if (GameService.LastGuessed!.GuessedArtist is null)
-                return "Time's Up!";
-
-            if (GameService.LastGuessed!.IsCorrect)
-                return "Rock On!";
-
-            return "Oh, Drumsticks!";
-        }
+        return "Oh, Drumsticks!";
     }
 }

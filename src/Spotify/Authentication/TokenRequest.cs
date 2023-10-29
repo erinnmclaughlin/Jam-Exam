@@ -1,10 +1,9 @@
 ﻿using Refit;
 
-namespace Spotify.Authentication
+namespace Spotify.Authentication;
+
+internal class TokenRequest
 {
-    internal class TokenRequest
-    {
-        [AliasAs("grant_type")]
-        public string GrantType { get; } = "client_credentials";
-    }
+    [AliasAs("grant_type")]
+    public string GrantType { get; } = "client_credentials";
 }

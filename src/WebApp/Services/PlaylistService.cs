@@ -1,47 +1,43 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Extensions.Options;
 using Spotify;
 using Spotify.Models;
-using WebApp.Database;
 
 namespace WebApp.Services;
 
 public sealed class PlaylistService
 {
-    private readonly List<Playlist> _inMemoryCache = new(); //TODO: Use local storage
+    private readonly Dictionary<string, Playlist> _playlists = new();
 
-    private readonly IDbContextFactory<JamDbContext> _dbContextFactory;
+    private readonly IOptionsMonitor<GameSettings> _settings;
     private readonly ISpotifyClient _spotify;
 
-    public PlaylistService(IDbContextFactory<JamDbContext> dbContextFactory, ISpotifyClient spotify)
+    public PlaylistService(IOptionsMonitor<GameSettings> settings, ISpotifyClient spotify)
     {
-        _dbContextFactory = dbContextFactory;
+        _settings = settings;
         _spotify = spotify;
     }
 
     /// <summary>
     /// Gets a list of playlists supported by the app.
     /// </summary>
-    public async Task<Playlist[]> LoadPlaylistsAsync()
+    public async Task<Playlist[]> GetPlaylistsAsync(CancellationToken cancellationToken = default)
     {
-        if (_inMemoryCache.Count == 0)
+        var playlistIds = _settings.CurrentValue.PlaylistIds;
+
+        foreach (var id in playlistIds)
         {
-            var playlistIds = await GetPlaylistIdsAsync();
+            if (_playlists.ContainsKey(id))
+                continue;
 
-            foreach (var id in playlistIds)
-            {
-                var response = await _spotify.GetPlaylistById(id);
+            var response = await _spotify.GetPlaylistById(id, cancellationToken);
 
-                if (response.Content is not null)
-                    _inMemoryCache.Add(response.Content);
-            }
+            if (response.Content is { } playlist)
+                _playlists.Add(id, playlist);
+
+            if (cancellationToken.IsCancellationRequested)
+                break;
         }
 
-        return _inMemoryCache.ToArray();
-    }
-
-    private async Task<string[]> GetPlaylistIdsAsync()
-    {
-        using var dbContext = _dbContextFactory.CreateDbContext();
-        return await dbContext.Playlists.Select(p => p.SpotifyId).ToArrayAsync();
+        return _playlists.Select(p => p.Value).ToArray();
     }
 }

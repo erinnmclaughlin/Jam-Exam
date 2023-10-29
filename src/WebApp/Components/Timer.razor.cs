@@ -1,48 +1,47 @@
 ﻿using WebApp.Services;
 
-namespace WebApp.Components
+namespace WebApp.Components;
+
+public partial class Timer : IDisposable
 {
-    public partial class Timer : IDisposable
+    private bool _forceStop;
+
+    private int CurrentSeconds { get; set; }
+    private string TimerText => new DateTime().AddSeconds(CurrentSeconds).ToString("mm:ss");
+
+    public void Dispose()
     {
-        private bool _forceStop;
+        _forceStop = true;
+        GC.SuppressFinalize(this);
+    }
 
-        private int CurrentSeconds { get; set; }
-        private string TimerText => new DateTime().AddSeconds(CurrentSeconds).ToString("mm:ss");
+    protected override async Task OnInitializedAsync()
+    {
+        CurrentSeconds = 30;
+        await Countdown();
+    }
 
-        public void Dispose()
+    private async Task Countdown()
+    {
+        await Task.Delay(1000);
+        CurrentSeconds--;
+        await InvokeAsync(StateHasChanged);
+
+        if (CurrentSeconds == 0)
         {
-            _forceStop = true;
-            GC.SuppressFinalize(this);
+            await GameService.Timeout();
+            return;
         }
-
-        protected override async Task OnInitializedAsync()
+        else if (GameService.PlayTrack == true && !_forceStop)
         {
-            CurrentSeconds = 30;
             await Countdown();
         }
+        
+    }
 
-        private async Task Countdown()
-        {
-            await Task.Delay(1000);
-            CurrentSeconds--;
-            await InvokeAsync(StateHasChanged);
-
-            if (CurrentSeconds == 0)
-            {
-                await GameService.Timeout();
-                return;
-            }
-            else if (GameService.PlayTrack == true && !_forceStop)
-            {
-                await Countdown();
-            }
-            
-        }
-
-        private int GetDashArray()
-        {
-            var timeFraction = CurrentSeconds / 30.0;
-            return (int)(283 * timeFraction - (1.0 / 30.0) * (1.0 - timeFraction));
-        }
+    private int GetDashArray()
+    {
+        var timeFraction = CurrentSeconds / 30.0;
+        return (int)(283 * timeFraction - (1.0 / 30.0) * (1.0 - timeFraction));
     }
 }

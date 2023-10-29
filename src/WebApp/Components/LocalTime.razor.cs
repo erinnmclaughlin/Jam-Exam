@@ -1,22 +1,21 @@
 ﻿using Microsoft.AspNetCore.Components;
 using WebApp.Services;
 
-namespace WebApp.Components
+namespace WebApp.Components;
+
+public partial class LocalTime
 {
-    public partial class LocalTime
+    [Inject] private TimeZoneService TimeZoneService { get; set; } = null!;
+    [Parameter] public DateTime UtcTime { get; set; }
+
+    private DateTime? Local { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        [Inject] private TimeZoneService TimeZoneService { get; set; } = null!;
-        [Parameter] public DateTime UtcTime { get; set; }
-
-        private DateTime? Local { get; set; }
-
-        protected override async Task OnAfterRenderAsync(bool firstRender)
+        if (firstRender)
         {
-            if (firstRender)
-            {
-                Local = await TimeZoneService.ToLocalTime(UtcTime);
-                StateHasChanged();
-            }
+            Local = await TimeZoneService.ToLocalTime(UtcTime);
+            StateHasChanged();
         }
     }
 }

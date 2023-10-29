@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Spotify.Models;
 
-namespace WebApp.Components
+namespace WebApp.Components;
+
+public partial class ArtistCard
 {
-    public partial class ArtistCard
-    {
-        [Parameter] public Artist Artist { get; set; } = null!;
-    }
+    [Parameter] public Artist Artist { get; set; } = null!;
 }

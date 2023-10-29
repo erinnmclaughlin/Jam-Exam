@@ -1,13 +1,12 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Spotify.Responses
-{
-    public class ErrorResponse
-    {
-        [JsonPropertyName("message")]
-        public string? Message { get; set; }
+namespace Spotify.Responses;
 
-        [JsonPropertyName("status")]
-        public int Status { get; set; }
-    }
+public class ErrorResponse
+{
+    [JsonPropertyName("message")]
+    public string? Message { get; set; }
+
+    [JsonPropertyName("status")]
+    public int Status { get; set; }
 }

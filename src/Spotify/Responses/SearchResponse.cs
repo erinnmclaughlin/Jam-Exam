@@ -1,9 +1,8 @@
 ﻿using Spotify.Models;
 
-namespace Spotify.Responses
+namespace Spotify.Responses;
+
+public class SearchResponse
 {
-    public class SearchResponse
-    {
-        public PagedResponse<Artist>? Artists { get; set; }
-    }
+    public PagedResponse<Artist>? Artists { get; set; }
 }
