@@ -1,11 +1,14 @@
 @import 'modern-normalize.css';
+@import '../fonts/Nunito/Nunito.css';
 
-html, body {
+html {
     height: 100%;
+    font-family: Nunito, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
 }
 
 body {
     color: #94a3b8;
+    height: 100%;
 }
 
 h1, h2, h3, h4, h5, h6 {
