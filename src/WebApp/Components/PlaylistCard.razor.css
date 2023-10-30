@@ -27,6 +27,8 @@
 
     .playlist-card .cover-image {
         flex-shrink: 0;
+        width: var(--cover-image-size);
+        height: var(--cover-image-size);
     }
 
         .playlist-card .cover-image img {

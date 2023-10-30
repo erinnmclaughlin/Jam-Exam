@@ -1,0 +1,7 @@
+﻿@page "/play"
+
+<MusicPlayer @ref="_player" Url="@GameService.CurrentTrack?.PreviewUrl" />
+
+@code {
+    private MusicPlayer _player = default!;
+}

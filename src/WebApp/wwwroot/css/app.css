@@ -1,16 +1,46 @@
 @import 'modern-normalize.css';
 @import '../fonts/Nunito/Nunito.css';
 
+:root {
+    --background-color: #111827;
+    --color: #cbd5e1;
+    --heading-color: #e2e8f0;
+    --link-color: #cbd5e1;
+    --max-width: 1200px;
+    --border-color: #64748b;
+}
+
+* {
+    border-color: var(--border-color);
+}
+
 html {
-    height: 100%;
     font-family: Nunito, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+    height: 100%;
 }
 
 body {
-    color: #94a3b8;
+    color: var(--color);
     height: 100%;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    color: #e2e8f0;
+    color: var(--heading-color);
+    margin: 0;
+}
+
+a {
+    color: var(--link-color);
+    opacity: 0.75;
+    transition: opacity linear 0.1s;
+}
+
+    a:hover {
+        opacity: 1;
+    }
+
+hr {
+    width: 100%;
+    border-top-width: 0;
+    border-bottom-width: 1px;
 }
